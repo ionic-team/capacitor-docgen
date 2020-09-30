@@ -1,0 +1,2 @@
+const Haptics = {};
+export { Haptics };
