@@ -1,6 +1,6 @@
 # @capacitor/docgen
 
-Docs Readme Markdown and JSON Generator for Capacitor Plugins.
+Docs Readme Markdown and JSON Generator for [Capacitor](https://capacitorjs.com/) Plugins.
 
 - Designed specifically for generating docs for Capacitor plugins using TypeScript
 - Gerenates docs data pulled from [JSDocs](https://en.wikipedia.org/wiki/JSDoc) within source code 
@@ -40,6 +40,7 @@ for Github and NPM, and the anchors within the docs can also be
 linked to and shared.
 ```
 
+
 ## CLI
 
 Easiest way to run `docgen` is to install `@capacitor/docgen` as a dev dependency
@@ -56,3 +57,9 @@ docgen --api HapticsPlugin --output-readme README.md
 | `--output-readme` | `-r`  | Path to the markdown file to update. Note that the file must already exist. **Required** |
 | `--output-json`   | `-j`  | Path to write the raw docs data as a json file.                                          |
 | `--project`       | `-p`  | Path to the project's `tsconfig.json` file, same as the [project](https://www.typescriptlang.org/docs/handbook/compiler-options.html) flag for TypeScript's CLI. By default it'll attempt to find this file. |
+
+
+## Related
+
+- [Capacitor](https://capacitorjs.com/)
+- [Capacitor Community Plugins](https://github.com/capacitor-community)
