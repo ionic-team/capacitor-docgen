@@ -9,6 +9,9 @@ Docs Readme Markdown and JSON Generator for [Capacitor](https://capacitorjs.com/
 - Ideal for formatted docs within Github and NPM readme landing pages
 - If you're looking for an entire docs site generator we recommend [TypeDoc](https://typedoc.org/) instead
 
+```bash
+npm i @capacitor/docgen --save-dev
+```
 
 ## Example Readme File
 
@@ -57,6 +60,17 @@ docgen --api HapticsPlugin --output-readme README.md
 | `--output-readme` | `-r`  | Path to the markdown file to update. Note that the file must already exist. **Required** |
 | `--output-json`   | `-j`  | Path to write the raw docs data as a json file.                                          |
 | `--project`       | `-p`  | Path to the project's `tsconfig.json` file, same as the [project](https://www.typescriptlang.org/docs/handbook/compiler-options.html) flag for TypeScript's CLI. By default it'll attempt to find this file. |
+
+
+#### package.json script
+
+```json
+{
+  "scripts": {
+    "docgen": "docgen --api HapticsPlugin --output-readme README.md"
+  }
+}
+```
 
 
 ## Related
