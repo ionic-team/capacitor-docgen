@@ -5,8 +5,14 @@
   "keywords": [
     "capacitor docs generation",
     "docsgen",
-    "capacitor"
+    "capacitor",
+    "capacitor plugins"
   ],
+  "author": "Ionic Team",
+  "homepage": "https://capacitorjs.com/",
+  "bin": {
+    "docgen": "bin/docgen"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -44,5 +50,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ionic-team/capacitor-docgen.git"
   }
 }
