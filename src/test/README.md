@@ -1,7 +1,10 @@
+# My Capacitor Plugin 🔌
 
-# Haptics
+The readme file can be formatted however you'd like. Just insert 
+the HTML placeholder comments where the index of the API
+methods, and the API docs should go.
 
-The Haptics API provides physical feedback to the user through touch or vibration.
+Below is an index of all the methods available.
 
 <!--DOCGEN_INDEX_START-->
 * [impact()](#impact)
@@ -12,56 +15,11 @@ The Haptics API provides physical feedback to the user through touch or vibratio
 * [Enums](#enums)
 <!--DOCGEN_INDEX_END-->
 
-## Android Notes
+## Custom Content
 
-To use vibration, you must add this permission to your `AndroidManifest.xml` file:
-
-```xml
-<uses-permission android:name="android.permission.VIBRATE" />
-```
-
-## Example
-
-```typescript
-import {
-  Plugins,
-  HapticsImpactStyle
-} from '@capacitor/core';
-
-const { Haptics } = Plugins;
-
-export class HapticsExample {
-  hapticsImpact(style = HapticsImpactStyle.Heavy) {
-    Haptics.impact({
-      style: style
-    });
-  }
-
-  hapticsImpactMedium(style) {
-    this.hapticsImpact(HapticsImpactStyle.Medium);
-  }
-
-  hapticsImpactLight(style) {
-    this.hapticsImpact(HapticsImpactStyle.Light);
-  }
-
-  hapticsVibrate() {
-    Haptics.vibrate();
-  }
-
-  hapticsSelectionStart() {
-    Haptics.selectionStart();
-  }
-
-  hapticsSelectionChanged() {
-    Haptics.selectionChanged();
-  }
-
-  hapticsSelectionEnd() {
-    Haptics.selectionEnd();
-  }
-}
-```
+Manage your readme content however you'd like, and on every docgen 
+rebuild it will leave your original content as is, but update the 
+HTML placeholder comments with the updated generated docs.
 
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
@@ -198,3 +156,9 @@ Trigger a selection started haptic hint
 
 
 <!--DOCGEN_API_END-->
+
+## Commit Your Readme 🚀
+
+The benefit of this readme file is that is also acts as the landing 
+page for the Github repo and NPM package, and the anchors within the 
+docs can also be linked to and shared.

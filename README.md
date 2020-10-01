@@ -19,7 +19,7 @@ npm i @capacitor/docgen --save-dev
 # My Capacitor Plugin 🔌
 
 The readme file can be formatted however you'd like. Just insert 
-the  HTML placeholder comments where the Index of the API
+the HTML placeholder comments where the index of the API
 methods, and the API docs should go.
 
 Below is an index of all the methods available.
@@ -38,10 +38,13 @@ HTML placeholder comments with the updated generated docs.
 
 ## Commit Your Readme 🚀
 
-The benefit is that this readme file also acts as the landing page 
-for Github and NPM, and the anchors within the docs can also be 
-linked to and shared.
+The benefit of this readme file is that is also acts as the landing 
+page for the Github repo and NPM package, and the anchors within the 
+docs can also be linked to and shared.
 ```
+
+- [Example Readme Output](https://github.com/ionic-team/capacitor-docgen/blob/master/src/test/README.md)
+- [Example JSON Output](https://github.com/ionic-team/capacitor-docgen/blob/master/src/test/docs.json)
 
 
 ## CLI

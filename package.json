@@ -21,7 +21,7 @@
     "release": "npm run build && np --no-2fa",
     "test": "jest",
     "test.watch": "jest --watchAll",
-    "test.output": "node bin/docgen --project src/test/fixtures/tsconfig.json --api HapticsPlugin --output-readme src/test/fixtures/README.md --output-json src/test/fixtures/docs.json"
+    "test.output": "node bin/docgen --project src/test/fixtures/tsconfig.json --api HapticsPlugin --output-readme src/test/README.md --output-json src/test/docs.json"
   },
   "license": "MIT",
   "files": [
