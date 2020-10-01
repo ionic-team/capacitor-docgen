@@ -11,7 +11,7 @@ describe('parse', () => {
   it('api', () => {
     expect(api.name).toBe(`HapticsPlugin`);
     expect(api.slug).toBe(`hapticsplugin`);
-    expect(api.docs).toBe(`Top level docs.`);
+    expect(api.docs).toContain(`Docs from JSDoc comments!`);
     expect(interfaces).toHaveLength(4);
     expect(enums).toHaveLength(2);
 
