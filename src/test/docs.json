@@ -2,7 +2,7 @@
   "api": {
     "name": "HapticsPlugin",
     "slug": "hapticsplugin",
-    "docs": "## Docs from JSDoc comments!\n\nThis content is from the JSDOC comments on top of\nthe `HapticsPlugin` interface. All the API data below\nis generated from comments from its methods, interfaces\nand enums.",
+    "docs": "## Docs from JSDoc comments!\n\nThis content is from the JSDOC comments on top of\nthe `HapticsPlugin` interface. All the API data below\nis generated from comments from its methods, interfaces\nand enums.\n\nTake a look at the test [HapticsPlugin interface source file](https://github.com/ionic-team/capacitor-docgen/blob/master/src/test/fixtures/definitions.ts).",
     "tags": [],
     "methods": [
       {
