@@ -1,23 +1,41 @@
 import ts from 'typescript';
 import fs from 'fs';
 import path from 'path';
+import { DocsParseOptions } from './types';
 
-export function getTsProgram(tsconfigPath: string) {
-  const configResult = ts.readConfigFile(tsconfigPath, p =>
-    fs.readFileSync(p, 'utf-8'),
-  );
+export function getTsProgram(opts: DocsParseOptions) {
+  let rootNames: string[];
+  let options: ts.CompilerOptions;
 
-  if (configResult.error) {
+  if (typeof opts.tsconfigPath === 'string') {
+    const configResult = ts.readConfigFile(opts.tsconfigPath, p =>
+      fs.readFileSync(p, 'utf-8'),
+    );
+
+    if (configResult.error) {
+      throw new Error(
+        `Unable to read tsconfig path: "${opts.tsconfigPath}". ` +
+          ts.flattenDiagnosticMessageText(configResult.error.messageText, '\n'),
+      );
+    }
+    const tsconfigDir = path.dirname(opts.tsconfigPath);
+    rootNames = configResult.config.files.map((f: string) => {
+      return path.join(tsconfigDir, f);
+    });
+    options = configResult.config.compilerOptions;
+  } else if (Array.isArray(opts.inputFiles) && opts.inputFiles.length > 0) {
+    opts.inputFiles.forEach(i => {
+      if (!path.isAbsolute(i)) {
+        throw new Error(`inputFile "${i}" must be absolute`);
+      }
+    });
+    options = {};
+    rootNames = [...opts.inputFiles];
+  } else {
     throw new Error(
-      `Unable to read tsconfig path: "${tsconfigPath}". ` +
-        ts.flattenDiagnosticMessageText(configResult.error.messageText, '\n'),
+      `Either "tsconfigPath" or "inputFiles" option must be provided`,
     );
   }
-  const tsconfigDir = path.dirname(tsconfigPath);
-  const rootNames = configResult.config.files.map((f: string) => {
-    return path.join(tsconfigDir, f);
-  });
-  const options = configResult.config.compilerOptions;
 
   // same defaults as transpile() for faster parse-only transpiling
   options.isolatedModules = true;

@@ -70,11 +70,12 @@ export interface DocsTagInfo {
 }
 
 export interface DocsParseOptions {
-  tsconfigPath: string;
-  api: string;
+  tsconfigPath?: string;
+  inputFiles?: string[];
 }
 
 export interface DocsGenerateOptions extends DocsParseOptions {
+  api: string;
   outputJsonPath?: string;
   outputReadmePath?: string;
 }

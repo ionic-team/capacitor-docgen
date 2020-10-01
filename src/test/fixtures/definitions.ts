@@ -1,5 +1,10 @@
 /**
- * Top level docs.
+ * ## Docs from JSDoc comments!
+ *
+ * This content is from the JSDOC comments on top of
+ * the `HapticsPlugin` interface. All the API data below
+ * is generated from comments from its methods, interfaces
+ * and enums.
  */
 export interface HapticsPlugin {
   /**

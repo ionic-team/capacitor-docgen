@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { promisify } from 'util';
 import { MarkdownTable } from './markdown';
 import type {
@@ -14,6 +15,12 @@ const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
 export async function outputReadme(readmeFilePath: string, data: DocsData) {
+  if (typeof readmeFilePath !== 'string') {
+    throw new Error(`Missing readme file path`);
+  }
+  if (!path.isAbsolute(readmeFilePath)) {
+    throw new Error(`Readme file path must be an absolute path`);
+  }
   let content: string;
   try {
     content = await readFile(readmeFilePath, 'utf8');
@@ -23,16 +30,20 @@ export async function outputReadme(readmeFilePath: string, data: DocsData) {
     );
   }
 
-  content = replaceMarkdownDocs(content, data);
+  content = replaceMarkdownPlaceholders(content, data);
   await writeFile(readmeFilePath, content);
 }
 
-export function replaceMarkdownDocs(content: string, data: DocsData) {
-  if (data?.api) {
-    data = JSON.parse(JSON.stringify(data));
-    content = replaceMarkdownDocsIndex(content, data);
-    content = replaceMarkdownDocsApi(content, data);
+export function replaceMarkdownPlaceholders(content: string, data: DocsData) {
+  if (typeof content !== 'string') {
+    throw new Error(`Invalid content`);
   }
+  if (data == null || data.api == null) {
+    throw new Error(`Missing data`);
+  }
+  data = JSON.parse(JSON.stringify(data));
+  content = replaceMarkdownDocsIndex(content, data);
+  content = replaceMarkdownDocsApi(content, data);
   return content;
 }
 
@@ -92,6 +103,11 @@ function markdownIndex(data: DocsData) {
 
 function markdownApi(data: DocsData) {
   const o: string[] = [];
+
+  if (typeof data.api?.docs === 'string' && data.api.docs.length > 0) {
+    o.push(data.api.docs);
+    o.push(``);
+  }
 
   o.push(`## API`);
   o.push(``);
@@ -313,6 +329,15 @@ function getTagText(tags: DocsTagInfo[], tagName: string) {
 }
 
 export async function outputJson(jsonFilePath: string, data: DocsData) {
+  if (typeof jsonFilePath !== 'string') {
+    throw new Error(`Missing json file path`);
+  }
+  if (!path.isAbsolute(jsonFilePath)) {
+    throw new Error(`JSON file path must be an absolute path`);
+  }
+  if (data == null) {
+    throw new Error(`Missing data`);
+  }
   const content = JSON.stringify(data, null, 2);
   await writeFile(jsonFilePath, content);
 }

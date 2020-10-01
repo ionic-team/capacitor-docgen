@@ -13,8 +13,14 @@ import type {
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
 
+/**
+ * Given either a tsconfig file path, or exact input files, will
+ * use TypeScript to parse apart the source file's JSDoc comments
+ * and returns a function which can be used to get a specific
+ * interface as the primary api. Used by the generate() function.
+ */
 export function parse(opts: DocsParseOptions) {
-  const tsProgram = getTsProgram(opts.tsconfigPath);
+  const tsProgram = getTsProgram(opts);
   const typeChecker = tsProgram.getTypeChecker();
   const tsSourceFiles = tsProgram.getSourceFiles();
 
@@ -25,19 +31,21 @@ export function parse(opts: DocsParseOptions) {
     parseSourceFile(tsSourceFile, typeChecker, interfaces, enums);
   });
 
-  const api = interfaces.find(i => i.name === opts.api) || null;
+  return (api: string) => {
+    const apiInterface = interfaces.find(i => i.name === api) || null;
 
-  const data: DocsData = {
-    api,
-    interfaces: [],
-    enums: [],
+    const data: DocsData = {
+      api: apiInterface,
+      interfaces: [],
+      enums: [],
+    };
+
+    if (apiInterface) {
+      collectInterfaces(data, apiInterface, interfaces, enums);
+    }
+
+    return data;
   };
-
-  if (api) {
-    collectInterfaces(data, api, interfaces, enums);
-  }
-
-  return data;
 }
 
 function collectInterfaces(

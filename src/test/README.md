@@ -15,7 +15,7 @@ Below is an index of all the methods available.
 * [Enums](#enums)
 <!--DOCGEN_INDEX_END-->
 
-## Custom Content
+## Custom Readme Content
 
 Manage your readme content however you'd like, and on every docgen 
 rebuild it will leave your original content as is, but update the 
@@ -23,6 +23,13 @@ HTML placeholder comments with the updated generated docs.
 
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## Docs from JSDoc comments!
+
+This content is from the JSDOC comments on top of
+the `HapticsPlugin` interface. All the API data below
+is generated from comments from its methods, interfaces
+and enums.
+
 ## API
 
 ### impact

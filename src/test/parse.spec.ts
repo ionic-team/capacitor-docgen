@@ -2,10 +2,11 @@ import { parse } from '../parse';
 import path from 'path';
 
 describe('parse', () => {
-  const { api, interfaces, enums } = parse({
+  const apiFinder = parse({
     tsconfigPath: path.join(__dirname, 'fixtures', 'tsconfig.json'),
-    api: 'HapticsPlugin',
   });
+
+  const { api, interfaces, enums } = apiFinder('HapticsPlugin');
 
   it('api', () => {
     expect(api.name).toBe(`HapticsPlugin`);

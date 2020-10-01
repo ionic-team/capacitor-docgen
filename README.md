@@ -27,7 +27,7 @@ Below is an index of all the methods available.
 <!--DOCGEN_INDEX_START-->
 <!--DOCGEN_INDEX_END-->
 
-## Custom Content
+## Custom Readme Content
 
 Manage your readme content however you'd like, and on every docgen 
 rebuild it will leave your original content as is, but update the 
