@@ -123,10 +123,11 @@ Trigger a selection started haptic hint
 
 #### HapticsImpactOptions
 
-| Prop      | Type                                      | Description                                                                                                                                                                              | Default                  | Since |
-| --------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----- |
-| **style** | [HapticsImpactStyle](#hapticsimpactstyle) | Impact Feedback Style The mass of the objects in the collision simulated by a [UIImpactFeedbackGenerator](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | HapticsImpactStyle.Heavy | 1.0.0 |
-| **value** | boolean                                   |                                                                                                                                                                                          |                          |       |
+| Prop          | Type                                          | Description                                                                                                                                                                              | Default                  | Since |
+| ------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----- |
+| **style**     | [HapticsImpactStyle](#hapticsimpactstyle)     | Impact Feedback Style The mass of the objects in the collision simulated by a [UIImpactFeedbackGenerator](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | HapticsImpactStyle.Heavy | 1.0.0 |
+| **value**     | boolean                                       |                                                                                                                                                                                          |                          |       |
+| **recursive** | [HapticsImpactOptions](#hapticsimpactoptions) |                                                                                                                                                                                          |                          |       |
 
 
 #### HapticsNotificationOptions

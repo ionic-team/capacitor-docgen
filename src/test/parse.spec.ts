@@ -82,7 +82,7 @@ describe('parse', () => {
     const i = interfaces.find(i => i.name === 'HapticsImpactOptions');
     expect(i.slug).toBe(`hapticsimpactoptions`);
     expect(i.methods).toHaveLength(0);
-    expect(i.properties).toHaveLength(2);
+    expect(i.properties).toHaveLength(3);
 
     const p0 = i.properties[0];
     expect(p0.name).toBe(`style`);

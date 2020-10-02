@@ -156,6 +156,15 @@
           "docs": "",
           "complexTypes": [],
           "type": "boolean"
+        },
+        {
+          "name": "recursive",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "HapticsImpactOptions"
+          ],
+          "type": "HapticsImpactOptions"
         }
       ]
     },

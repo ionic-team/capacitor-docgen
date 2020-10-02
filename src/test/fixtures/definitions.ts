@@ -56,6 +56,8 @@ export interface HapticsImpactOptions {
   style: HapticsImpactStyle;
 
   value: boolean;
+
+  recursive: HapticsImpactOptions;
 }
 
 /**

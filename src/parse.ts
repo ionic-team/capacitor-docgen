@@ -77,7 +77,7 @@ function collectUsed(
 ) {
   complexTypes.forEach(typeName => {
     const fi = interfaces.find(i => i.name === typeName);
-    if (fi) {
+    if (fi && !data.interfaces.some(i => i.name === fi.name)) {
       collectInterfaces(data, fi, interfaces, enums);
     }
     const ei = enums.find(i => i.name === typeName);
