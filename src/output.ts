@@ -13,6 +13,7 @@ import type {
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const mkdir = promisify(fs.mkdir);
 
 export async function outputReadme(readmeFilePath: string, data: DocsData) {
   if (typeof readmeFilePath !== 'string') {
@@ -341,6 +342,7 @@ export async function outputJson(jsonFilePath: string, data: DocsData) {
     throw new Error(`Missing data`);
   }
   const content = JSON.stringify(data, null, 2);
+  await mkdir(path.dirname(jsonFilePath), { recursive: true });
   await writeFile(jsonFilePath, content);
 }
 
