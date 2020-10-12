@@ -260,7 +260,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
       const defaultValue = getTagText(m.tags, 'default');
 
       t.addRow([
-        `<code><strong>${m.name}</strong></code>`,
+        `**\`${m.name}\`**`,
         cleanTypes(data, m.type),
         m.docs,
         defaultValue ? `<code>${defaultValue}</code>` : '',
@@ -303,7 +303,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
 
     i.members.forEach(m => {
       t.addRow([
-        `<code><strong>${m.name}</strong></code>`,
+        `**\`${m.name}\`**`,
         cleanTypes(data, m.value),
         m.docs,
         getTagText(m.tags, 'since'),
