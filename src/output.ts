@@ -140,7 +140,7 @@ function markdownApi(data: DocsData) {
 function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
   const o: string[] = [];
 
-  o.push(`### \`${m.name}\``);
+  o.push(`### ${m.name}`);
   o.push(``);
   o.push('```typescript');
   o.push(`${m.name}${m.signature}`);
@@ -243,7 +243,7 @@ function linkType(data: DocsData, s: string) {
 function interfaceTable(data: DocsData, i: DocsInterface) {
   const o: string[] = [];
   o.push(``);
-  o.push(`#### \`${i.name}\``);
+  o.push(`#### ${i.name}`);
   o.push(``);
 
   if (i.docs) {
@@ -293,7 +293,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 function enumTable(data: DocsData, i: DocsEnum) {
   const o: string[] = [];
   o.push(``);
-  o.push(`#### \`${i.name}\``);
+  o.push(`#### ${i.name}`);
   o.push(``);
 
   if (i.members.length > 0) {
