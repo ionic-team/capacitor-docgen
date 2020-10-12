@@ -219,7 +219,7 @@ function cleanTypes(data: DocsData, c?: string) {
     c = `Promise&lt;${c}&gt;`;
   }
 
-  return c;
+  return `<code>${c}</code>`;
 }
 
 function linkType(data: DocsData, s: string) {
@@ -229,12 +229,12 @@ function linkType(data: DocsData, s: string) {
 
   const i = data.interfaces.find(i => i.name === s);
   if (i) {
-    return `[${s}](#${i.slug})`;
+    return `<a href="#${i.slug}">${s}</a>`;
   }
 
   const en = data.enums.find(en => en.name === s);
   if (en) {
-    return `[${s}](#${en.slug})`;
+    return `<a href="#${en.slug}">${s}</a>`;
   }
 
   return s;

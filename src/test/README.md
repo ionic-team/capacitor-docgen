@@ -42,12 +42,12 @@ impact(options: HapticsImpactOptions, x?: number | undefined) => Promise<Haptics
 
 Trigger a haptics "impact" feedback
 
-| Param       | Type                                          | Description        |
-| ----------- | --------------------------------------------- | ------------------ |
-| **options** | [HapticsImpactOptions](#hapticsimpactoptions) | The impact options |
-| **x**       | number                                        |                    |
+| Param       | Type                                                                  | Description        |
+| ----------- | --------------------------------------------------------------------- | ------------------ |
+| **options** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> | The impact options |
+| **x**       | <code>number</code>                                                   |                    |
 
-**Returns:** Promise&lt;[HapticsImpact](#hapticsimpact)&gt;
+**Returns:** <code>Promise&lt;<a href="#hapticsimpact">HapticsImpact</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -62,11 +62,11 @@ notification(options?: HapticsNotificationOptions | undefined) => Promise<string
 
 Trigger a haptics "notification" feedback
 
-| Param       | Type                                                      |
-| ----------- | --------------------------------------------------------- |
-| **options** | [HapticsNotificationOptions](#hapticsnotificationoptions) |
+| Param       | Type                                                                              |
+| ----------- | --------------------------------------------------------------------------------- |
+| **options** | <code><a href="#hapticsnotificationoptions">HapticsNotificationOptions</a></code> |
 
-**Returns:** Promise&lt;string | number&gt;
+**Returns:** <code>Promise&lt;string | number&gt;</code>
 
 **Since:** 1.0.0
 
@@ -81,11 +81,11 @@ vibrate(options?: VibrateOptions | undefined) => Promise<number>
 
 Vibrate the device
 
-| Param       | Type                              |
-| ----------- | --------------------------------- |
-| **options** | [VibrateOptions](#vibrateoptions) |
+| Param       | Type                                                      |
+| ----------- | --------------------------------------------------------- |
+| **options** | <code><a href="#vibrateoptions">VibrateOptions</a></code> |
 
-**Returns:** Promise&lt;number&gt;
+**Returns:** <code>Promise&lt;number&gt;</code>
 
 **Since:** 1.0.0
 
@@ -100,11 +100,11 @@ selectionStart(value: number | string) => Promise<void>
 
 Trigger a selection started haptic hint
 
-| Param     | Type             |
-| --------- | ---------------- |
-| **value** | string \| number |
+| Param     | Type                          |
+| --------- | ----------------------------- |
+| **value** | <code>string \| number</code> |
 
-**Returns:** Promise&lt;void&gt;
+**Returns:** <code>Promise&lt;void&gt;</code>
 
 **Since:** 1.0.0
 
@@ -116,32 +116,32 @@ Trigger a selection started haptic hint
 
 #### HapticsImpact
 
-| Prop      | Type   |
-| --------- | ------ |
-| **value** | number |
+| Prop      | Type                |
+| --------- | ------------------- |
+| **value** | <code>number</code> |
 
 
 #### HapticsImpactOptions
 
-| Prop          | Type                                          | Description                                                                                                                                                                              | Default                  | Since |
-| ------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----- |
-| **style**     | [HapticsImpactStyle](#hapticsimpactstyle)     | Impact Feedback Style The mass of the objects in the collision simulated by a [UIImpactFeedbackGenerator](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | HapticsImpactStyle.Heavy | 1.0.0 |
-| **value**     | boolean                                       |                                                                                                                                                                                          |                          |       |
-| **recursive** | [HapticsImpactOptions](#hapticsimpactoptions) |                                                                                                                                                                                          |                          |       |
+| Prop          | Type                                                                  | Description                                                                                                                                                                              | Default                  | Since |
+| ------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ----- |
+| **style**     | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code>     | Impact Feedback Style The mass of the objects in the collision simulated by a [UIImpactFeedbackGenerator](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | HapticsImpactStyle.Heavy | 1.0.0 |
+| **value**     | <code>boolean</code>                                                  |                                                                                                                                                                                          |                          |       |
+| **recursive** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> |                                                                                                                                                                                          |                          |       |
 
 
 #### HapticsNotificationOptions
 
-| Prop     | Type                                                | Description                                                                                                                                                                                       | Default                         | Since |
-| -------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ----- |
-| **type** | [HapticsNotificationType](#hapticsnotificationtype) | Notification Feedback Type The type of notification feedback generated by a [UINotificationFeedbackGenerator](https://developer.apple.com/documentation/uikit/uinotificationfeedbacktype) object. | HapticsNotificationType.SUCCESS | 1.0.0 |
+| Prop     | Type                                                                        | Description                                                                                                                                                                                       | Default                         | Since |
+| -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ----- |
+| **type** | <code><a href="#hapticsnotificationtype">HapticsNotificationType</a></code> | Notification Feedback Type The type of notification feedback generated by a [UINotificationFeedbackGenerator](https://developer.apple.com/documentation/uikit/uinotificationfeedbacktype) object. | HapticsNotificationType.SUCCESS | 1.0.0 |
 
 
 #### VibrateOptions
 
-| Prop         | Type   | Description                                                      | Default | Since |
-| ------------ | ------ | ---------------------------------------------------------------- | ------- | ----- |
-| **duration** | number | Duration of the vibration in milliseconds. Not supported in iOS. | 300     | 1.0.0 |
+| Prop         | Type                | Description                                                      | Default | Since |
+| ------------ | ------------------- | ---------------------------------------------------------------- | ------- | ----- |
+| **duration** | <code>number</code> | Duration of the vibration in milliseconds. Not supported in iOS. | 300     | 1.0.0 |
 
 
 ### Enums
@@ -149,20 +149,20 @@ Trigger a selection started haptic hint
 
 #### HapticsImpactStyle
 
-| Members    | Value    | Description                                                  | Since |
-| ---------- | -------- | ------------------------------------------------------------ | ----- |
-| **Heavy**  | 'HEAVY'  | A collision between small, light user interface elements     | 1.0.0 |
-| **Medium** | 'MEDIUM' | A collision between moderately sized user interface elements | 1.0.0 |
-| **Light**  | 'LIGHT'  | A collision between small, light user interface elements     | 1.0.0 |
+| Members    | Value                 | Description                                                  | Since |
+| ---------- | --------------------- | ------------------------------------------------------------ | ----- |
+| **Heavy**  | <code>'HEAVY'</code>  | A collision between small, light user interface elements     | 1.0.0 |
+| **Medium** | <code>'MEDIUM'</code> | A collision between moderately sized user interface elements | 1.0.0 |
+| **Light**  | <code>'LIGHT'</code>  | A collision between small, light user interface elements     | 1.0.0 |
 
 
 #### HapticsNotificationType
 
-| Members     | Value     | Description                                                                    | Since |
-| ----------- | --------- | ------------------------------------------------------------------------------ | ----- |
-| **SUCCESS** | 'SUCCESS' | A notification feedback type indicating that a task has completed successfully | 1.0.0 |
-| **WARNING** | 'WARNING' | A notification feedback type indicating that a task has produced a warning     | 1.0.0 |
-| **ERROR**   | 'ERROR'   | A notification feedback type indicating that a task has failed                 | 1.0.0 |
+| Members     | Value                  | Description                                                                    | Since |
+| ----------- | ---------------------- | ------------------------------------------------------------------------------ | ----- |
+| **SUCCESS** | <code>'SUCCESS'</code> | A notification feedback type indicating that a task has completed successfully | 1.0.0 |
+| **WARNING** | <code>'WARNING'</code> | A notification feedback type indicating that a task has produced a warning     | 1.0.0 |
+| **ERROR**   | <code>'ERROR'</code>   | A notification feedback type indicating that a task has failed                 | 1.0.0 |
 
 
 <!--DOCGEN_API_END-->
