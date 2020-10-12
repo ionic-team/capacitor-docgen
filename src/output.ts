@@ -87,7 +87,7 @@ function markdownIndex(data: DocsData) {
   const o: string[] = [];
 
   data?.api?.methods.forEach(m => {
-    o.push(`* [${m.name}()](#${m.slug})`);
+    o.push(`* [\`${m.name}()\`](#${m.slug})`);
   });
 
   if (data.interfaces.length > 0) {
@@ -257,11 +257,13 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
     t.addHeader([`Prop`, `Type`, `Description`, `Default`, `Since`]);
 
     i.properties.forEach(m => {
+      const defaultValue = getTagText(m.tags, 'default');
+
       t.addRow([
-        `**${m.name}**`,
+        `**\`${m.name}\`**`,
         cleanTypes(data, m.type),
         m.docs,
-        getTagText(m.tags, 'default'),
+        defaultValue ? `<code>${defaultValue}</code>` : '',
         getTagText(m.tags, 'since'),
       ]);
     });
@@ -301,7 +303,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
 
     i.members.forEach(m => {
       t.addRow([
-        `**${m.name}**`,
+        `**\`${m.name}\`**`,
         cleanTypes(data, m.value),
         m.docs,
         getTagText(m.tags, 'since'),
