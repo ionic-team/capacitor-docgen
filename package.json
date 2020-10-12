@@ -18,6 +18,7 @@
   "scripts": {
     "clean": "rimraf -rf dist",
     "build": "npm run clean && tsc",
+    "watch": "tsc -w",
     "release": "np --no-2fa",
     "version": "npm run build",
     "test": "jest",
