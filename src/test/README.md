@@ -7,10 +7,10 @@ methods, and the API docs should go.
 Below is an index of all the methods available.
 
 <!--DOCGEN_INDEX_START-->
-* [`impact()`](#impact)
-* [`notification()`](#notification)
-* [`vibrate()`](#vibrate)
-* [`selectionStart()`](#selectionstart)
+* [`impact(...)`](#impact)
+* [`notification(...)`](#notification)
+* [`vibrate(...)`](#vibrate)
+* [`selectionStart(...)`](#selectionstart)
 * [Interfaces](#interfaces)
 * [Enums](#enums)
 <!--DOCGEN_INDEX_END-->
@@ -34,7 +34,7 @@ Take a look at the test [HapticsPlugin interface source file](https://github.com
 
 ## API
 
-### impact
+### impact(...)
 
 ```typescript
 impact(options: HapticsImpactOptions, x?: number | undefined) => Promise<HapticsImpact>
@@ -54,7 +54,7 @@ Trigger a haptics "impact" feedback
 --------------------
 
 
-### notification
+### notification(...)
 
 ```typescript
 notification(options?: HapticsNotificationOptions | undefined) => Promise<string | number>
@@ -73,7 +73,7 @@ Trigger a haptics "notification" feedback
 --------------------
 
 
-### vibrate
+### vibrate(...)
 
 ```typescript
 vibrate(options?: VibrateOptions | undefined) => Promise<number>
@@ -92,7 +92,7 @@ Vibrate the device
 --------------------
 
 
-### selectionStart
+### selectionStart(...)
 
 ```typescript
 selectionStart(value: number | string) => Promise<void>
@@ -123,18 +123,18 @@ Trigger a selection started haptic hint
 
 #### HapticsImpactOptions
 
-| Prop            | Type                                                                  | Description                                                                                                                                                                              | Default                               | Since |
-| --------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----- |
-| **`style`**     | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code>     | Impact Feedback Style The mass of the objects in the collision simulated by a [UIImpactFeedbackGenerator](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | <code>HapticsImpactStyle.Heavy</code> | 1.0.0 |
-| **`value`**     | <code>boolean</code>                                                  |                                                                                                                                                                                          |                                       |       |
-| **`recursive`** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> |                                                                                                                                                                                          |                                       |       |
+| Prop            | Type                                                                  | Description                                                                                                                                                                                | Default                               | Since |
+| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----- |
+| **`style`**     | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code>     | Impact Feedback Style The mass of the objects in the collision simulated by a [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | <code>HapticsImpactStyle.Heavy</code> | 1.0.0 |
+| **`value`**     | <code>boolean</code>                                                  |                                                                                                                                                                                            |                                       |       |
+| **`recursive`** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> |                                                                                                                                                                                            |                                       |       |
 
 
 #### HapticsNotificationOptions
 
-| Prop       | Type                                                                        | Description                                                                                                                                                                                       | Default                                      | Since |
-| ---------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ----- |
-| **`type`** | <code><a href="#hapticsnotificationtype">HapticsNotificationType</a></code> | Notification Feedback Type The type of notification feedback generated by a [UINotificationFeedbackGenerator](https://developer.apple.com/documentation/uikit/uinotificationfeedbacktype) object. | <code>HapticsNotificationType.SUCCESS</code> | 1.0.0 |
+| Prop       | Type                                                                        | Description                                                                                                                                                                                         | Default                                      | Since |
+| ---------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ----- |
+| **`type`** | <code><a href="#hapticsnotificationtype">HapticsNotificationType</a></code> | Notification Feedback Type The type of notification feedback generated by a [`UINotificationFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uinotificationfeedbacktype) object. | <code>HapticsNotificationType.SUCCESS</code> | 1.0.0 |
 
 
 #### VibrateOptions
