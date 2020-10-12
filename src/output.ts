@@ -87,7 +87,7 @@ function markdownIndex(data: DocsData) {
   const o: string[] = [];
 
   data?.api?.methods.forEach(m => {
-    o.push(`* [\`${m.name}()\`](#${m.slug})`);
+    o.push(`* [\`${m.name}(${m.parameters.length > 0 ? '...' : ''})\`](#${m.slug})`);
   });
 
   if (data.interfaces.length > 0) {
@@ -140,7 +140,7 @@ function markdownApi(data: DocsData) {
 function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
   const o: string[] = [];
 
-  o.push(`### ${m.name}`);
+  o.push(`### ${m.name}(${m.parameters.length > 0 ? '...' : ''})`);
   o.push(``);
   o.push('```typescript');
   o.push(`${m.name}${m.signature}`);
