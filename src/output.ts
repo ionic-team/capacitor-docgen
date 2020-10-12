@@ -87,7 +87,7 @@ function markdownIndex(data: DocsData) {
   const o: string[] = [];
 
   data?.api?.methods.forEach(m => {
-    o.push(`* [${m.name}()](#${m.slug})`);
+    o.push(`* [\`${m.name}()\`](#${m.slug})`);
   });
 
   if (data.interfaces.length > 0) {
@@ -140,7 +140,7 @@ function markdownApi(data: DocsData) {
 function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
   const o: string[] = [];
 
-  o.push(`### ${m.name}`);
+  o.push(`### \`${m.name}\``);
   o.push(``);
   o.push('```typescript');
   o.push(`${m.name}${m.signature}`);
@@ -243,7 +243,7 @@ function linkType(data: DocsData, s: string) {
 function interfaceTable(data: DocsData, i: DocsInterface) {
   const o: string[] = [];
   o.push(``);
-  o.push(`#### ${i.name}`);
+  o.push(`#### \`${i.name}\``);
   o.push(``);
 
   if (i.docs) {
@@ -257,11 +257,13 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
     t.addHeader([`Prop`, `Type`, `Description`, `Default`, `Since`]);
 
     i.properties.forEach(m => {
+      const defaultValue = getTagText(m.tags, 'default');
+
       t.addRow([
-        `**${m.name}**`,
+        `<code><strong>${m.name}</strong></code>`,
         cleanTypes(data, m.type),
         m.docs,
-        getTagText(m.tags, 'default'),
+        defaultValue ? `<code>${defaultValue}</code>` : '',
         getTagText(m.tags, 'since'),
       ]);
     });
@@ -291,7 +293,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 function enumTable(data: DocsData, i: DocsEnum) {
   const o: string[] = [];
   o.push(``);
-  o.push(`#### ${i.name}`);
+  o.push(`#### \`${i.name}\``);
   o.push(``);
 
   if (i.members.length > 0) {
@@ -301,7 +303,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
 
     i.members.forEach(m => {
       t.addRow([
-        `**${m.name}**`,
+        `<code><strong>${m.name}</strong></code>`,
         cleanTypes(data, m.value),
         m.docs,
         getTagText(m.tags, 'since'),
