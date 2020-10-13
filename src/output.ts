@@ -180,7 +180,7 @@ function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
   t.addHeader([`Param`, `Type`, `Description`]);
 
   parameters.forEach(p => {
-    const nm = `**${p.name}**`;
+    const nm = `**\`${p.name}\`**`;
     const ty = cleanTypes(data, p.type);
 
     t.addRow([nm, ty, p.docs]);

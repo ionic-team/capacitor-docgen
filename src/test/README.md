@@ -42,10 +42,10 @@ impact(options: HapticsImpactOptions, x?: number | undefined) => Promise<Haptics
 
 Trigger a haptics "impact" feedback
 
-| Param       | Type                                                                  | Description        |
-| ----------- | --------------------------------------------------------------------- | ------------------ |
-| **options** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> | The impact options |
-| **x**       | <code>number</code>                                                   |                    |
+| Param         | Type                                                                  | Description        |
+| ------------- | --------------------------------------------------------------------- | ------------------ |
+| **`options`** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> | The impact options |
+| **`x`**       | <code>number</code>                                                   |                    |
 
 **Returns:** <code>Promise&lt;<a href="#hapticsimpact">HapticsImpact</a>&gt;</code>
 
@@ -62,9 +62,9 @@ notification(options?: HapticsNotificationOptions | undefined) => Promise<string
 
 Trigger a haptics "notification" feedback
 
-| Param       | Type                                                                              |
-| ----------- | --------------------------------------------------------------------------------- |
-| **options** | <code><a href="#hapticsnotificationoptions">HapticsNotificationOptions</a></code> |
+| Param         | Type                                                                              |
+| ------------- | --------------------------------------------------------------------------------- |
+| **`options`** | <code><a href="#hapticsnotificationoptions">HapticsNotificationOptions</a></code> |
 
 **Returns:** <code>Promise&lt;string | number&gt;</code>
 
@@ -81,9 +81,9 @@ vibrate(options?: VibrateOptions | undefined) => Promise<number>
 
 Vibrate the device
 
-| Param       | Type                                                      |
-| ----------- | --------------------------------------------------------- |
-| **options** | <code><a href="#vibrateoptions">VibrateOptions</a></code> |
+| Param         | Type                                                      |
+| ------------- | --------------------------------------------------------- |
+| **`options`** | <code><a href="#vibrateoptions">VibrateOptions</a></code> |
 
 **Returns:** <code>Promise&lt;number&gt;</code>
 
@@ -100,9 +100,9 @@ selectionStart(value: number | string) => Promise<void>
 
 Trigger a selection started haptic hint
 
-| Param     | Type                          |
-| --------- | ----------------------------- |
-| **value** | <code>string \| number</code> |
+| Param       | Type                          |
+| ----------- | ----------------------------- |
+| **`value`** | <code>string \| number</code> |
 
 **Returns:** <code>Promise&lt;void&gt;</code>
 
