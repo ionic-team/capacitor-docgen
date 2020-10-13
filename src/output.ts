@@ -99,7 +99,7 @@ function markdownIndex(data: DocsData) {
     o.push(`* [Enums](#enums)`);
   }
 
-  return o.join('\n');
+  return `<div class="docgen docgen-index">\n\n${o.join('\n').trim()}\n\n</div>`;
 }
 
 function markdownApi(data: DocsData) {
@@ -135,7 +135,7 @@ function markdownApi(data: DocsData) {
     o.push(``);
   }
 
-  return o.join('\n');
+  return `<div class="docgen docgen-api">\n\n${o.join('\n').trim()}\n\n</div>`;
 }
 
 function methodsTable(data: DocsData, m: DocsInterfaceMethod) {

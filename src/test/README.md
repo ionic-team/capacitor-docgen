@@ -7,12 +7,16 @@ methods, and the API docs should go.
 Below is an index of all the methods available.
 
 <!--DOCGEN_INDEX_START-->
+<div class="docgen docgen-index">
+
 * [`impact(...)`](#impact)
 * [`notification(...)`](#notification)
 * [`vibrate(...)`](#vibrate)
 * [`selectionStart(...)`](#selectionstart)
 * [Interfaces](#interfaces)
 * [Enums](#enums)
+
+</div>
 <!--DOCGEN_INDEX_END-->
 
 ## Custom Readme Content
@@ -23,6 +27,8 @@ HTML placeholder comments with the updated generated docs.
 
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+<div class="docgen docgen-api">
+
 ## Docs from JSDoc comments!
 
 This content is from the JSDOC comments on top of
@@ -164,7 +170,7 @@ Trigger a selection started haptic hint
 | **`WARNING`** | <code>'WARNING'</code> | A notification feedback type indicating that a task has produced a warning     | 1.0.0 |
 | **`ERROR`**   | <code>'ERROR'</code>   | A notification feedback type indicating that a task has failed                 | 1.0.0 |
 
-
+</div>
 <!--DOCGEN_API_END-->
 
 ## Commit Your Readme 🚀
