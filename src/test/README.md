@@ -6,8 +6,7 @@ methods, and the API docs should go.
 
 Below is an index of all the methods available.
 
-<!--DOCGEN_INDEX_START-->
-<div class="docgen docgen-index">
+<docgen-index>
 
 * [`impact(...)`](#impact)
 * [`notification(...)`](#notification)
@@ -16,8 +15,7 @@ Below is an index of all the methods available.
 * [Interfaces](#interfaces)
 * [Enums](#enums)
 
-</div>
-<!--DOCGEN_INDEX_END-->
+</docgen-index>
 
 ## Custom Readme Content
 
@@ -25,9 +23,8 @@ Manage your readme content however you'd like, and on every docgen
 rebuild it will leave your original content as is, but update the 
 HTML placeholder comments with the updated generated docs.
 
-<!--DOCGEN_API_START-->
+<docgen-api class="custom-css">
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
-<div class="docgen docgen-api">
 
 ## Docs from JSDoc comments!
 
@@ -170,8 +167,7 @@ Trigger a selection started haptic hint
 | **`WARNING`** | <code>'WARNING'</code> | A notification feedback type indicating that a task has produced a warning     | 1.0.0 |
 | **`ERROR`**   | <code>'ERROR'</code>   | A notification feedback type indicating that a task has failed                 | 1.0.0 |
 
-</div>
-<!--DOCGEN_API_END-->
+</docgen-api>
 
 ## Commit Your Readme 🚀
 
