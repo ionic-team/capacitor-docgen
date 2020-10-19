@@ -48,10 +48,10 @@ export function replaceMarkdownPlaceholders(content: string, data: DocsData) {
   return content;
 }
 
-const INDEX_START = `<!--DOCGEN_INDEX_START-->`;
-const INDEX_END = `<!--DOCGEN_INDEX_END-->`;
-const API_START = `<!--DOCGEN_API_START-->`;
-const API_END = `<!--DOCGEN_API_END-->`;
+const INDEX_START = `<docgen-index`;
+const INDEX_END = `</docgen-index>`;
+const API_START = `<docgen-api`;
+const API_END = `</docgen-api>`;
 const UPDATE_MSG = `<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->`;
 
 function replaceMarkdownDocsIndex(content: string, data: DocsData) {
@@ -59,10 +59,11 @@ function replaceMarkdownDocsIndex(content: string, data: DocsData) {
   if (startOuterIndex > -1) {
     const endInnerIndex = content.indexOf(INDEX_END);
     if (endInnerIndex > -1) {
-      const startInnerIndex = startOuterIndex + INDEX_START.length;
-      const start = content.substring(0, startInnerIndex);
+      const inner = content.substring(startOuterIndex + INDEX_START.length);
+      const startInnderIndex = startOuterIndex + INDEX_START.length + inner.indexOf('>') + 1;
+      const start = content.substring(0, startInnderIndex);
       const end = content.substring(endInnerIndex);
-      return `${start}\n${markdownIndex(data)}\n${end}`;
+      return `${start}\n\n${markdownIndex(data)}\n\n${end}`;
     }
   }
 
@@ -74,10 +75,11 @@ function replaceMarkdownDocsApi(content: string, data: DocsData) {
   if (startOuterIndex > -1) {
     const endInnerIndex = content.indexOf(API_END);
     if (endInnerIndex > -1) {
-      const startInnerIndex = startOuterIndex + API_START.length;
+      const inner = content.substring(startOuterIndex + API_START.length);
+      const startInnerIndex = startOuterIndex + API_START.length + inner.indexOf('>') + 1;
       const start = content.substring(0, startInnerIndex);
       const end = content.substring(endInnerIndex);
-      return `${start}\n${UPDATE_MSG}\n${markdownApi(data)}\n${end}`;
+      return `${start}\n${UPDATE_MSG}\n\n${markdownApi(data)}\n\n${end}`;
     }
   }
 
@@ -99,7 +101,7 @@ function markdownIndex(data: DocsData) {
     o.push(`* [Enums](#enums)`);
   }
 
-  return `<div class="docgen docgen-index">\n\n${o.join('\n').trim()}\n\n</div>`;
+  return o.join('\n').trim();
 }
 
 function markdownApi(data: DocsData) {
@@ -135,7 +137,7 @@ function markdownApi(data: DocsData) {
     o.push(``);
   }
 
-  return `<div class="docgen docgen-api">\n\n${o.join('\n').trim()}\n\n</div>`;
+  return o.join('\n').trim();
 }
 
 function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
@@ -167,7 +169,7 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
     o.push(``);
   }
 
-  o.push(HR);
+  o.push(`--------------------`);
   o.push(``);
   o.push(``);
 
@@ -345,5 +347,3 @@ export async function outputJson(jsonFilePath: string, data: DocsData) {
   await mkdir(path.dirname(jsonFilePath), { recursive: true });
   await writeFile(jsonFilePath, content);
 }
-
-const HR = `--------------------`;

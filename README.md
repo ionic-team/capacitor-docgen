@@ -24,8 +24,7 @@ methods, and the API docs should go.
 
 Below is an index of all the methods available.
 
-<!--DOCGEN_INDEX_START-->
-<!--DOCGEN_INDEX_END-->
+<docgen-index></docgen-index>
 
 ## Custom Readme Content
 
@@ -33,8 +32,7 @@ Manage your readme content however you'd like, and on every docgen
 rebuild it will leave your original content as is, but update the 
 HTML placeholder comments with the updated generated docs.
 
-<!--DOCGEN_API_START-->
-<!--DOCGEN_API_END-->
+<docgen-api></docgen-api>
 
 ## Commit Your Readme 🚀
 
@@ -43,8 +41,8 @@ page for the Github repo and NPM package, and the anchors within the
 docs can also be linked to and shared.
 ```
 
-- [Example Readme Output](https://github.com/ionic-team/capacitor-docgen/blob/master/src/test/README.md)
-- [Example JSON Output](https://github.com/ionic-team/capacitor-docgen/blob/master/src/test/docs.json)
+- [Example Readme Output](https://github.com/ionic-team/capacitor-docgen/blob/main/src/test/README.md)
+- [Example JSON Output](https://github.com/ionic-team/capacitor-docgen/blob/main/src/test/docs.json)
 
 
 ## CLI
