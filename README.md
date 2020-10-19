@@ -73,6 +73,10 @@ docgen --api HapticsPlugin --output-readme README.md
 }
 ```
 
+## API
+
+The same API that's available to the CLI can also be imported from `@capacitor/docgen`.
+
 
 ## Related
 
