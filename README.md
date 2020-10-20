@@ -18,9 +18,9 @@ npm i @capacitor/docgen --save-dev
 ```
 # My Capacitor Plugin 🔌
 
-The readme file can be formatted however you'd like. Just insert 
-the HTML placeholder comments where the index of the API
-methods, and the API docs should go.
+The readme file can be formatted however you'd like. Just insert
+the docgen placeholder elements where the index of the API methods,
+and the API docs should go.
 
 Below is an index of all the methods available.
 
@@ -28,9 +28,9 @@ Below is an index of all the methods available.
 
 ## Custom Readme Content
 
-Manage your readme content however you'd like, and on every docgen 
-rebuild it will leave your original content as is, but update the 
-HTML placeholder comments with the updated generated docs.
+Manage your readme content however, and on every `docgen` rebuild
+it will leave the original content as is, but update the inner text 
+of the docgen placeholder elements with the updated generated docs.
 
 <docgen-api></docgen-api>
 
