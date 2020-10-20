@@ -85,13 +85,18 @@
         "slug": "vibrate"
       },
       {
-        "name": "selectionStart",
-        "signature": "(value: number | string) => Promise<void>",
+        "name": "addListener",
+        "signature": "(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>",
         "parameters": [
           {
-            "name": "value",
+            "name": "eventName",
             "docs": "",
-            "type": "string | number"
+            "type": "\"vibrate\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(event: VibrateOptions) => void"
           }
         ],
         "returns": "Promise<void>",
@@ -101,9 +106,26 @@
             "text": "1.0.0"
           }
         ],
-        "docs": "Trigger a selection started haptic hint",
+        "docs": "Add a listener",
+        "complexTypes": [
+          "VibrateOptions"
+        ],
+        "slug": "addlistener"
+      },
+      {
+        "name": "removeAllListeners",
+        "signature": "() => void",
+        "parameters": [],
+        "returns": "void",
+        "tags": [
+          {
+            "name": "since",
+            "text": "1.0.0"
+          }
+        ],
+        "docs": "Remove all the listeners that are attached to this plugin",
         "complexTypes": [],
-        "slug": "selectionstart"
+        "slug": "removealllisteners"
       }
     ],
     "properties": []

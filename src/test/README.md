@@ -11,7 +11,8 @@ Below is an index of all the methods available.
 * [`impact(...)`](#impact)
 * [`notification(...)`](#notification)
 * [`vibrate(...)`](#vibrate)
-* [`selectionStart(...)`](#selectionstart)
+* [`addListener(...)`](#addlistener)
+* [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 * [Enums](#enums)
 
@@ -95,19 +96,31 @@ Vibrate the device
 --------------------
 
 
-### selectionStart(...)
+### addListener(...)
 
 ```typescript
-selectionStart(value: number | string) => Promise<void>
+addListener(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>
 ```
 
-Trigger a selection started haptic hint
+Add a listener
 
-| Param       | Type                          |
-| ----------- | ----------------------------- |
-| **`value`** | <code>string \| number</code> |
+| Param              | Type                                         |
+| ------------------ | -------------------------------------------- |
+| **`eventName`**    | <code>"vibrate"</code>                       |
+| **`listenerFunc`** | <code>(event: VibrateOptions) => void</code> |
 
-**Returns:** <code>Promise&lt;void&gt;</code>
+**Since:** 1.0.0
+
+--------------------
+
+
+### removeAllListeners()
+
+```typescript
+removeAllListeners() => void
+```
+
+Remove all the listeners that are attached to this plugin
 
 **Since:** 1.0.0
 

@@ -33,11 +33,18 @@ export interface HapticsPlugin {
   vibrate(options?: VibrateOptions): Promise<number>;
 
   /**
-   * Trigger a selection started haptic hint
+   * Add a listener
    *
    * @since 1.0.0
    */
-  selectionStart(value: number | string): Promise<void>;
+  addListener(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void): Promise<void>;
+
+  /**
+   * Remove all the listeners that are attached to this plugin
+   *
+   * @since 1.0.0
+   */
+  removeAllListeners(): void;
 }
 
 export interface HapticsImpact {

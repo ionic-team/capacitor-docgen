@@ -50,7 +50,7 @@ describe('parse', () => {
   });
 
   it('api methods', () => {
-    expect(api.methods).toHaveLength(4);
+    expect(api.methods).toHaveLength(5);
 
     const m0 = api.methods[0];
     expect(m0.name).toBe(`impact`);
@@ -76,6 +76,18 @@ describe('parse', () => {
     expect(m0.complexTypes).toHaveLength(2);
     expect(m0.complexTypes[0]).toBe(`HapticsImpact`);
     expect(m0.complexTypes[1]).toBe(`HapticsImpactOptions`);
+
+    const m3 = api.methods[3];
+    expect(m3.name).toBe(`addListener`);
+    expect(m3.docs).toBe(`Add a listener`);
+    expect(m3.signature).toBe(`(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>`);
+    expect(m3.returns).toBe(`Promise<void>`);
+
+    const m4 = api.methods[4];
+    expect(m4.name).toBe(`removeAllListeners`);
+    expect(m4.docs).toBe(`Remove all the listeners that are attached to this plugin`);
+    expect(m4.signature).toBe(`() => void`);
+    expect(m4.returns).toBe(`void`);
   });
 
   it('interface properties', () => {

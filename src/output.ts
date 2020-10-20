@@ -160,8 +160,11 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
     o.push(``);
   }
 
-  o.push(`**Returns:** ${cleanTypes(data, m.returns)}`);
-  o.push(``);
+  const ret = cleanTypes(data, m.returns);
+  if (ret.type && ret.type !== 'void' && ret.type !== 'Promise<void>') {
+    o.push(`**Returns:** ${ret.formatted}`);
+    o.push(``);
+  }
 
   const since = getTagText(m.tags, 'since');
   if (since) {
@@ -185,7 +188,7 @@ function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
     const nm = `**\`${p.name}\`**`;
     const ty = cleanTypes(data, p.type);
 
-    t.addRow([nm, ty, p.docs]);
+    t.addRow([nm, ty.formatted, p.docs]);
   });
 
   t.removeEmptyColumns();
@@ -193,36 +196,43 @@ function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
 }
 
 function cleanTypes(data: DocsData, c?: string) {
-  if (typeof c !== 'string') {
-    return '';
-  }
-  c = c.replace(/\n/g, ' ').trim();
-  while (c.includes('  ')) {
-    c = c.replace(/  /g, ' ');
+  const rtn = { type: '', formatted: '' };
+  
+  if (typeof c === 'string') {
+    c = c.replace(/\n/g, ' ').trim();
+    while (c.includes('  ')) {
+      c = c.replace(/  /g, ' ');
+    }
+
+    const isAsync = c.startsWith(`Promise<`) && c.endsWith(`>`);
+    if (isAsync) {
+      c = c.substring(`Promise<`.length);
+      c = c.substring(0, c.length - 1);
+    }
+
+    c = c
+      .split('|')
+      .map(c => c.trim())
+      .filter(c => c !== 'undefined')
+      .map(c => linkType(data, c))
+      .join(` | `);
+
+    if (c === '') {
+      return rtn;
+    }
+
+    if (isAsync) {
+      rtn.type = `Promise<${c}>`;
+      rtn.formatted = `Promise&lt;${c}&gt;`;
+    } else {
+      rtn.type = c;
+      rtn.formatted = c;
+    }
+
+    rtn.formatted = `<code>${rtn.formatted}</code>`;
   }
 
-  const isAsync = c.startsWith(`Promise<`) && c.endsWith(`>`);
-  if (isAsync) {
-    c = c.substring(`Promise<`.length);
-    c = c.substring(0, c.length - 1);
-  }
-
-  c = c
-    .split('|')
-    .map(c => c.trim())
-    .filter(c => c !== 'undefined')
-    .map(c => linkType(data, c))
-    .join(` | `);
-
-  if (c === '') {
-    return '';
-  }
-
-  if (isAsync) {
-    c = `Promise&lt;${c}&gt;`;
-  }
-
-  return `<code>${c}</code>`;
+  return rtn;
 }
 
 function linkType(data: DocsData, s: string) {
@@ -264,7 +274,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 
       t.addRow([
         `**\`${m.name}\`**`,
-        cleanTypes(data, m.type),
+        cleanTypes(data, m.type).formatted,
         m.docs,
         defaultValue ? `<code>${defaultValue}</code>` : '',
         getTagText(m.tags, 'since'),
@@ -307,7 +317,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
     i.members.forEach(m => {
       t.addRow([
         `**\`${m.name}\`**`,
-        cleanTypes(data, m.value),
+        cleanTypes(data, m.value).formatted,
         m.docs,
         getTagText(m.tags, 'since'),
       ]);
