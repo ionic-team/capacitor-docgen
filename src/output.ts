@@ -112,9 +112,6 @@ function markdownApi(data: DocsData) {
     o.push(``);
   }
 
-  o.push(`## API`);
-  o.push(``);
-
   data!.api!.methods.forEach(m => {
     o.push(methodsTable(data, m));
   });

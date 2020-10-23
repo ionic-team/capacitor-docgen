@@ -36,8 +36,6 @@ and enums.
 
 Take a look at the test [HapticsPlugin interface source file](https://github.com/ionic-team/capacitor-docgen/blob/master/src/test/fixtures/definitions.ts).
 
-## API
-
 ### impact(...)
 
 ```typescript
