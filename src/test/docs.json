@@ -106,7 +106,7 @@
             "text": "1.0.0"
           }
         ],
-        "docs": "Add a listener",
+        "docs": "Add a listener. Callback has VibrateOptions.",
         "complexTypes": [
           "VibrateOptions"
         ],
@@ -166,7 +166,7 @@
               "name": "since"
             }
           ],
-          "docs": "Impact Feedback Style\n\nThe mass of the objects in the collision simulated by a [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.",
+          "docs": "Impact Feedback Style\n\nThe mass of the objects in the collision simulated by a \n[`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.\nType is a `HapticsImpactStyle`.",
           "complexTypes": [
             "HapticsImpactStyle"
           ],

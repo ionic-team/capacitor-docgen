@@ -33,7 +33,7 @@ export interface HapticsPlugin {
   vibrate(options?: VibrateOptions): Promise<number>;
 
   /**
-   * Add a listener
+   * Add a listener. Callback has VibrateOptions.
    *
    * @since 1.0.0
    */
@@ -55,7 +55,9 @@ export interface HapticsImpactOptions {
   /**
    * Impact Feedback Style
    *
-   * The mass of the objects in the collision simulated by a [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.
+   * The mass of the objects in the collision simulated by a 
+   * [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.
+   * Type is a `HapticsImpactStyle`.
    *
    * @default HapticsImpactStyle.Heavy
    * @since 1.0.0

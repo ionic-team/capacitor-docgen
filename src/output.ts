@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { formatDescription, formatType } from './formatting';
 import { promisify } from 'util';
 import { MarkdownTable } from './markdown';
 import type {
@@ -148,7 +149,7 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
   o.push(``);
 
   if (m.docs) {
-    o.push(m.docs);
+    o.push(formatDescription(data, m.docs));
     o.push(``);
   }
 
@@ -157,8 +158,8 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
     o.push(``);
   }
 
-  const ret = cleanTypes(data, m.returns);
-  if (ret.type && ret.type !== 'void' && ret.type !== 'Promise<void>') {
+  const ret = formatType(data, m.returns);
+  if (ret.type !== 'void' && ret.type !== 'Promise<void>') {
     o.push(`**Returns:** ${ret.formatted}`);
     o.push(``);
   }
@@ -183,71 +184,13 @@ function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
 
   parameters.forEach(p => {
     const nm = `**\`${p.name}\`**`;
-    const ty = cleanTypes(data, p.type);
-
-    t.addRow([nm, ty.formatted, p.docs]);
+    const ty = formatType(data, p.type);
+    const docs = formatDescription(data, p.docs);
+    t.addRow([nm, ty.formatted, docs]);
   });
 
   t.removeEmptyColumns();
   return t.toMarkdown();
-}
-
-function cleanTypes(data: DocsData, c?: string) {
-  const rtn = { type: '', formatted: '' };
-  
-  if (typeof c === 'string') {
-    c = c.replace(/\n/g, ' ').trim();
-    while (c.includes('  ')) {
-      c = c.replace(/  /g, ' ');
-    }
-
-    const isAsync = c.startsWith(`Promise<`) && c.endsWith(`>`);
-    if (isAsync) {
-      c = c.substring(`Promise<`.length);
-      c = c.substring(0, c.length - 1);
-    }
-
-    c = c
-      .split('|')
-      .map(c => c.trim())
-      .filter(c => c !== 'undefined')
-      .map(c => linkType(data, c))
-      .join(` | `);
-
-    if (c === '') {
-      return rtn;
-    }
-
-    if (isAsync) {
-      rtn.type = `Promise<${c}>`;
-      rtn.formatted = `Promise&lt;${c}&gt;`;
-    } else {
-      rtn.type = c;
-      rtn.formatted = c;
-    }
-
-    rtn.formatted = `<code>${rtn.formatted}</code>`;
-  }
-
-  return rtn;
-}
-
-function linkType(data: DocsData, s: string) {
-  if (s === '') {
-    return '';
-  }
-
-  const i = data.interfaces.find(i => i.name === s);
-  if (i) {
-    return `<a href="#${i.slug}">${s}</a>`;
-  }
-
-  const en = data.enums.find(en => en.name === s);
-  if (en) {
-    return `<a href="#${en.slug}">${s}</a>`;
-  }
-
-  return s;
 }
 
 function interfaceTable(data: DocsData, i: DocsInterface) {
@@ -257,7 +200,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
   o.push(``);
 
   if (i.docs) {
-    o.push(`${i.docs}`);
+    o.push(`${formatDescription(data, i.docs)}`);
     o.push(``);
   }
 
@@ -271,8 +214,8 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 
       t.addRow([
         `**\`${m.name}\`**`,
-        cleanTypes(data, m.type).formatted,
-        m.docs,
+        formatType(data, m.type).formatted,
+        formatDescription(data, m.docs),
         defaultValue ? `<code>${defaultValue}</code>` : '',
         getTagText(m.tags, 'since'),
       ]);
@@ -289,7 +232,11 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
     t.addHeader([`Method`, `Signature`, `Description`]);
 
     i.methods.forEach(m => {
-      t.addRow([`**${m.name}**`, m.signature, m.docs]);
+      t.addRow([
+        `**${m.name}**`,
+        formatDescription(data, m.signature),
+        formatDescription(data, m.docs)
+      ]);
     });
 
     t.removeEmptyColumns();
@@ -314,8 +261,8 @@ function enumTable(data: DocsData, i: DocsEnum) {
     i.members.forEach(m => {
       t.addRow([
         `**\`${m.name}\`**`,
-        cleanTypes(data, m.value).formatted,
-        m.docs,
+        formatType(data, m.value).formatted,
+        formatDescription(data, m.docs),
         getTagText(m.tags, 'since'),
       ]);
     });

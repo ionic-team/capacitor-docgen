@@ -79,7 +79,7 @@ describe('parse', () => {
 
     const m3 = api.methods[3];
     expect(m3.name).toBe(`addListener`);
-    expect(m3.docs).toBe(`Add a listener`);
+    expect(m3.docs).toBe(`Add a listener. Callback has VibrateOptions.`);
     expect(m3.signature).toBe(`(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>`);
     expect(m3.returns).toBe(`Promise<void>`);
 

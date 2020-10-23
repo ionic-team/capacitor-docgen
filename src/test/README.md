@@ -100,12 +100,12 @@ Vibrate the device
 addListener(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>
 ```
 
-Add a listener
+Add a listener. Callback has <a href="#vibrateoptions">VibrateOptions</a>.
 
-| Param              | Type                                         |
-| ------------------ | -------------------------------------------- |
-| **`eventName`**    | <code>"vibrate"</code>                       |
-| **`listenerFunc`** | <code>(event: VibrateOptions) => void</code> |
+| Param              | Type                                                                          |
+| ------------------ | ----------------------------------------------------------------------------- |
+| **`eventName`**    | <code>"vibrate"</code>                                                        |
+| **`listenerFunc`** | <code>(event: <a href="#vibrateoptions">VibrateOptions</a>) =&gt; void</code> |
 
 **Since:** 1.0.0
 
@@ -137,11 +137,11 @@ Remove all the listeners that are attached to this plugin
 
 #### HapticsImpactOptions
 
-| Prop            | Type                                                                  | Description                                                                                                                                                                                | Default                               | Since |
-| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----- |
-| **`style`**     | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code>     | Impact Feedback Style The mass of the objects in the collision simulated by a [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. | <code>HapticsImpactStyle.Heavy</code> | 1.0.0 |
-| **`value`**     | <code>boolean</code>                                                  |                                                                                                                                                                                            |                                       |       |
-| **`recursive`** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> |                                                                                                                                                                                            |                                       |       |
+| Prop            | Type                                                                  | Description                                                                                                                                                                                                                                                  | Default                               | Since |
+| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----- |
+| **`style`**     | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code>     | Impact Feedback Style The mass of the objects in the collision simulated by a [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object. Type is a <a href="#hapticsimpactstyle">`HapticsImpactStyle`</a>. | <code>HapticsImpactStyle.Heavy</code> | 1.0.0 |
+| **`value`**     | <code>boolean</code>                                                  |                                                                                                                                                                                                                                                              |                                       |       |
+| **`recursive`** | <code><a href="#hapticsimpactoptions">HapticsImpactOptions</a></code> |                                                                                                                                                                                                                                                              |                                       |       |
 
 
 #### HapticsNotificationOptions
