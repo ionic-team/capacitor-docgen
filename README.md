@@ -3,7 +3,7 @@
 Docs Readme Markdown and JSON Generator for [Capacitor](https://capacitorjs.com/) Plugins.
 
 - Designed specifically for generating docs for Capacitor plugins using TypeScript
-- Gerenates docs data pulled from [JSDocs](https://en.wikipedia.org/wiki/JSDoc) within source code 
+- Generates docs data pulled from [JSDocs](https://en.wikipedia.org/wiki/JSDoc) within source code 
 - Replaces placeholders within existing README.md markdown files with the generated docs
 - Outputs a json file of the raw docs data
 - Ideal for formatted docs within Github and NPM readme landing pages
@@ -47,7 +47,7 @@ docs can also be linked to and shared.
 
 ## CLI
 
-Easiest way to run `docgen` is to install `@capacitor/docgen` as a dev dependency
+The easiest way to run `docgen` is to install `@capacitor/docgen` as a dev dependency
 and add the command to the `package.json` scripts. In the example below, 
 `HapticsPlugin` is the primary interface:
 
