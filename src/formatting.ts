@@ -4,7 +4,7 @@ export function formatDescription(data: DocsData, c: string | undefined) {
   if (typeof c !== 'string') {
     return '';
   }
-  return formatTokens(data, tokenize(c));  
+  return formatTokens(data, tokenize(c));
 }
 
 export function formatType(data: DocsData, c: string | undefined) {
@@ -28,7 +28,7 @@ export function formatType(data: DocsData, c: string | undefined) {
 
   // If the type has more than three alternates, format into separate lines
   if (types.length > 3) {
-    formatted = "| " + types.join("<br>| ");
+    formatted = "|&nbsp;" + types.join("<br>|&nbsp;");
   }
 
   return {
@@ -47,7 +47,7 @@ function formatTokens(data: DocsData, tokens: string[]) {
       f += '&lt;';
       continue;
     }
-    
+
     if (t === '>') {
       f += '&gt;';
       continue;
