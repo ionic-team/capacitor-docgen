@@ -17,7 +17,7 @@ const writeFile = promisify(fs.writeFile);
 const mkdir = promisify(fs.mkdir);
 
 export async function outputReadme(readmeFilePath: string, data: DocsData) {
-  if (typeof readmeFilePath !== 'string') {
+  if (readmeFilePath === '') {
     throw new Error(`Missing readme file path`);
   }
   if (!path.isAbsolute(readmeFilePath)) {
@@ -37,7 +37,7 @@ export async function outputReadme(readmeFilePath: string, data: DocsData) {
 }
 
 export function replaceMarkdownPlaceholders(content: string, data: DocsData) {
-  if (typeof content !== 'string') {
+  if (content === '') {
     throw new Error(`Invalid content`);
   }
   if (data == null || data.api == null) {
@@ -288,7 +288,7 @@ function getTagText(tags: DocsTagInfo[], tagName: string) {
 }
 
 export async function outputJson(jsonFilePath: string, data: DocsData) {
-  if (typeof jsonFilePath !== 'string') {
+  if (jsonFilePath === '') {
     throw new Error(`Missing json file path`);
   }
   if (!path.isAbsolute(jsonFilePath)) {
