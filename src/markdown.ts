@@ -36,11 +36,7 @@ export class MarkdownTable {
         const row = this.rows[r];
         if (row && !row.isHeader) {
           const column = row.columns[c];
-          if (
-            column &&
-            typeof column.text === 'string' &&
-            column.text.trim().length > 0
-          ) {
+          if (column && column.text.trim().length > 0) {
             isEmptyColumn = false;
             break;
           }
