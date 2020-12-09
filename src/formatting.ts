@@ -4,7 +4,7 @@ export function formatDescription(data: DocsData, c: string | undefined) {
   if (typeof c !== 'string') {
     return '';
   }
-  return formatTokens(data, tokenize(c));  
+  return formatTokens(data, tokenize(c));
 }
 
 export function formatType(data: DocsData, c: string | undefined) {
@@ -44,7 +44,7 @@ function formatTokens(data: DocsData, tokens: string[]) {
       f += '&lt;';
       continue;
     }
-    
+
     if (t === '>') {
       f += '&gt;';
       continue;
@@ -95,7 +95,7 @@ function linkToken(data: DocsData, token: string) {
 function cleanWhitespace(str: string) {
   str = str.replace(/\n/g, ' ').trim();
   while (str.includes('  ')) {
-    str = str.replace(/  /g, ' ');
+    str = str.replace(/ {2}/g, ' ');
   }
   return str;
 }
