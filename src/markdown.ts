@@ -103,7 +103,7 @@ const createBorder = (th: RowData) => {
 
   th.columns.forEach(c => {
     const borderCol: ColumnData = {
-      text: '',
+      text: ':',
       width: c.width,
     };
     while (borderCol.text.length < borderCol.width) {

@@ -22,16 +22,19 @@ export function formatType(data: DocsData, c: string | undefined) {
     }
   }
 
-  const rtn = {
-    type: tokens.join(''),
-    formatted: formatTokens(data, tokens),
-  };
+  const type = tokens.join('');
+  let formatted = formatTokens(data, tokens);
+  const types = formatted.split(/ \| /);
 
-  if (rtn.formatted.length > 0) {
-    rtn.formatted = `<code>${rtn.formatted}</code>`;
+  // If the type has more than three alternates, format into separate lines
+  if (types.length > 3) {
+    formatted = "| " + types.join("<br>| ");
   }
 
-  return rtn;
+  return {
+    type,
+    formatted,
+  };
 }
 
 function formatTokens(data: DocsData, tokens: string[]) {

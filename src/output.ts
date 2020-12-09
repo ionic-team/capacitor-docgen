@@ -90,16 +90,24 @@ function replaceMarkdownDocsApi(content: string, data: DocsData) {
 function markdownIndex(data: DocsData) {
   const o: string[] = [];
 
+  if (data?.api?.methods.length) {
+    o.push(`**Methods**`)
+  }
+
   data?.api?.methods.forEach(m => {
-    o.push(`* [\`${m.name}(${m.parameters.length > 0 ? '...' : ''})\`](#${m.slug})`);
+    o.push(`[${m.name}(${m.parameters.length > 0 ? '...' : ''})](#${m.slug})`);
   });
 
+  if (data?.api?.methods.length) {
+    o.push(`\n`);
+  }
+
   if (data.interfaces.length > 0) {
-    o.push(`* [Interfaces](#interfaces)`);
+    o.push(`[Interfaces](#interfaces)`);
   }
 
   if (data.enums.length > 0) {
-    o.push(`* [Enums](#enums)`);
+    o.push(`[Enums](#enums)`);
   }
 
   return o.join('\n').trim();
@@ -120,7 +128,11 @@ function markdownApi(data: DocsData) {
   if (data.interfaces.length > 0) {
     o.push(`### Interfaces`);
     o.push(``);
-    data.interfaces.forEach(i => {
+    data.interfaces.forEach((i, index) => {
+      if (index > 0) {
+        o.push(`<br>`);
+      }
+
       o.push(interfaceTable(data, i));
     });
     o.push(``);
@@ -183,7 +195,7 @@ function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
   t.addHeader([`Param`, `Type`, `Description`]);
 
   parameters.forEach(p => {
-    const nm = `**\`${p.name}\`**`;
+    const nm = `${p.name}`;
     const ty = formatType(data, p.type);
     const docs = formatDescription(data, p.docs);
     t.addRow([nm, ty.formatted, docs]);
@@ -213,10 +225,10 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
       const defaultValue = getTagText(m.tags, 'default');
 
       t.addRow([
-        `**\`${m.name}\`**`,
+        `${m.name}`,
         formatType(data, m.type).formatted,
         formatDescription(data, m.docs),
-        defaultValue ? `<code>${defaultValue}</code>` : '',
+        defaultValue ? `${defaultValue}` : '',
         getTagText(m.tags, 'since'),
       ]);
     });
@@ -233,7 +245,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 
     i.methods.forEach(m => {
       t.addRow([
-        `**${m.name}**`,
+        `${m.name}`,
         formatDescription(data, m.signature),
         formatDescription(data, m.docs)
       ]);
@@ -260,7 +272,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
 
     i.members.forEach(m => {
       t.addRow([
-        `**\`${m.name}\`**`,
+        `${m.name}`,
         formatType(data, m.value).formatted,
         formatDescription(data, m.docs),
         getTagText(m.tags, 'since'),
