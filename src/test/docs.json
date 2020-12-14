@@ -110,7 +110,7 @@
         "complexTypes": [
           "VibrateOptions"
         ],
-        "slug": "addlistener"
+        "slug": "addlistenervibrate-"
       },
       {
         "name": "removeAllListeners",
@@ -166,7 +166,7 @@
               "name": "since"
             }
           ],
-          "docs": "Impact Feedback Style\n\nThe mass of the objects in the collision simulated by a \n[`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.\nType is a `HapticsImpactStyle`.",
+          "docs": "Impact Feedback Style\n\nThe mass of the objects in the collision simulated by a\n[`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.\nType is a `HapticsImpactStyle`.",
           "complexTypes": [
             "HapticsImpactStyle"
           ],

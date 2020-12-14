@@ -12,6 +12,7 @@ import type {
 } from './types';
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
+import { formatMethodSignature } from './formatting';
 
 /**
  * Given either a tsconfig file path, or exact input files, will
@@ -223,8 +224,14 @@ function getInterfaceMethod(
       signature.getDocumentationComment(typeChecker),
     ),
     complexTypes: Array.from(referencedTypes),
-    slug: slugify(methodName),
+    slug: '',
   };
+
+  m.slug = slugify(formatMethodSignature(m));
+
+  if (m.tags.some(t => t.name === 'hidden')) {
+    return null;
+  }
 
   return m;
 }

@@ -1,6 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { formatDescription, formatType } from './formatting';
+import {
+  formatDescription,
+  formatType,
+  formatMethodSignature,
+} from './formatting';
 import { promisify } from 'util';
 import { MarkdownTable } from './markdown';
 import type {
@@ -61,7 +65,8 @@ function replaceMarkdownDocsIndex(content: string, data: DocsData) {
     const endInnerIndex = content.indexOf(INDEX_END);
     if (endInnerIndex > -1) {
       const inner = content.substring(startOuterIndex + INDEX_START.length);
-      const startInnderIndex = startOuterIndex + INDEX_START.length + inner.indexOf('>') + 1;
+      const startInnderIndex =
+        startOuterIndex + INDEX_START.length + inner.indexOf('>') + 1;
       const start = content.substring(0, startInnderIndex);
       const end = content.substring(endInnerIndex);
       return `${start}\n\n${markdownIndex(data)}\n\n${end}`;
@@ -77,7 +82,8 @@ function replaceMarkdownDocsApi(content: string, data: DocsData) {
     const endInnerIndex = content.indexOf(API_END);
     if (endInnerIndex > -1) {
       const inner = content.substring(startOuterIndex + API_START.length);
-      const startInnerIndex = startOuterIndex + API_START.length + inner.indexOf('>') + 1;
+      const startInnerIndex =
+        startOuterIndex + API_START.length + inner.indexOf('>') + 1;
       const start = content.substring(0, startInnerIndex);
       const end = content.substring(endInnerIndex);
       return `${start}\n${UPDATE_MSG}\n\n${markdownApi(data)}\n\n${end}`;
@@ -91,7 +97,7 @@ function markdownIndex(data: DocsData) {
   const o: string[] = [];
 
   data?.api?.methods.forEach(m => {
-    o.push(`* [\`${m.name}(${m.parameters.length > 0 ? '...' : ''})\`](#${m.slug})`);
+    o.push(`* [\`${formatMethodSignature(m)}\`](#${m.slug})`);
   });
 
   if (data.interfaces.length > 0) {
@@ -141,7 +147,7 @@ function markdownApi(data: DocsData) {
 function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
   const o: string[] = [];
 
-  o.push(`### ${m.name}(${m.parameters.length > 0 ? '...' : ''})`);
+  o.push(`### ${formatMethodSignature(m)}`);
   o.push(``);
   o.push('```typescript');
   o.push(`${m.name}${m.signature}`);
@@ -235,7 +241,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
       t.addRow([
         `**${m.name}**`,
         formatDescription(data, m.signature),
-        formatDescription(data, m.docs)
+        formatDescription(data, m.docs),
       ]);
     });
 

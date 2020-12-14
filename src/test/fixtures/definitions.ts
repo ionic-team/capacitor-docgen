@@ -37,7 +37,21 @@ export interface HapticsPlugin {
    *
    * @since 1.0.0
    */
-  addListener(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void): Promise<void>;
+  addListener(
+    eventName: 'vibrate',
+    listenerFunc: (event: VibrateOptions) => void,
+  ): Promise<void>;
+
+  /**
+   * Add a listener. Callback has VibrateOptions.
+   *
+   * @hidden
+   * @deprecated Use the 'vibrate' event instead.
+   */
+  addListener(
+    eventName: 'bad',
+    listenerFunc: (event: VibrateOptions) => void,
+  ): Promise<void>;
 
   /**
    * Remove all the listeners that are attached to this plugin
@@ -55,7 +69,7 @@ export interface HapticsImpactOptions {
   /**
    * Impact Feedback Style
    *
-   * The mass of the objects in the collision simulated by a 
+   * The mass of the objects in the collision simulated by a
    * [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.
    * Type is a `HapticsImpactStyle`.
    *
