@@ -79,13 +79,18 @@ describe('parse', () => {
 
     const m3 = api.methods[3];
     expect(m3.name).toBe(`addListener`);
+    expect(m3.slug).toBe(`addlistenervibrate-`);
     expect(m3.docs).toBe(`Add a listener. Callback has VibrateOptions.`);
-    expect(m3.signature).toBe(`(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>`);
+    expect(m3.signature).toBe(
+      `(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>`,
+    );
     expect(m3.returns).toBe(`Promise<void>`);
 
     const m4 = api.methods[4];
     expect(m4.name).toBe(`removeAllListeners`);
-    expect(m4.docs).toBe(`Remove all the listeners that are attached to this plugin`);
+    expect(m4.docs).toBe(
+      `Remove all the listeners that are attached to this plugin`,
+    );
     expect(m4.signature).toBe(`() => void`);
     expect(m4.returns).toBe(`void`);
   });

@@ -1,10 +1,10 @@
-import type { DocsData } from './types';
+import type { DocsData, DocsInterfaceMethod } from './types';
 
 export function formatDescription(data: DocsData, c: string | undefined) {
   if (typeof c !== 'string') {
     return '';
   }
-  return formatTokens(data, tokenize(c));  
+  return formatTokens(data, tokenize(c));
 }
 
 export function formatType(data: DocsData, c: string | undefined) {
@@ -15,7 +15,12 @@ export function formatType(data: DocsData, c: string | undefined) {
     tokens.shift();
   } else {
     for (let i = tokens.length - 1; i >= 0; i--) {
-      if (tokens[i] === 'undefined' && tokens[i - 1] === ' ' && tokens[i - 2] === '|' && tokens[i - 3] === ' ') {
+      if (
+        tokens[i] === 'undefined' &&
+        tokens[i - 1] === ' ' &&
+        tokens[i - 2] === '|' &&
+        tokens[i - 3] === ' '
+      ) {
         tokens.splice(i - 3, 4);
         i = i - 4;
       }
@@ -44,7 +49,7 @@ function formatTokens(data: DocsData, tokens: string[]) {
       f += '&lt;';
       continue;
     }
-    
+
     if (t === '>') {
       f += '&gt;';
       continue;
@@ -71,20 +76,29 @@ function formatTokens(data: DocsData, tokens: string[]) {
   return f;
 }
 
+export function formatMethodSignature(m: DocsInterfaceMethod) {
+  if (m.name === 'addListener' && m.parameters.length > 0) {
+    return `addListener(${m.parameters[0].type.replace(/\"/g, `'`)}, ...)`;
+  }
+  return `${m.name}(${m.parameters.length > 0 ? '...' : ''})`;
+}
+
 function linkToken(data: DocsData, token: string) {
   const t = token.replace(/`/g, '');
   const i = data.interfaces.find(i => {
     return (
       i.name === t ||
-      i.methods.some(m => (i.name + '.' + m.name) === t) ||
-      i.properties.some(p => (i.name + '.' + p.name) === t)
+      i.methods.some(m => i.name + '.' + m.name === t) ||
+      i.properties.some(p => i.name + '.' + p.name === t)
     );
   });
   if (i) {
     return `<a href="#${i.slug}">${token}</a>`;
   }
 
-  const e = data.enums.find(e => e.name === t || e.members.some(m => (e.name + '.' + m.name) === t));
+  const e = data.enums.find(
+    e => e.name === t || e.members.some(m => e.name + '.' + m.name === t),
+  );
   if (e) {
     return `<a href="#${e.slug}">${token}</a>`;
   }
@@ -120,4 +134,26 @@ export function tokenize(str: string) {
   return t;
 }
 
-const BREAKS = [` `, `.`, `,`, `|`, `<`, `>`, `:`, `;`, `?`, `&`, `!`, `*`, `(`, `)`, `=`, `@`, `"`, `'`, `-`, `{`, `}`];
+const BREAKS = [
+  ` `,
+  `.`,
+  `,`,
+  `|`,
+  `<`,
+  `>`,
+  `:`,
+  `;`,
+  `?`,
+  `&`,
+  `!`,
+  `*`,
+  `(`,
+  `)`,
+  `=`,
+  `@`,
+  `"`,
+  `'`,
+  `-`,
+  `{`,
+  `}`,
+];

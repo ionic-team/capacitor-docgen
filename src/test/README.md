@@ -11,7 +11,7 @@ Below is an index of all the methods available.
 * [`impact(...)`](#impact)
 * [`notification(...)`](#notification)
 * [`vibrate(...)`](#vibrate)
-* [`addListener(...)`](#addlistener)
+* [`addListener('vibrate', ...)`](#addlistenervibrate-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 * [Enums](#enums)
@@ -94,7 +94,7 @@ Vibrate the device
 --------------------
 
 
-### addListener(...)
+### addListener('vibrate', ...)
 
 ```typescript
 addListener(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>
