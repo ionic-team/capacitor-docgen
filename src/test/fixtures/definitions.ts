@@ -61,7 +61,17 @@ export interface HapticsPlugin {
 export type VibrateListener = (event: VibrateListenerEvent) => void;
 
 export interface VibrateListenerEvent {
-  style: HapticsImpactStyle;
+  /**
+   * The style of vibration.
+   *
+   * @since 1.0.0
+   */
+  style?: HapticsImpactStyle;
+
+  /**
+   * The duration of the vibration.
+   * @since 1.0.0
+   */
   duration: number;
 }
 
