@@ -333,16 +333,26 @@ function getInterfaceProperty(
     tags: docs.tags,
     docs: docs.docs,
     complexTypes: Array.from(referencedTypes),
-    type: typeToString(typeChecker, type),
+    type: typeToString(typeChecker, type, properytSignature.type),
   };
   return p;
 }
 
-function typeToString(checker: ts.TypeChecker, type: ts.Type) {
+function typeToString(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  typeNode?: ts.TypeNode,
+) {
+  if (typeNode && ts.isTypeReferenceNode(typeNode)) {
+    return typeNode.getText();
+  }
+
   const TYPE_FORMAT_FLAGS =
     ts.TypeFormatFlags.NoTruncation |
     ts.TypeFormatFlags.NoTypeReduction |
-    ts.TypeFormatFlags.InElementType;
+    ts.TypeFormatFlags.WriteArrowStyleSignature |
+    ts.TypeFormatFlags.WriteTypeArgumentsOfSignature |
+    ts.TypeFormatFlags.UseSingleQuotesForStringLiteralType;
 
   return checker.typeToString(type, undefined, TYPE_FORMAT_FLAGS);
 }

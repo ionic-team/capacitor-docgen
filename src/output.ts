@@ -279,11 +279,12 @@ function typeAliasTable(data: DocsData, t: DocsTypeAlias) {
     o.push(``);
   }
 
-  o.push(
-    `${t.types.map(ty => {
-      return formatType(data, ty.text).formatted;
-    })}`,
-  );
+  const type = t.types
+    .map(ty => formatType(data, ty.text).formatted)
+    .join(' | ')
+    .replace(/\<\/code\> \| \<code\>/g, ` | `);
+
+  o.push(`${type}`);
   o.push(``);
 
   return o.join(`\n`);
