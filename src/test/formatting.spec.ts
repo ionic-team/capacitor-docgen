@@ -36,6 +36,7 @@ describe('formatting', () => {
         ],
       },
     ],
+    typeAliases: [],
   };
 
   it('formatDescription w/ backticks', () => {
