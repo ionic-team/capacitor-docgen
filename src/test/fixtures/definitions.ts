@@ -58,6 +58,9 @@ export interface HapticsPlugin {
   removeAllListeners(): void;
 }
 
+/**
+ * The vibrate listener callback function.
+ */
 export type VibrateListener = (event: VibrateListenerEvent) => void;
 
 export interface VibrateListenerEvent {

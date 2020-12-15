@@ -1,6 +1,7 @@
 export interface DocsData {
   api: DocsInterface | null;
   interfaces: DocsInterface[];
+  typeAliases: DocsTypeAlias[];
   enums: DocsEnum[];
 }
 
@@ -17,6 +18,18 @@ export interface DocsEnum {
   name: string;
   slug: string;
   members: DocsEnumMember[];
+}
+
+export interface DocsTypeAlias {
+  name: string;
+  slug: string;
+  docs: string;
+  types: DocsTypeAliasReference[];
+}
+
+export interface DocsTypeAliasReference {
+  text: string;
+  complexTypes: string[];
 }
 
 export interface DocsEnumMember {

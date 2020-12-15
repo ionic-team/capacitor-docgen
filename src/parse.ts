@@ -9,6 +9,8 @@ import type {
   DocsMethodParam,
   DocsJsDoc,
   DocsInterfaceProperty,
+  DocsTypeAlias,
+  DocsTypeAliasReference,
 } from './types';
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
@@ -27,9 +29,10 @@ export function parse(opts: DocsParseOptions) {
 
   const interfaces: DocsInterface[] = [];
   const enums: DocsEnum[] = [];
+  const typeAliases: DocsTypeAlias[] = [];
 
   tsSourceFiles.forEach(tsSourceFile => {
-    parseSourceFile(tsSourceFile, typeChecker, interfaces, enums);
+    parseSourceFile(tsSourceFile, typeChecker, interfaces, typeAliases, enums);
   });
 
   return (api: string) => {
@@ -39,10 +42,11 @@ export function parse(opts: DocsParseOptions) {
       api: apiInterface,
       interfaces: [],
       enums: [],
+      typeAliases: [],
     };
 
     if (apiInterface) {
-      collectInterfaces(data, apiInterface, interfaces, enums);
+      collectInterfaces(data, apiInterface, interfaces, typeAliases, enums);
     }
 
     return data;
@@ -53,6 +57,7 @@ function collectInterfaces(
   data: DocsData,
   i: DocsInterface,
   interfaces: DocsInterface[],
+  typeAliases: DocsTypeAlias[],
   enums: DocsEnum[],
 ) {
   if (
@@ -63,10 +68,10 @@ function collectInterfaces(
   }
 
   i.methods.forEach(m => {
-    collectUsed(data, m.complexTypes, interfaces, enums);
+    collectUsed(data, m.complexTypes, interfaces, typeAliases, enums);
   });
   i.properties.forEach(p => {
-    collectUsed(data, p.complexTypes, interfaces, enums);
+    collectUsed(data, p.complexTypes, interfaces, typeAliases, enums);
   });
 }
 
@@ -74,18 +79,25 @@ function collectUsed(
   data: DocsData,
   complexTypes: string[],
   interfaces: DocsInterface[],
+  typeAliases: DocsTypeAlias[],
   enums: DocsEnum[],
 ) {
   complexTypes.forEach(typeName => {
     const fi = interfaces.find(i => i.name === typeName);
     if (fi && !data.interfaces.some(i => i.name === fi.name)) {
-      collectInterfaces(data, fi, interfaces, enums);
+      collectInterfaces(data, fi, interfaces, typeAliases, enums);
     }
-    const ei = enums.find(i => i.name === typeName);
-    if (ei) {
-      if (!data.enums.some(en => en.name === ei.name)) {
-        data.enums.push(ei);
-      }
+    const ei = enums.find(en => en.name === typeName);
+    if (ei && !data.enums.some(en => en.name === ei.name)) {
+      data.enums.push(ei);
+    }
+    const ti = typeAliases.find(ty => ty.name === typeName);
+    if (ti && !data.typeAliases.some(ty => ty.name === ti.name)) {
+      data.typeAliases.push(ti);
+
+      ti.types.forEach(type => {
+        collectUsed(data, type.complexTypes, interfaces, typeAliases, enums);
+      });
     }
   });
 }
@@ -94,10 +106,12 @@ function parseSourceFile(
   tsSourceFile: ts.SourceFile,
   typeChecker: ts.TypeChecker,
   interfaces: DocsInterface[],
+  typeAliases: DocsTypeAlias[],
   enums: DocsEnum[],
 ) {
   const statements = tsSourceFile.statements;
   const interfaceDeclarations = statements.filter(ts.isInterfaceDeclaration);
+  const typeAliasDeclarations = statements.filter(ts.isTypeAliasDeclaration);
   const enumDeclarations = statements.filter(ts.isEnumDeclaration);
 
   interfaceDeclarations.forEach(interfaceDeclaration => {
@@ -106,6 +120,10 @@ function parseSourceFile(
 
   enumDeclarations.forEach(enumDeclaration => {
     enums.push(getEnum(typeChecker, enumDeclaration));
+  });
+
+  typeAliasDeclarations.forEach(typeAliasDeclaration => {
+    typeAliases.push(getTypeAlias(typeChecker, typeAliasDeclaration));
   });
 }
 
@@ -172,6 +190,62 @@ function getEnum(typeChecker: ts.TypeChecker, node: ts.EnumDeclaration) {
   return en;
 }
 
+function getTypeAlias(
+  typeChecker: ts.TypeChecker,
+  node: ts.TypeAliasDeclaration,
+) {
+  const symbol = typeChecker.getSymbolAtLocation(node.name);
+  const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
+
+  const typeAliasName = node.name.text;
+
+  const typeAlias: DocsTypeAlias = {
+    name: typeAliasName,
+    slug: slugify(typeAliasName),
+    docs: docs?.docs || '',
+    types: [],
+  };
+
+  if (node.type) {
+    if (ts.isFunctionTypeNode(node.type)) {
+      const signature = typeChecker.getSignatureFromDeclaration(node.type);
+      if (signature) {
+        const referencedTypes = new Set(getAllTypeReferences(node.type));
+        referencedTypes.delete('Promise');
+
+        const signatureString = typeChecker.signatureToString(signature);
+        typeAlias.types = [
+          {
+            text: signatureString,
+            complexTypes: Array.from(referencedTypes),
+          },
+        ];
+      }
+    } else if (ts.isUnionTypeNode(node.type) && node.type.types) {
+      typeAlias.types = node.type.types.map(t => {
+        const referencedTypes = new Set(getAllTypeReferences(t));
+        referencedTypes.delete('Promise');
+        const typeRef: DocsTypeAliasReference = {
+          text: t.getText(),
+          complexTypes: Array.from(referencedTypes),
+        };
+        return typeRef;
+      });
+    } else if (typeof node.type.getText === 'function') {
+      const referencedTypes = new Set(getAllTypeReferences(node.type));
+      referencedTypes.delete('Promise');
+      typeAlias.types = [
+        {
+          text: node.type.getText(),
+          complexTypes: Array.from(referencedTypes),
+        },
+      ];
+    }
+  }
+
+  return typeAlias;
+}
+
 function getInterfaceMethod(
   typeChecker: ts.TypeChecker,
   methodSignature: ts.MethodSignature,
@@ -183,6 +257,12 @@ function getInterfaceMethod(
   if (!signature) {
     return null;
   }
+
+  const tags = signature.getJsDocTags();
+  if (tags.some(t => t.name === 'hidden')) {
+    return null;
+  }
+
   const returnType = typeChecker.getReturnTypeOfSignature(signature);
   const returnTypeNode = typeChecker.typeToTypeNode(
     returnType,
@@ -219,7 +299,7 @@ function getInterfaceMethod(
       return param;
     }),
     returns: returnString,
-    tags: signature.getJsDocTags(),
+    tags,
     docs: ts.displayPartsToString(
       signature.getDocumentationComment(typeChecker),
     ),
@@ -228,10 +308,6 @@ function getInterfaceMethod(
   };
 
   m.slug = slugify(formatMethodSignature(m));
-
-  if (m.tags.some(t => t.name === 'hidden')) {
-    return null;
-  }
 
   return m;
 }
@@ -311,7 +387,7 @@ function getAllTypeReferences(node: ts.Node | undefined) {
     visit(node);
   }
 
-  return Array.from(referencedTypes);
+  return referencedTypes;
 }
 
 function getEntityName(entity: ts.EntityName): string {
@@ -322,7 +398,7 @@ function getEntityName(entity: ts.EntityName): string {
   }
 }
 
-function slugify(id: string) {
+export function slugify(id: string) {
   const s = new GithubSlugger();
   return s.slug(id);
 }

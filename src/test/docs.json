@@ -86,7 +86,7 @@
       },
       {
         "name": "addListener",
-        "signature": "(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>",
+        "signature": "(eventName: 'vibrate', listenerFunc: VibrateListener) => Promise<void>",
         "parameters": [
           {
             "name": "eventName",
@@ -96,7 +96,7 @@
           {
             "name": "listenerFunc",
             "docs": "",
-            "type": "(event: VibrateOptions) => void"
+            "type": "(event: VibrateListenerEvent) => void"
           }
         ],
         "returns": "Promise<void>",
@@ -108,7 +108,7 @@
         ],
         "docs": "Add a listener. Callback has VibrateOptions.",
         "complexTypes": [
-          "VibrateOptions"
+          "VibrateListener"
         ],
         "slug": "addlistenervibrate-"
       },
@@ -241,6 +241,41 @@
           "type": "number"
         }
       ]
+    },
+    {
+      "name": "VibrateListenerEvent",
+      "slug": "vibratelistenerevent",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "style",
+          "tags": [
+            {
+              "text": "1.0.0",
+              "name": "since"
+            }
+          ],
+          "docs": "The style of vibration.",
+          "complexTypes": [
+            "HapticsImpactStyle"
+          ],
+          "type": "HapticsImpactStyle | undefined"
+        },
+        {
+          "name": "duration",
+          "tags": [
+            {
+              "text": "1.0.0",
+              "name": "since"
+            }
+          ],
+          "docs": "The duration of the vibration.",
+          "complexTypes": [],
+          "type": "number"
+        }
+      ]
     }
   ],
   "enums": [
@@ -319,6 +354,21 @@
             }
           ],
           "docs": "A notification feedback type indicating that a task has failed"
+        }
+      ]
+    }
+  ],
+  "typeAliases": [
+    {
+      "name": "VibrateListener",
+      "slug": "vibratelistener",
+      "docs": "The vibrate listener callback function.",
+      "types": [
+        {
+          "text": "(event: VibrateListenerEvent): void",
+          "complexTypes": [
+            "VibrateListenerEvent"
+          ]
         }
       ]
     }

@@ -7,6 +7,7 @@ import {
 } from './formatting';
 import { promisify } from 'util';
 import { MarkdownTable } from './markdown';
+import { slugify } from './parse';
 import type {
   DocsData,
   DocsEnum,
@@ -14,6 +15,7 @@ import type {
   DocsInterfaceMethod,
   DocsMethodParam,
   DocsTagInfo,
+  DocsTypeAlias,
 } from './types';
 
 const readFile = promisify(fs.readFile);
@@ -101,11 +103,15 @@ function markdownIndex(data: DocsData) {
   });
 
   if (data.interfaces.length > 0) {
-    o.push(`* [Interfaces](#interfaces)`);
+    o.push(`* [Interfaces](#${slugify('Interfaces')})`);
+  }
+
+  if (data.typeAliases.length > 0) {
+    o.push(`* [Type Aliases](#${slugify('Type Aliases')})`);
   }
 
   if (data.enums.length > 0) {
-    o.push(`* [Enums](#enums)`);
+    o.push(`* [Enums](#${slugify('Enums')})`);
   }
 
   return o.join('\n').trim();
@@ -128,6 +134,15 @@ function markdownApi(data: DocsData) {
     o.push(``);
     data.interfaces.forEach(i => {
       o.push(interfaceTable(data, i));
+    });
+    o.push(``);
+  }
+
+  if (data.typeAliases.length > 0) {
+    o.push(`### Type Aliases`);
+    o.push(``);
+    data.typeAliases.forEach(i => {
+      o.push(typeAliasTable(data, i));
     });
     o.push(``);
   }
@@ -249,6 +264,27 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
     o.push(...t.toMarkdown());
     o.push(``);
   }
+
+  return o.join(`\n`);
+}
+
+function typeAliasTable(data: DocsData, t: DocsTypeAlias) {
+  const o: string[] = [];
+  o.push(``);
+  o.push(`#### ${t.name}`);
+  o.push(``);
+
+  if (t.docs) {
+    o.push(formatDescription(data, t.docs));
+    o.push(``);
+  }
+
+  o.push(
+    `${t.types.map(ty => {
+      return formatType(data, ty.text).formatted;
+    })}`,
+  );
+  o.push(``);
 
   return o.join(`\n`);
 }
