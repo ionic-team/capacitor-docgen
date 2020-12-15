@@ -13,7 +13,7 @@ describe('parse', () => {
     expect(api.slug).toBe(`hapticsplugin`);
     expect(api.docs).toContain(`Docs from JSDoc comments!`);
     expect(interfaces).toHaveLength(5);
-    expect(typeAliases).toHaveLength(1);
+    expect(typeAliases).toHaveLength(2);
     expect(enums).toHaveLength(2);
 
     const iNames = interfaces.map(i => i.name);
@@ -122,12 +122,21 @@ describe('parse', () => {
     expect(p0.complexTypes).toHaveLength(1);
     expect(p0.complexTypes[0]).toBe(`HapticsImpactStyle`);
     expect(p0.type).toBe(`HapticsImpactStyle`);
+
+    const i1 = interfaces.find(i => i.name === 'VibrateListenerEvent');
+    expect(i1.name).toBe('VibrateListenerEvent');
+    expect(i1.properties).toHaveLength(3);
+    expect(i1.properties[2].type).toBe('RepeatSchedule');
   });
 
   it('type typeAliases', () => {
-    const t = typeAliases.find(i => i.name === 'VibrateListener');
-    expect(t.slug).toBe(`vibratelistener`);
-    expect(t.docs).toBe(`The vibrate listener callback function.`);
-    expect(t.types).toHaveLength(1);
+    const t0 = typeAliases.find(i => i.name === 'VibrateListener');
+    expect(t0.slug).toBe(`vibratelistener`);
+    expect(t0.docs).toBe(`The vibrate listener callback function.`);
+    expect(t0.types).toHaveLength(1);
+
+    const t1 = typeAliases.find(i => i.name === 'RepeatSchedule');
+    expect(t1.slug).toBe(`repeatschedule`);
+    expect(t1.types).toHaveLength(4);
   });
 });

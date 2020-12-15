@@ -105,7 +105,7 @@ Add a listener. Callback has <a href="#vibrateoptions">VibrateOptions</a>.
 
 | Param              | Type                                                        |
 | ------------------ | ----------------------------------------------------------- |
-| **`eventName`**    | <code>"vibrate"</code>                                      |
+| **`eventName`**    | <code>'vibrate'</code>                                      |
 | **`listenerFunc`** | <code><a href="#vibratelistener">VibrateListener</a></code> |
 
 **Since:** 1.0.0
@@ -161,10 +161,11 @@ Remove all the listeners that are attached to this plugin
 
 #### VibrateListenerEvent
 
-| Prop           | Type                                                              | Description                    | Since |
-| -------------- | ----------------------------------------------------------------- | ------------------------------ | ----- |
-| **`style`**    | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code> | The style of vibration.        | 1.0.0 |
-| **`duration`** | <code>number</code>                                               | The duration of the vibration. | 1.0.0 |
+| Prop           | Type                                                              | Description                               | Since |
+| -------------- | ----------------------------------------------------------------- | ----------------------------------------- | ----- |
+| **`style`**    | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code> | The style of vibration.                   | 1.0.0 |
+| **`duration`** | <code>number</code>                                               | The duration of the vibration.            | 1.0.0 |
+| **`repeat`**   | <code><a href="#repeatschedule">RepeatSchedule</a></code>         | How often this vibrate event is repeated. | 1.0.0 |
 
 
 ### Type Aliases
@@ -175,6 +176,13 @@ Remove all the listeners that are attached to this plugin
 The vibrate listener callback function.
 
 <code>(event: <a href="#vibratelistenerevent">VibrateListenerEvent</a>): void</code>
+
+
+#### RepeatSchedule
+
+How often a vibration repeats.
+
+<code>'hourly' | 'daily' | 'weekly' | 'monthly'</code>
 
 
 ### Enums

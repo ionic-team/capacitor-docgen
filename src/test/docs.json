@@ -91,7 +91,7 @@
           {
             "name": "eventName",
             "docs": "",
-            "type": "\"vibrate\""
+            "type": "'vibrate'"
           },
           {
             "name": "listenerFunc",
@@ -261,7 +261,7 @@
           "complexTypes": [
             "HapticsImpactStyle"
           ],
-          "type": "HapticsImpactStyle | undefined"
+          "type": "HapticsImpactStyle"
         },
         {
           "name": "duration",
@@ -274,6 +274,20 @@
           "docs": "The duration of the vibration.",
           "complexTypes": [],
           "type": "number"
+        },
+        {
+          "name": "repeat",
+          "tags": [
+            {
+              "text": "1.0.0",
+              "name": "since"
+            }
+          ],
+          "docs": "How often this vibrate event is repeated.",
+          "complexTypes": [
+            "RepeatSchedule"
+          ],
+          "type": "RepeatSchedule"
         }
       ]
     }
@@ -369,6 +383,29 @@
           "complexTypes": [
             "VibrateListenerEvent"
           ]
+        }
+      ]
+    },
+    {
+      "name": "RepeatSchedule",
+      "slug": "repeatschedule",
+      "docs": "How often a vibration repeats.",
+      "types": [
+        {
+          "text": "'hourly'",
+          "complexTypes": []
+        },
+        {
+          "text": "'daily'",
+          "complexTypes": []
+        },
+        {
+          "text": "'weekly'",
+          "complexTypes": []
+        },
+        {
+          "text": "'monthly'",
+          "complexTypes": []
         }
       ]
     }

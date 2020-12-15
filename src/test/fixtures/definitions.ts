@@ -76,7 +76,19 @@ export interface VibrateListenerEvent {
    * @since 1.0.0
    */
   duration: number;
+
+  /**
+   * How often this vibrate event is repeated.
+   * @since 1.0.0
+   */
+  repeat?: RepeatSchedule;
 }
+
+/**
+ * How often a vibration repeats.
+ * @since 1.0.0
+ */
+export type RepeatSchedule = 'hourly' | 'daily' | 'weekly' | 'monthly';
 
 export interface HapticsImpact {
   value: number;
