@@ -341,7 +341,7 @@ function getInterfaceProperty(
 function typeToString(checker: ts.TypeChecker, type: ts.Type) {
   const TYPE_FORMAT_FLAGS =
     ts.TypeFormatFlags.NoTruncation |
-    ts.TypeFormatFlags.InTypeAlias |
+    ts.TypeFormatFlags.NoTypeReduction |
     ts.TypeFormatFlags.InElementType;
 
   return checker.typeToString(type, undefined, TYPE_FORMAT_FLAGS);

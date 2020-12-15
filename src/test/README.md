@@ -103,10 +103,10 @@ addListener(eventName: 'vibrate', listenerFunc: VibrateListener) => Promise<void
 
 Add a listener. Callback has <a href="#vibrateoptions">VibrateOptions</a>.
 
-| Param              | Type                                                                                      |
-| ------------------ | ----------------------------------------------------------------------------------------- |
-| **`eventName`**    | <code>"vibrate"</code>                                                                    |
-| **`listenerFunc`** | <code>(event: <a href="#vibratelistenerevent">VibrateListenerEvent</a>) =&gt; void</code> |
+| Param              | Type                         |
+| ------------------ | ---------------------------- |
+| **`eventName`**    | <code>"vibrate"</code>       |
+| **`listenerFunc`** | <code>VibrateListener</code> |
 
 **Since:** 1.0.0
 

@@ -96,7 +96,7 @@
           {
             "name": "listenerFunc",
             "docs": "",
-            "type": "(event: VibrateListenerEvent) => void"
+            "type": "VibrateListener"
           }
         ],
         "returns": "Promise<void>",

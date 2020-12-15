@@ -93,6 +93,10 @@ describe('parse', () => {
     expect(m3.signature).toBe(
       `(eventName: 'vibrate', listenerFunc: VibrateListener) => Promise<void>`,
     );
+    expect(m3.complexTypes).toContain(`VibrateListener`);
+    expect(m3.parameters).toHaveLength(2);
+    expect(m3.parameters[1].name).toBe('listenerFunc');
+    expect(m3.parameters[1].type).toBe('VibrateListener');
     expect(m3.returns).toBe(`Promise<void>`);
 
     const m4 = api.methods[4];
