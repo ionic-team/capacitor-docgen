@@ -11,9 +11,10 @@ Below is an index of all the methods available.
 * [`impact(...)`](#impact)
 * [`notification(...)`](#notification)
 * [`vibrate(...)`](#vibrate)
-* [`addListener(...)`](#addlistener)
+* [`addListener('vibrate', ...)`](#addlistenervibrate-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
 * [Enums](#enums)
 
 </docgen-index>
@@ -94,18 +95,18 @@ Vibrate the device
 --------------------
 
 
-### addListener(...)
+### addListener('vibrate', ...)
 
 ```typescript
-addListener(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>
+addListener(eventName: 'vibrate', listenerFunc: VibrateListener) => Promise<void>
 ```
 
 Add a listener. Callback has <a href="#vibrateoptions">VibrateOptions</a>.
 
-| Param              | Type                                                                          |
-| ------------------ | ----------------------------------------------------------------------------- |
-| **`eventName`**    | <code>"vibrate"</code>                                                        |
-| **`listenerFunc`** | <code>(event: <a href="#vibrateoptions">VibrateOptions</a>) =&gt; void</code> |
+| Param              | Type                                                        |
+| ------------------ | ----------------------------------------------------------- |
+| **`eventName`**    | <code>"vibrate"</code>                                      |
+| **`listenerFunc`** | <code><a href="#vibratelistener">VibrateListener</a></code> |
 
 **Since:** 1.0.0
 
@@ -156,6 +157,24 @@ Remove all the listeners that are attached to this plugin
 | Prop           | Type                | Description                                                      | Default          | Since |
 | -------------- | ------------------- | ---------------------------------------------------------------- | ---------------- | ----- |
 | **`duration`** | <code>number</code> | Duration of the vibration in milliseconds. Not supported in iOS. | <code>300</code> | 1.0.0 |
+
+
+#### VibrateListenerEvent
+
+| Prop           | Type                                                              | Description                    | Since |
+| -------------- | ----------------------------------------------------------------- | ------------------------------ | ----- |
+| **`style`**    | <code><a href="#hapticsimpactstyle">HapticsImpactStyle</a></code> | The style of vibration.        | 1.0.0 |
+| **`duration`** | <code>number</code>                                               | The duration of the vibration. | 1.0.0 |
+
+
+### Type Aliases
+
+
+#### VibrateListener
+
+The vibrate listener callback function.
+
+<code>(event: <a href="#vibratelistenerevent">VibrateListenerEvent</a>): void</code>
 
 
 ### Enums
