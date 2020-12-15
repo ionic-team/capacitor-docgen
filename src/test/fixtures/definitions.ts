@@ -39,7 +39,7 @@ export interface HapticsPlugin {
    */
   addListener(
     eventName: 'vibrate',
-    listenerFunc: (event: VibrateOptions) => void,
+    listenerFunc: VibrateListener,
   ): Promise<void>;
 
   /**
@@ -48,10 +48,7 @@ export interface HapticsPlugin {
    * @hidden
    * @deprecated Use the 'vibrate' event instead.
    */
-  addListener(
-    eventName: 'bad',
-    listenerFunc: (event: VibrateOptions) => void,
-  ): Promise<void>;
+  addListener(eventName: 'bad', listenerFunc: VibrateListener): Promise<void>;
 
   /**
    * Remove all the listeners that are attached to this plugin
@@ -59,6 +56,26 @@ export interface HapticsPlugin {
    * @since 1.0.0
    */
   removeAllListeners(): void;
+}
+
+/**
+ * The vibrate listener callback function.
+ */
+export type VibrateListener = (event: VibrateListenerEvent) => void;
+
+export interface VibrateListenerEvent {
+  /**
+   * The style of vibration.
+   *
+   * @since 1.0.0
+   */
+  style?: HapticsImpactStyle;
+
+  /**
+   * The duration of the vibration.
+   * @since 1.0.0
+   */
+  duration: number;
 }
 
 export interface HapticsImpact {

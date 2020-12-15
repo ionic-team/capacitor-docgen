@@ -6,23 +6,31 @@ describe('parse', () => {
     tsconfigPath: path.join(__dirname, 'fixtures', 'tsconfig.json'),
   });
 
-  const { api, interfaces, enums } = apiFinder('HapticsPlugin');
+  const { api, interfaces, enums, typeAliases } = apiFinder('HapticsPlugin');
 
   it('api', () => {
     expect(api.name).toBe(`HapticsPlugin`);
     expect(api.slug).toBe(`hapticsplugin`);
     expect(api.docs).toContain(`Docs from JSDoc comments!`);
-    expect(interfaces).toHaveLength(4);
+    expect(interfaces).toHaveLength(5);
+    expect(typeAliases).toHaveLength(1);
     expect(enums).toHaveLength(2);
 
     const iNames = interfaces.map(i => i.name);
     expect(iNames).not.toContain(`HapticsPlugin`); // main api
     expect(iNames).not.toContain(`HapticsImpactStyle`); // enum
     expect(iNames).not.toContain(`HapticsNotificationType`); // enum
+    expect(iNames).not.toContain(`VibrateListener`); // type alias
     expect(iNames).toContain(`HapticsImpact`);
     expect(iNames).toContain(`HapticsImpactOptions`);
     expect(iNames).toContain(`HapticsNotificationOptions`);
     expect(iNames).toContain(`VibrateOptions`);
+    expect(iNames).toContain(`VibrateListenerEvent`);
+
+    const tNames = typeAliases.map(t => t.name);
+    expect(tNames).toContain(`VibrateListener`);
+    expect(tNames).not.toContain(`VibrateListenerEvent`);
+    expect(tNames).not.toContain(`VibrateOptions`);
 
     const eNames = enums.map(i => i.name);
     expect(eNames).not.toContain(`HapticsPlugin`); // main api
@@ -32,6 +40,7 @@ describe('parse', () => {
     expect(eNames).not.toContain(`HapticsImpactOptions`);
     expect(eNames).not.toContain(`HapticsNotificationOptions`);
     expect(eNames).not.toContain(`VibrateOptions`);
+    expect(eNames).not.toContain(`VibrateListenerEvent`);
   });
 
   it('api enums', () => {
@@ -82,7 +91,7 @@ describe('parse', () => {
     expect(m3.slug).toBe(`addlistenervibrate-`);
     expect(m3.docs).toBe(`Add a listener. Callback has VibrateOptions.`);
     expect(m3.signature).toBe(
-      `(eventName: 'vibrate', listenerFunc: (event: VibrateOptions) => void) => Promise<void>`,
+      `(eventName: 'vibrate', listenerFunc: VibrateListener) => Promise<void>`,
     );
     expect(m3.returns).toBe(`Promise<void>`);
 
@@ -109,5 +118,12 @@ describe('parse', () => {
     expect(p0.complexTypes).toHaveLength(1);
     expect(p0.complexTypes[0]).toBe(`HapticsImpactStyle`);
     expect(p0.type).toBe(`HapticsImpactStyle`);
+  });
+
+  it('type typeAliases', () => {
+    const t = typeAliases.find(i => i.name === 'VibrateListener');
+    expect(t.slug).toBe(`vibratelistener`);
+    expect(t.docs).toBe(`The vibrate listener callback function.`);
+    expect(t.types).toHaveLength(1);
   });
 });
