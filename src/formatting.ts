@@ -96,6 +96,11 @@ function linkToken(data: DocsData, token: string) {
     return `<a href="#${i.slug}">${token}</a>`;
   }
 
+  const ta = data.typeAliases.find(ta => ta.name === t);
+  if (ta) {
+    return `<a href="#${ta.slug}">${token}</a>`;
+  }
+
   const e = data.enums.find(
     e => e.name === t || e.members.some(m => e.name + '.' + m.name === t),
   );
