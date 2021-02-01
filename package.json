@@ -33,17 +33,17 @@
     "colorette": "^1.2.1",
     "github-slugger": "^1.3.0",
     "minimist": "^1.2.5",
-    "typescript": "^4.0.3"
+    "typescript": "^4.1.3"
   },
   "devDependencies": {
     "@ionic/prettier-config": "^1.0.0",
-    "@stencil/core": "^2.1.0-5",
+    "@stencil/core": "^2.4.0",
     "@types/github-slugger": "^1.3.0",
-    "@types/jest": "^26.0.14",
-    "@types/minimist": "^1.2.0",
-    "jest": "^26.6.0",
-    "np": "^6.5.0",
-    "prettier": "^2.1.2",
+    "@types/jest": "^26.0.20",
+    "@types/minimist": "^1.2.1",
+    "jest": "^26.6.3",
+    "np": "^7.2.0",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2"
   },
   "prettier": "@ionic/prettier-config",
