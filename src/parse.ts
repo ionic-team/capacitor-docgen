@@ -9,6 +9,7 @@ import type {
   DocsMethodParam,
   DocsJsDoc,
   DocsInterfaceProperty,
+  DocsConfigInterface,
   DocsTypeAlias,
   DocsTypeAliasReference,
 } from './types';
@@ -30,9 +31,17 @@ export function parse(opts: DocsParseOptions) {
   const interfaces: DocsInterface[] = [];
   const enums: DocsEnum[] = [];
   const typeAliases: DocsTypeAlias[] = [];
+  const pluginConfigs: DocsInterface[] = [];
 
   tsSourceFiles.forEach(tsSourceFile => {
-    parseSourceFile(tsSourceFile, typeChecker, interfaces, typeAliases, enums);
+    parseSourceFile(
+      tsSourceFile,
+      typeChecker,
+      interfaces,
+      typeAliases,
+      enums,
+      pluginConfigs,
+    );
   });
 
   return (api: string) => {
@@ -43,6 +52,7 @@ export function parse(opts: DocsParseOptions) {
       interfaces: [],
       enums: [],
       typeAliases: [],
+      pluginConfigs,
     };
 
     if (apiInterface) {
@@ -108,11 +118,13 @@ function parseSourceFile(
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
   enums: DocsEnum[],
+  pluginConfigs: DocsInterface[],
 ) {
   const statements = tsSourceFile.statements;
   const interfaceDeclarations = statements.filter(ts.isInterfaceDeclaration);
   const typeAliasDeclarations = statements.filter(ts.isTypeAliasDeclaration);
   const enumDeclarations = statements.filter(ts.isEnumDeclaration);
+  const moduleDeclarations = statements.filter(ts.isModuleDeclaration);
 
   interfaceDeclarations.forEach(interfaceDeclaration => {
     interfaces.push(getInterface(typeChecker, interfaceDeclaration));
@@ -125,6 +137,12 @@ function parseSourceFile(
   typeAliasDeclarations.forEach(typeAliasDeclaration => {
     typeAliases.push(getTypeAlias(typeChecker, typeAliasDeclaration));
   });
+
+  moduleDeclarations
+    .filter(m => m?.name?.text === '@capacitor/cli')
+    .forEach(moduleDeclaration => {
+      getPluginsConfig(typeChecker, moduleDeclaration, pluginConfigs);
+    });
 }
 
 function getInterface(
@@ -336,6 +354,49 @@ function getInterfaceProperty(
     type: typeToString(typeChecker, type, properytSignature.type),
   };
   return p;
+}
+
+function getPluginsConfig(
+  typeChecker: ts.TypeChecker,
+  moduleDeclaration: ts.ModuleDeclaration,
+  pluginConfigs: DocsConfigInterface[],
+) {
+  const body = moduleDeclaration.body as ts.ModuleBlock;
+  if (!Array.isArray(body.statements)) {
+    return;
+  }
+
+  const pluginConfigInterfaces = body.statements.filter(
+    (s: ts.InterfaceDeclaration) =>
+      s?.name?.text === 'PluginsConfig' &&
+      Array.isArray(s?.members) &&
+      s.members.length > 0,
+  ) as ts.InterfaceDeclaration[];
+
+  pluginConfigInterfaces.forEach(pluginConfigInterface => {
+    pluginConfigInterface.members
+      .filter(ts.isPropertySignature)
+      .filter(p => p?.type && (p?.type as ts.TypeLiteralNode).members)
+      .forEach(properytSignature => {
+        const typeLiteral = properytSignature.type as ts.TypeLiteralNode;
+
+        const nm = properytSignature.name.getText();
+        const i: DocsConfigInterface = {
+          name: nm,
+          slug: slugify(nm),
+          properties: typeLiteral.members
+            .filter(ts.isPropertySignature)
+            .map(propertySignature => {
+              return getInterfaceProperty(typeChecker, propertySignature);
+            })
+            .filter(p => p != null) as DocsInterfaceProperty[],
+        };
+
+        if (i.properties.length > 0) {
+          pluginConfigs.push(i);
+        }
+      });
+  });
 }
 
 function typeToString(

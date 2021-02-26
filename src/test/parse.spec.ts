@@ -6,7 +6,9 @@ describe('parse', () => {
     tsconfigPath: path.join(__dirname, 'fixtures', 'tsconfig.json'),
   });
 
-  const { api, interfaces, enums, typeAliases } = apiFinder('HapticsPlugin');
+  const { api, interfaces, enums, typeAliases, pluginConfigs } = apiFinder(
+    'HapticsPlugin',
+  );
 
   it('api', () => {
     expect(api.name).toBe(`HapticsPlugin`);
@@ -138,5 +140,33 @@ describe('parse', () => {
     const t1 = typeAliases.find(i => i.name === 'RepeatSchedule');
     expect(t1.slug).toBe(`repeatschedule`);
     expect(t1.types).toHaveLength(4);
+  });
+
+  it('Plugins Config', () => {
+    expect(pluginConfigs).toHaveLength(1);
+    const p = pluginConfigs.find(i => i.name === `Haptics`);
+
+    expect(p.slug).toBe(`haptics`);
+    expect(p.properties).toHaveLength(2);
+
+    const p0 = p.properties[0];
+    expect(p0.name).toBe(`style`);
+    expect(p0.docs).toBe(`Configure the style.`);
+    expect(p0.type).toBe(`'none' | 'native' | undefined`);
+    expect(p0.complexTypes).toHaveLength(0);
+    expect(p0.tags).toHaveLength(2);
+    expect(p0.tags[0].name).toBe(`since`);
+    expect(p0.tags[0].text).toBe(`1.0.0`);
+    expect(p0.tags[1].name).toBe(`default`);
+    expect(p0.tags[1].text).toBe(`native`);
+
+    const p1 = p.properties[1];
+    expect(p1.name).toBe(`duration`);
+    expect(p1.docs).toBe(`Configure the duration.`);
+    expect(p1.type).toBe(`number | undefined`);
+    expect(p1.complexTypes).toHaveLength(0);
+    expect(p1.tags).toHaveLength(1);
+    expect(p1.tags[0].name).toBe(`since`);
+    expect(p1.tags[0].text).toBe(`1.2.3`);
   });
 });

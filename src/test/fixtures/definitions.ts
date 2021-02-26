@@ -1,3 +1,26 @@
+/// <reference types="@capacitor/cli" />
+
+declare module '@capacitor/cli' {
+  export interface PluginsConfig {
+    Haptics?: {
+      /**
+       * Configure the style.
+       *
+       * @since 1.0.0
+       * @default native
+       */
+      style?: 'none' | 'native';
+
+      /**
+       * Configure the duration.
+       *
+       * @since 1.2.3
+       */
+      duration?: number;
+    };
+  }
+}
+
 /**
  * ## Docs from JSDoc comments!
  *

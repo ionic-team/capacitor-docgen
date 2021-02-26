@@ -3,6 +3,13 @@ export interface DocsData {
   interfaces: DocsInterface[];
   typeAliases: DocsTypeAlias[];
   enums: DocsEnum[];
+  pluginConfigs: DocsConfigInterface[];
+}
+
+export interface DocsConfigInterface {
+  name: string;
+  slug: string;
+  properties: DocsInterfaceProperty[];
 }
 
 export interface DocsInterface {
