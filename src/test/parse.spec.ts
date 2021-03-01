@@ -147,6 +147,7 @@ describe('parse', () => {
     const p = pluginConfigs.find(i => i.name === `Haptics`);
 
     expect(p.slug).toBe(`haptics`);
+    expect(p.docs).toBe(`Haptics can be configured with this options:`);
     expect(p.properties).toHaveLength(2);
 
     const p0 = p.properties[0];

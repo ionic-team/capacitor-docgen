@@ -381,6 +381,8 @@ function getPluginsConfig(
         const typeLiteral = properytSignature.type as ts.TypeLiteralNode;
 
         const nm = properytSignature.name.getText();
+        const symbol = typeChecker.getSymbolAtLocation(properytSignature.name);
+        const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
         const i: DocsConfigInterface = {
           name: nm,
           slug: slugify(nm),
@@ -390,6 +392,7 @@ function getPluginsConfig(
               return getInterfaceProperty(typeChecker, propertySignature);
             })
             .filter(p => p != null) as DocsInterfaceProperty[],
+          docs: docs?.docs || '',
         };
 
         if (i.properties.length > 0) {

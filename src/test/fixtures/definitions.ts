@@ -2,6 +2,9 @@
 
 declare module '@capacitor/cli' {
   export interface PluginsConfig {
+    /**
+     * Haptics can be configured with this options:
+     */
     Haptics?: {
       /**
        * Configure the style.

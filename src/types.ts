@@ -10,6 +10,7 @@ export interface DocsConfigInterface {
   name: string;
   slug: string;
   properties: DocsInterfaceProperty[];
+  docs: string;
 }
 
 export interface DocsInterface {
