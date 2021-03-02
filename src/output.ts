@@ -9,6 +9,7 @@ import { promisify } from 'util';
 import { MarkdownTable } from './markdown';
 import { slugify } from './parse';
 import type {
+  DocsConfigInterface,
   DocsData,
   DocsEnum,
   DocsInterface,
@@ -51,6 +52,7 @@ export function replaceMarkdownPlaceholders(content: string, data: DocsData) {
   }
   data = JSON.parse(JSON.stringify(data));
   content = replaceMarkdownDocsIndex(content, data);
+  content = replaceMarkdownDocsConfig(content, data);
   content = replaceMarkdownDocsApi(content, data);
   return content;
 }
@@ -59,6 +61,8 @@ const INDEX_START = `<docgen-index`;
 const INDEX_END = `</docgen-index>`;
 const API_START = `<docgen-api`;
 const API_END = `</docgen-api>`;
+const CONFIG_START = `<docgen-config`;
+const CONFIG_END = `</docgen-config>`;
 const UPDATE_MSG = `<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->`;
 
 function replaceMarkdownDocsIndex(content: string, data: DocsData) {
@@ -77,6 +81,24 @@ function replaceMarkdownDocsIndex(content: string, data: DocsData) {
 
   return content;
 }
+
+function replaceMarkdownDocsConfig(content: string, data: DocsData) {
+  const startOuterIndex = content.indexOf(CONFIG_START);
+  if (startOuterIndex > -1) {
+    const endInnerIndex = content.indexOf(CONFIG_END);
+    if (endInnerIndex > -1) {
+      const inner = content.substring(startOuterIndex + CONFIG_START.length);
+      const startInnerIndex =
+        startOuterIndex + CONFIG_START.length + inner.indexOf('>') + 1;
+      const start = content.substring(0, startInnerIndex);
+      const end = content.substring(endInnerIndex);
+      return `${start}\n${UPDATE_MSG}\n\n${markdownConfig(data)}\n\n${end}`;
+    }
+  }
+
+  return content;
+}
+
 
 function replaceMarkdownDocsApi(content: string, data: DocsData) {
   const startOuterIndex = content.indexOf(API_START);
@@ -198,6 +220,62 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
   return o.join('\n');
 }
 
+function markdownConfig(data: DocsData) {
+  const o: string[] = [];
+  if (data.pluginConfigs) {
+    o.push('## Configuration')
+    o.push(``);
+    data!.pluginConfigs!.forEach(c => {
+      o.push(configInterfaceTable(data, c));
+      o.push(buildExamples(c));
+    });
+  }
+
+  return o.join('\n');
+}
+
+function buildExamples(c: DocsConfigInterface) {
+  const o: string[] = [];
+  o.push(`### Examples`);
+  o.push(``);
+  o.push(`In \`capacitor.config.json\`:`);
+  o.push(``);
+  o.push(`\`\`\`json`);
+  o.push(`{`);
+  o.push(`  "plugins": {`);
+  o.push(`    "${c.name}": {`);
+  c.properties.forEach((p, i) => {
+    o.push(`      "${p.name}": ${p.tags.find(t => t.name === 'example')?.text}${i === c.properties.length - 1 ? '' : ','}`);
+  });
+  o.push(`    }`);
+  o.push(`  }`);
+  o.push(`}`);
+  o.push(`\`\`\``);
+  o.push(``);
+
+  o.push(`In \`capacitor.config.ts\`:`);
+  o.push(``);
+  o.push(`\`\`\`ts`);
+  o.push(`/// <reference types="@capacitor/${slugify(c.name.replace(/([a-z])([A-Z])/g, '$1 $2'))}" />`);
+  o.push(``);
+  o.push(`import { CapacitorConfig } from '@capacitor/cli';`);
+  o.push(``);
+  o.push(`const config: CapacitorConfig = {`);
+  o.push(`  plugins: {`);
+  o.push(`    ${c.name}: {`);
+  c.properties.forEach(p => {
+    o.push(`      ${p.name}: ${p.tags.find(t => t.name === 'example')?.text},`);
+  });
+  o.push(`    },`);
+  o.push(`  },`);
+  o.push(`};`);
+  o.push(``);
+  o.push(`export = config;`);
+  o.push(`\`\`\``);
+
+  return o.join('\n');
+}
+
 function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
   const t = new MarkdownTable();
 
@@ -257,6 +335,39 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
         `**${m.name}**`,
         formatDescription(data, m.signature),
         formatDescription(data, m.docs),
+      ]);
+    });
+
+    t.removeEmptyColumns();
+    o.push(...t.toMarkdown());
+    o.push(``);
+  }
+
+  return o.join(`\n`);
+}
+
+function configInterfaceTable(data: DocsData, i: DocsConfigInterface) {
+  const o: string[] = [];
+
+  if (i.docs) {
+    o.push(`${formatDescription(data, i.docs)}`);
+    o.push(``);
+  }
+
+  if (i.properties.length > 0) {
+    const t = new MarkdownTable();
+
+    t.addHeader([`Prop`, `Type`, `Description`, `Default`, `Since`]);
+
+    i.properties.forEach(m => {
+      const defaultValue = getTagText(m.tags, 'default');
+
+      t.addRow([
+        `**\`${m.name}\`**`,
+        formatType(data, m.type).formatted,
+        formatDescription(data, m.docs),
+        defaultValue ? `<code>${defaultValue}</code>` : '',
+        getTagText(m.tags, 'since'),
       ]);
     });
 
