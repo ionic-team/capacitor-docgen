@@ -409,5 +409,42 @@
         }
       ]
     }
+  ],
+  "pluginConfigs": [
+    {
+      "name": "Haptics",
+      "slug": "haptics",
+      "properties": [
+        {
+          "name": "style",
+          "tags": [
+            {
+              "text": "1.0.0",
+              "name": "since"
+            },
+            {
+              "text": "native",
+              "name": "default"
+            }
+          ],
+          "docs": "Configure the style.",
+          "complexTypes": [],
+          "type": "'none' | 'native' | undefined"
+        },
+        {
+          "name": "duration",
+          "tags": [
+            {
+              "text": "1.2.3",
+              "name": "since"
+            }
+          ],
+          "docs": "Configure the duration.",
+          "complexTypes": [],
+          "type": "number | undefined"
+        }
+      ],
+      "docs": "Haptics can be configured with this options:"
+    }
   ]
 }

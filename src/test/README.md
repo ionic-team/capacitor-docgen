@@ -207,6 +207,55 @@ How often a vibration repeats.
 
 </docgen-api>
 
+
+## Haptics Plugin Config
+
+<docgen-config>
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+
+Haptics can be configured with this options:
+
+| Prop           | Type                            | Description             | Default             | Since |
+| -------------- | ------------------------------- | ----------------------- | ------------------- | ----- |
+| **`style`**    | <code>'none' \| 'native'</code> | Configure the style.    | <code>native</code> | 1.0.0 |
+| **`duration`** | <code>number</code>             | Configure the duration. |                     | 1.2.3 |
+
+### Examples
+
+In `capacitor.config.json`:
+
+```json
+{
+  "plugins": {
+    "Haptics": {
+      "style": undefined,
+      "duration": undefined
+    }
+  }
+}
+```
+
+In `capacitor.config.ts`:
+
+```ts
+/// <reference types="@capacitor/haptics" />
+
+import { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  plugins: {
+    Haptics: {
+      style: undefined,
+      duration: undefined,
+    },
+  },
+};
+
+export = config;
+```
+
+</docgen-config>
+
 ## Commit Your Readme 🚀
 
 The benefit of this readme file is that is also acts as the landing 
