@@ -425,6 +425,10 @@
             {
               "text": "native",
               "name": "default"
+            },
+            {
+              "text": "\"native\"",
+              "name": "example"
             }
           ],
           "docs": "Configure the style.",
@@ -437,6 +441,10 @@
             {
               "text": "1.2.3",
               "name": "since"
+            },
+            {
+              "text": "123",
+              "name": "example"
             }
           ],
           "docs": "Configure the duration.",
