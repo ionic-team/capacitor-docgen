@@ -99,7 +99,6 @@ function replaceMarkdownDocsConfig(content: string, data: DocsData) {
   return content;
 }
 
-
 function replaceMarkdownDocsApi(content: string, data: DocsData) {
   const startOuterIndex = content.indexOf(API_START);
   if (startOuterIndex > -1) {
@@ -223,8 +222,6 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
 function markdownConfig(data: DocsData) {
   const o: string[] = [];
   if (data.pluginConfigs) {
-    o.push('## Configuration')
-    o.push(``);
     data!.pluginConfigs!.forEach(c => {
       o.push(configInterfaceTable(data, c));
       o.push(buildExamples(c));
@@ -245,7 +242,11 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`  "plugins": {`);
   o.push(`    "${c.name}": {`);
   c.properties.forEach((p, i) => {
-    o.push(`      "${p.name}": ${p.tags.find(t => t.name === 'example')?.text}${i === c.properties.length - 1 ? '' : ','}`);
+    o.push(
+      `      "${p.name}": ${p.tags.find(t => t.name === 'example')?.text}${
+        i === c.properties.length - 1 ? '' : ','
+      }`,
+    );
   });
   o.push(`    }`);
   o.push(`  }`);
@@ -256,7 +257,11 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`In \`capacitor.config.ts\`:`);
   o.push(``);
   o.push(`\`\`\`ts`);
-  o.push(`/// <reference types="@capacitor/${slugify(c.name.replace(/([a-z])([A-Z])/g, '$1 $2'))}" />`);
+  o.push(
+    `/// <reference types="@capacitor/${slugify(
+      c.name.replace(/([a-z])([A-Z])/g, '$1 $2'),
+    )}" />`,
+  );
   o.push(``);
   o.push(`import { CapacitorConfig } from '@capacitor/cli';`);
   o.push(``);
