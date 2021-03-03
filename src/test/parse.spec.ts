@@ -155,19 +155,23 @@ describe('parse', () => {
     expect(p0.docs).toBe(`Configure the style.`);
     expect(p0.type).toBe(`'none' | 'native' | undefined`);
     expect(p0.complexTypes).toHaveLength(0);
-    expect(p0.tags).toHaveLength(2);
+    expect(p0.tags).toHaveLength(3);
     expect(p0.tags[0].name).toBe(`since`);
     expect(p0.tags[0].text).toBe(`1.0.0`);
     expect(p0.tags[1].name).toBe(`default`);
     expect(p0.tags[1].text).toBe(`native`);
+    expect(p0.tags[2].name).toBe(`example`);
+    expect(p0.tags[2].text).toBe(`"native"`);
 
     const p1 = p.properties[1];
     expect(p1.name).toBe(`duration`);
     expect(p1.docs).toBe(`Configure the duration.`);
     expect(p1.type).toBe(`number | undefined`);
     expect(p1.complexTypes).toHaveLength(0);
-    expect(p1.tags).toHaveLength(1);
+    expect(p1.tags).toHaveLength(2);
     expect(p1.tags[0].name).toBe(`since`);
     expect(p1.tags[0].text).toBe(`1.2.3`);
+    expect(p1.tags[1].name).toBe(`example`);
+    expect(p1.tags[1].text).toBe(`123`);
   });
 });

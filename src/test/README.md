@@ -228,8 +228,8 @@ In `capacitor.config.json`:
 {
   "plugins": {
     "Haptics": {
-      "style": undefined,
-      "duration": undefined
+      "style": "native",
+      "duration": 123
     }
   }
 }
@@ -245,8 +245,8 @@ import { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   plugins: {
     Haptics: {
-      style: undefined,
-      duration: undefined,
+      style: "native",
+      duration: 123,
     },
   },
 };

@@ -11,6 +11,7 @@ declare module '@capacitor/cli' {
        *
        * @since 1.0.0
        * @default native
+       * @example "native"
        */
       style?: 'none' | 'native';
 
@@ -18,6 +19,7 @@ declare module '@capacitor/cli' {
        * Configure the duration.
        *
        * @since 1.2.3
+       * @example 123
        */
       duration?: number;
     };
