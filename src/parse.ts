@@ -185,7 +185,7 @@ function getInterface(
   const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
 
   // @ts-ignore
-  const importObject = node.parent?.locals?.keys() || null
+  const importObject = node.parent?.locals?.keys() || []
 
   const i: DocsInterface = {
     name: interfaceName,
