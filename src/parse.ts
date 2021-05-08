@@ -46,6 +46,10 @@ export function parse(opts: DocsParseOptions) {
 
   return (api: string) => {
     let apiInterface = interfaces.find(i => i.name === api) || null;
+
+    /**
+     * Add methods of import(many is used in `extends`)
+     */
     const allImportObject = interfaces
       .filter(i => apiInterface?.importObject.includes(i.name) && i.name !== api)
       .map(i => i.importObject);
@@ -194,7 +198,7 @@ function getInterface(
     tags: docs?.tags || [],
     methods,
     properties,
-    importObject: [...importObject]
+    importObject: [...importObject].filter((d: string) => d !== interfaceName)
   };
 
   return i;
