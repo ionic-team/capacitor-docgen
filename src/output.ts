@@ -275,7 +275,7 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`  },`);
   o.push(`};`);
   o.push(``);
-  o.push(`export = config;`);
+  o.push(`export default config;`);
   o.push(`\`\`\``);
 
   return o.join('\n');
