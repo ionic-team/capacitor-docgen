@@ -19,7 +19,7 @@ export function getTsProgram(opts: DocsParseOptions) {
       );
     }
     const tsconfigDir = path.dirname(opts.tsconfigPath);
-    rootNames = configResult.config.files.map((f: string) => {
+    rootNames = (configResult.config.files ?? []).map((f: string) => {
       return path.join(tsconfigDir, f);
     });
     options = configResult.config.compilerOptions;
