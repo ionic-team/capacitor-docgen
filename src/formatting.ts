@@ -15,12 +15,7 @@ export function formatType(data: DocsData, c: string | undefined) {
     tokens.shift();
   } else {
     for (let i = tokens.length - 1; i >= 0; i--) {
-      if (
-        tokens[i] === 'undefined' &&
-        tokens[i - 1] === ' ' &&
-        tokens[i - 2] === '|' &&
-        tokens[i - 3] === ' '
-      ) {
+      if (tokens[i] === 'undefined' && tokens[i - 1] === ' ' && tokens[i - 2] === '|' && tokens[i - 3] === ' ') {
         tokens.splice(i - 3, 4);
         i = i - 4;
       }
@@ -92,25 +87,23 @@ export function formatMethodSignatureForSlug(m: DocsInterfaceMethod) {
 
 function linkToken(data: DocsData, token: string) {
   const t = token.replace(/`/g, '');
-  const i = data.interfaces.find(i => {
+  const i = data.interfaces.find((i) => {
     return (
       i.name === t ||
-      i.methods.some(m => i.name + '.' + m.name === t) ||
-      i.properties.some(p => i.name + '.' + p.name === t)
+      i.methods.some((m) => i.name + '.' + m.name === t) ||
+      i.properties.some((p) => i.name + '.' + p.name === t)
     );
   });
   if (i) {
     return `<a href="#${i.slug}">${token}</a>`;
   }
 
-  const ta = data.typeAliases.find(ta => ta.name === t);
+  const ta = data.typeAliases.find((ta) => ta.name === t);
   if (ta) {
     return `<a href="#${ta.slug}">${token}</a>`;
   }
 
-  const e = data.enums.find(
-    e => e.name === t || e.members.some(m => e.name + '.' + m.name === t),
-  );
+  const e = data.enums.find((e) => e.name === t || e.members.some((m) => e.name + '.' + m.name === t));
   if (e) {
     return `<a href="#${e.slug}">${token}</a>`;
   }

@@ -65,10 +65,7 @@ export interface HapticsPlugin {
    *
    * @since 1.0.0
    */
-  addListener(
-    eventName: 'vibrate',
-    listenerFunc: VibrateListener,
-  ): Promise<void>;
+  addListener(eventName: 'vibrate', listenerFunc: VibrateListener): Promise<void>;
 
   /**
    * Add a listener. Callback has VibrateOptions.
