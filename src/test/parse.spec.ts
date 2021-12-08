@@ -6,9 +6,8 @@ describe('parse', () => {
     tsconfigPath: path.join(__dirname, 'fixtures', 'tsconfig.json'),
   });
 
-  const { api, interfaces, enums, typeAliases, pluginConfigs } = apiFinder(
-    'HapticsPlugin',
-  );
+  const { api, interfaces, enums, typeAliases, pluginConfigs } =
+    apiFinder('HapticsPlugin');
 
   it('api', () => {
     expect(api.name).toBe(`HapticsPlugin`);

@@ -51,15 +51,20 @@ export function parse(opts: DocsParseOptions) {
      * Add methods of import(many is used in `extends`)
      */
     const allImportObject = interfaces
-      .filter(i => apiInterface?.importObject.includes(i.name) && i.name !== api)
+      .filter(
+        i => apiInterface?.importObject.includes(i.name) && i.name !== api,
+      )
       .map(i => i.importObject);
 
-    const otherMethod = interfaces
-      .filter(i => [...new Set(allImportObject.flat())].includes(i.name))
-      .map(d => d.methods)|| null;
+    const otherMethod =
+      interfaces
+        .filter(i => [...new Set(allImportObject.flat())].includes(i.name))
+        .map(d => d.methods) || null;
 
     if (apiInterface !== null && otherMethod && otherMethod.length > 0) {
-      apiInterface.methods = [...new Set(apiInterface?.methods.concat(otherMethod.flat(1)))];
+      apiInterface.methods = [
+        ...new Set(apiInterface?.methods.concat(otherMethod.flat(1))),
+      ];
     }
 
     const data: DocsData = {
@@ -189,7 +194,7 @@ function getInterface(
   const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
 
   // @ts-ignore
-  const importObject = node.parent?.locals?.keys() || []
+  const importObject = node.parent?.locals?.keys() || [];
 
   const i: DocsInterface = {
     name: interfaceName,
@@ -198,7 +203,7 @@ function getInterface(
     tags: docs?.tags || [],
     methods,
     properties,
-    importObject: [...importObject].filter((d: string) => d !== interfaceName)
+    importObject: [...importObject].filter((d: string) => d !== interfaceName),
   };
 
   return i;
