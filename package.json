@@ -16,14 +16,17 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "rimraf -rf dist",
     "build": "npm run clean && tsc",
-    "watch": "tsc -w",
+    "clean": "rimraf -rf dist",
+    "fmt": "npm run prettier -- --write",
+    "lint": "npm run prettier -- --check",
+    "prettier": "prettier \"**/*.ts\"",
     "release": "np --no-2fa",
-    "version": "npm run build",
     "test": "jest",
     "test.watch": "jest --watchAll",
-    "test.output": "node bin/docgen --project src/test/fixtures/tsconfig.json --api HapticsPlugin --output-readme src/test/README.md --output-json src/test/docs.json"
+    "test.output": "node bin/docgen --project src/test/fixtures/tsconfig.json --api HapticsPlugin --output-readme src/test/README.md --output-json src/test/docs.json",
+    "version": "npm run build",
+    "watch": "tsc -w"
   },
   "license": "MIT",
   "files": [
