@@ -1,10 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {
-  formatDescription,
-  formatType,
-  formatMethodSignature,
-} from './formatting';
+import { formatDescription, formatType, formatMethodSignature } from './formatting';
 import { promisify } from 'util';
 import { MarkdownTable } from './markdown';
 import { slugify } from './parse';
@@ -35,7 +31,7 @@ export async function outputReadme(readmeFilePath: string, data: DocsData) {
     content = await readFile(readmeFilePath, 'utf8');
   } catch (e) {
     throw new Error(
-      `Unable to read: "${readmeFilePath}".\n\nIf this is the correct path, please create the file first, then run again.`,
+      `Unable to read: "${readmeFilePath}".\n\nIf this is the correct path, please create the file first, then run again.`
     );
   }
 
@@ -71,8 +67,7 @@ function replaceMarkdownDocsIndex(content: string, data: DocsData) {
     const endInnerIndex = content.indexOf(INDEX_END);
     if (endInnerIndex > -1) {
       const inner = content.substring(startOuterIndex + INDEX_START.length);
-      const startInnderIndex =
-        startOuterIndex + INDEX_START.length + inner.indexOf('>') + 1;
+      const startInnderIndex = startOuterIndex + INDEX_START.length + inner.indexOf('>') + 1;
       const start = content.substring(0, startInnderIndex);
       const end = content.substring(endInnerIndex);
       return `${start}\n\n${markdownIndex(data)}\n\n${end}`;
@@ -88,8 +83,7 @@ function replaceMarkdownDocsConfig(content: string, data: DocsData) {
     const endInnerIndex = content.indexOf(CONFIG_END);
     if (endInnerIndex > -1) {
       const inner = content.substring(startOuterIndex + CONFIG_START.length);
-      const startInnerIndex =
-        startOuterIndex + CONFIG_START.length + inner.indexOf('>') + 1;
+      const startInnerIndex = startOuterIndex + CONFIG_START.length + inner.indexOf('>') + 1;
       const start = content.substring(0, startInnerIndex);
       const end = content.substring(endInnerIndex);
       return `${start}\n${UPDATE_MSG}\n\n${markdownConfig(data)}\n\n${end}`;
@@ -105,8 +99,7 @@ function replaceMarkdownDocsApi(content: string, data: DocsData) {
     const endInnerIndex = content.indexOf(API_END);
     if (endInnerIndex > -1) {
       const inner = content.substring(startOuterIndex + API_START.length);
-      const startInnerIndex =
-        startOuterIndex + API_START.length + inner.indexOf('>') + 1;
+      const startInnerIndex = startOuterIndex + API_START.length + inner.indexOf('>') + 1;
       const start = content.substring(0, startInnerIndex);
       const end = content.substring(endInnerIndex);
       return `${start}\n${UPDATE_MSG}\n\n${markdownApi(data)}\n\n${end}`;
@@ -119,7 +112,7 @@ function replaceMarkdownDocsApi(content: string, data: DocsData) {
 function markdownIndex(data: DocsData) {
   const o: string[] = [];
 
-  data?.api?.methods.forEach(m => {
+  data?.api?.methods.forEach((m) => {
     o.push(`* [\`${formatMethodSignature(m)}\`](#${m.slug})`);
   });
 
@@ -146,14 +139,14 @@ function markdownApi(data: DocsData) {
     o.push(``);
   }
 
-  data!.api!.methods.forEach(m => {
+  data!.api!.methods.forEach((m) => {
     o.push(methodsTable(data, m));
   });
 
   if (data.interfaces.length > 0) {
     o.push(`### Interfaces`);
     o.push(``);
-    data.interfaces.forEach(i => {
+    data.interfaces.forEach((i) => {
       o.push(interfaceTable(data, i));
     });
     o.push(``);
@@ -162,7 +155,7 @@ function markdownApi(data: DocsData) {
   if (data.typeAliases.length > 0) {
     o.push(`### Type Aliases`);
     o.push(``);
-    data.typeAliases.forEach(i => {
+    data.typeAliases.forEach((i) => {
       o.push(typeAliasTable(data, i));
     });
     o.push(``);
@@ -171,7 +164,7 @@ function markdownApi(data: DocsData) {
   if (data.enums.length > 0) {
     o.push(`### Enums`);
     o.push(``);
-    data.enums.forEach(i => {
+    data.enums.forEach((i) => {
       o.push(enumTable(data, i));
     });
     o.push(``);
@@ -222,7 +215,7 @@ function methodsTable(data: DocsData, m: DocsInterfaceMethod) {
 function markdownConfig(data: DocsData) {
   const o: string[] = [];
   if (data.pluginConfigs) {
-    data!.pluginConfigs!.forEach(c => {
+    data!.pluginConfigs!.forEach((c) => {
       o.push(configInterfaceTable(data, c));
       o.push(buildExamples(c));
     });
@@ -243,9 +236,7 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`    "${c.name}": {`);
   c.properties.forEach((p, i) => {
     o.push(
-      `      "${p.name}": ${p.tags.find(t => t.name === 'example')?.text}${
-        i === c.properties.length - 1 ? '' : ','
-      }`,
+      `      "${p.name}": ${p.tags.find((t) => t.name === 'example')?.text}${i === c.properties.length - 1 ? '' : ','}`
     );
   });
   o.push(`    }`);
@@ -257,19 +248,15 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`In \`capacitor.config.ts\`:`);
   o.push(``);
   o.push(`\`\`\`ts`);
-  o.push(
-    `/// <reference types="@capacitor/${slugify(
-      c.name.replace(/([a-z])([A-Z])/g, '$1 $2'),
-    )}" />`,
-  );
+  o.push(`/// <reference types="@capacitor/${slugify(c.name.replace(/([a-z])([A-Z])/g, '$1 $2'))}" />`);
   o.push(``);
   o.push(`import { CapacitorConfig } from '@capacitor/cli';`);
   o.push(``);
   o.push(`const config: CapacitorConfig = {`);
   o.push(`  plugins: {`);
   o.push(`    ${c.name}: {`);
-  c.properties.forEach(p => {
-    o.push(`      ${p.name}: ${p.tags.find(t => t.name === 'example')?.text},`);
+  c.properties.forEach((p) => {
+    o.push(`      ${p.name}: ${p.tags.find((t) => t.name === 'example')?.text},`);
   });
   o.push(`    },`);
   o.push(`  },`);
@@ -286,7 +273,7 @@ function createMethodParamTable(data: DocsData, parameters: DocsMethodParam[]) {
 
   t.addHeader([`Param`, `Type`, `Description`]);
 
-  parameters.forEach(p => {
+  parameters.forEach((p) => {
     const nm = `**\`${p.name}\`**`;
     const ty = formatType(data, p.type);
     const docs = formatDescription(data, p.docs);
@@ -313,7 +300,7 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 
     t.addHeader([`Prop`, `Type`, `Description`, `Default`, `Since`]);
 
-    i.properties.forEach(m => {
+    i.properties.forEach((m) => {
       const defaultValue = getTagText(m.tags, 'default');
 
       t.addRow([
@@ -335,12 +322,8 @@ function interfaceTable(data: DocsData, i: DocsInterface) {
 
     t.addHeader([`Method`, `Signature`, `Description`]);
 
-    i.methods.forEach(m => {
-      t.addRow([
-        `**${m.name}**`,
-        formatDescription(data, m.signature),
-        formatDescription(data, m.docs),
-      ]);
+    i.methods.forEach((m) => {
+      t.addRow([`**${m.name}**`, formatDescription(data, m.signature), formatDescription(data, m.docs)]);
     });
 
     t.removeEmptyColumns();
@@ -364,7 +347,7 @@ function configInterfaceTable(data: DocsData, i: DocsConfigInterface) {
 
     t.addHeader([`Prop`, `Type`, `Description`, `Default`, `Since`]);
 
-    i.properties.forEach(m => {
+    i.properties.forEach((m) => {
       const defaultValue = getTagText(m.tags, 'default');
 
       t.addRow([
@@ -396,7 +379,7 @@ function typeAliasTable(data: DocsData, t: DocsTypeAlias) {
   }
 
   const type = t.types
-    .map(ty => formatType(data, ty.text).formatted)
+    .map((ty) => formatType(data, ty.text).formatted)
     .join(' | ')
     .replace(/\<\/code\> \| \<code\>/g, ` | `);
 
@@ -417,7 +400,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
 
     t.addHeader([`Members`, `Value`, `Description`, `Since`]);
 
-    i.members.forEach(m => {
+    i.members.forEach((m) => {
       t.addRow([
         `**\`${m.name}\`**`,
         formatType(data, m.value).formatted,
@@ -436,9 +419,7 @@ function enumTable(data: DocsData, i: DocsEnum) {
 
 function getTagText(tags: DocsTagInfo[], tagName: string) {
   if (tags) {
-    const tag = tags.find(
-      t => t.name === tagName && typeof t.text === 'string',
-    );
+    const tag = tags.find((t) => t.name === tagName && typeof t.text === 'string');
     if (tag) {
       return tag.text!;
     }

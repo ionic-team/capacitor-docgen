@@ -24,15 +24,13 @@ export async function run(config: { cwd: string; args: string[] }) {
 
   try {
     if (!args.api) {
-      throw new Error(
-        `Please provide the primary interface name using the "--api" arg`,
-      );
+      throw new Error(`Please provide the primary interface name using the "--api" arg`);
     }
 
     const tsconfigPath = getTsconfigPath(config.cwd, args.project);
     if (!tsconfigPath) {
       throw new Error(
-        `Unable to find project's tsconfig.json file. Use the "--project" arg to specify the exact path.`,
+        `Unable to find project's tsconfig.json file. Use the "--project" arg to specify the exact path.`
       );
     }
 
@@ -42,9 +40,7 @@ export async function run(config: { cwd: string; args: string[] }) {
     };
 
     if (!args['output-json'] && !args['output-readme']) {
-      throw new Error(
-        `Please provide an output path with either "--output-readme" or "--output-json" args, or both.`,
-      );
+      throw new Error(`Please provide an output path with either "--output-readme" or "--output-json" args, or both.`);
     }
 
     if (args['output-json']) {
@@ -74,7 +70,7 @@ function getTsconfigPath(cwd: string, cliTsConfigPath: string) {
   if (cliTsConfigPath) {
     return normalizePath(cwd, cliTsConfigPath);
   }
-  return ts.findConfigFile(cwd, f => fs.existsSync(f));
+  return ts.findConfigFile(cwd, (f) => fs.existsSync(f));
 }
 
 function logOutput(outputPath: string | undefined) {

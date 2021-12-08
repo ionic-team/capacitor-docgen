@@ -8,7 +8,7 @@ export class MarkdownTable {
   addRow(data: string[], isHeader = false) {
     const colData: ColumnData[] = [];
 
-    data.forEach(text => {
+    data.forEach((text) => {
       const col: ColumnData = {
         text: escapeMarkdownTableColumn(text),
         width: text.length,
@@ -36,11 +36,7 @@ export class MarkdownTable {
         const row = this.rows[r];
         if (row && !row.isHeader) {
           const column = row.columns[c];
-          if (
-            column &&
-            typeof column.text === 'string' &&
-            column.text.trim().length > 0
-          ) {
+          if (column && typeof column.text === 'string' && column.text.trim().length > 0) {
             isEmptyColumn = false;
             break;
           }
@@ -80,15 +76,15 @@ const createTable = (rows: RowData[]) => {
   normalizeColumCount(rows);
   normalizeColumnWidth(rows);
 
-  const th = rows.find(r => r.isHeader);
+  const th = rows.find((r) => r.isHeader);
   if (th) {
     const headerRow = createRow(th);
     content.push(headerRow);
     content.push(createBorder(th));
   }
 
-  const tds = rows.filter(r => !r.isHeader);
-  tds.forEach(td => {
+  const tds = rows.filter((r) => !r.isHeader);
+  tds.forEach((td) => {
     content.push(createRow(td));
   });
 
@@ -101,7 +97,7 @@ const createBorder = (th: RowData) => {
     isHeader: false,
   };
 
-  th.columns.forEach(c => {
+  th.columns.forEach((c) => {
     const borderCol: ColumnData = {
       text: '',
       width: c.width,
@@ -118,7 +114,7 @@ const createBorder = (th: RowData) => {
 const createRow = (row: RowData) => {
   const content: string[] = ['| '];
 
-  row.columns.forEach(c => {
+  row.columns.forEach((c) => {
     content.push(c.text);
     content.push(' | ');
   });
@@ -129,13 +125,13 @@ const createRow = (row: RowData) => {
 const normalizeColumCount = (rows: RowData[]) => {
   let columnCount = 0;
 
-  rows.forEach(r => {
+  rows.forEach((r) => {
     if (r.columns.length > columnCount) {
       columnCount = r.columns.length;
     }
   });
 
-  rows.forEach(r => {
+  rows.forEach((r) => {
     while (r.columns.length < columnCount) {
       r.columns.push({
         text: ``,
@@ -151,14 +147,14 @@ const normalizeColumnWidth = (rows: RowData[]) => {
   for (let columnIndex = 0; columnIndex < columnCount; columnIndex++) {
     let longestText = 0;
 
-    rows.forEach(r => {
+    rows.forEach((r) => {
       const col = r.columns[columnIndex];
       if (col.text.length > longestText) {
         longestText = col.text.length;
       }
     });
 
-    rows.forEach(r => {
+    rows.forEach((r) => {
       const col = r.columns[columnIndex];
       col.width = longestText;
       while (col.text.length < longestText) {

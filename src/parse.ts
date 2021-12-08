@@ -33,38 +33,25 @@ export function parse(opts: DocsParseOptions) {
   const typeAliases: DocsTypeAlias[] = [];
   const pluginConfigs: DocsInterface[] = [];
 
-  tsSourceFiles.forEach(tsSourceFile => {
-    parseSourceFile(
-      tsSourceFile,
-      typeChecker,
-      interfaces,
-      typeAliases,
-      enums,
-      pluginConfigs,
-    );
+  tsSourceFiles.forEach((tsSourceFile) => {
+    parseSourceFile(tsSourceFile, typeChecker, interfaces, typeAliases, enums, pluginConfigs);
   });
 
   return (api: string) => {
-    let apiInterface = interfaces.find(i => i.name === api) || null;
+    let apiInterface = interfaces.find((i) => i.name === api) || null;
 
     /**
      * Add methods of import(many is used in `extends`)
      */
     const allImportObject = interfaces
-      .filter(
-        i => apiInterface?.importObject.includes(i.name) && i.name !== api,
-      )
-      .map(i => i.importObject);
+      .filter((i) => apiInterface?.importObject.includes(i.name) && i.name !== api)
+      .map((i) => i.importObject);
 
     const otherMethod =
-      interfaces
-        .filter(i => [...new Set(allImportObject.flat())].includes(i.name))
-        .map(d => d.methods) || null;
+      interfaces.filter((i) => [...new Set(allImportObject.flat())].includes(i.name)).map((d) => d.methods) || null;
 
     if (apiInterface !== null && otherMethod && otherMethod.length > 0) {
-      apiInterface.methods = [
-        ...new Set(apiInterface?.methods.concat(otherMethod.flat(1))),
-      ];
+      apiInterface.methods = [...new Set(apiInterface?.methods.concat(otherMethod.flat(1)))];
     }
 
     const data: DocsData = {
@@ -88,19 +75,16 @@ function collectInterfaces(
   i: DocsInterface,
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
-  enums: DocsEnum[],
+  enums: DocsEnum[]
 ) {
-  if (
-    i.name !== data.api?.name &&
-    !data.interfaces.some(di => di.name === i.name)
-  ) {
+  if (i.name !== data.api?.name && !data.interfaces.some((di) => di.name === i.name)) {
     data.interfaces.push(i);
   }
 
-  i.methods.forEach(m => {
+  i.methods.forEach((m) => {
     collectUsed(data, m.complexTypes, interfaces, typeAliases, enums);
   });
-  i.properties.forEach(p => {
+  i.properties.forEach((p) => {
     collectUsed(data, p.complexTypes, interfaces, typeAliases, enums);
   });
 }
@@ -110,22 +94,22 @@ function collectUsed(
   complexTypes: string[],
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
-  enums: DocsEnum[],
+  enums: DocsEnum[]
 ) {
-  complexTypes.forEach(typeName => {
-    const fi = interfaces.find(i => i.name === typeName);
-    if (fi && !data.interfaces.some(i => i.name === fi.name)) {
+  complexTypes.forEach((typeName) => {
+    const fi = interfaces.find((i) => i.name === typeName);
+    if (fi && !data.interfaces.some((i) => i.name === fi.name)) {
       collectInterfaces(data, fi, interfaces, typeAliases, enums);
     }
-    const ei = enums.find(en => en.name === typeName);
-    if (ei && !data.enums.some(en => en.name === ei.name)) {
+    const ei = enums.find((en) => en.name === typeName);
+    if (ei && !data.enums.some((en) => en.name === ei.name)) {
       data.enums.push(ei);
     }
-    const ti = typeAliases.find(ty => ty.name === typeName);
-    if (ti && !data.typeAliases.some(ty => ty.name === ti.name)) {
+    const ti = typeAliases.find((ty) => ty.name === typeName);
+    if (ti && !data.typeAliases.some((ty) => ty.name === ti.name)) {
       data.typeAliases.push(ti);
 
-      ti.types.forEach(type => {
+      ti.types.forEach((type) => {
         collectUsed(data, type.complexTypes, interfaces, typeAliases, enums);
       });
     }
@@ -138,7 +122,7 @@ function parseSourceFile(
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
   enums: DocsEnum[],
-  pluginConfigs: DocsInterface[],
+  pluginConfigs: DocsInterface[]
 ) {
   const statements = tsSourceFile.statements;
   const interfaceDeclarations = statements.filter(ts.isInterfaceDeclaration);
@@ -146,49 +130,42 @@ function parseSourceFile(
   const enumDeclarations = statements.filter(ts.isEnumDeclaration);
   const moduleDeclarations = statements.filter(ts.isModuleDeclaration);
 
-  interfaceDeclarations.forEach(interfaceDeclaration => {
+  interfaceDeclarations.forEach((interfaceDeclaration) => {
     interfaces.push(getInterface(typeChecker, interfaceDeclaration));
   });
 
-  enumDeclarations.forEach(enumDeclaration => {
+  enumDeclarations.forEach((enumDeclaration) => {
     enums.push(getEnum(typeChecker, enumDeclaration));
   });
 
-  typeAliasDeclarations.forEach(typeAliasDeclaration => {
+  typeAliasDeclarations.forEach((typeAliasDeclaration) => {
     typeAliases.push(getTypeAlias(typeChecker, typeAliasDeclaration));
   });
 
   moduleDeclarations
-    .filter(m => m?.name?.text === '@capacitor/cli')
-    .forEach(moduleDeclaration => {
+    .filter((m) => m?.name?.text === '@capacitor/cli')
+    .forEach((moduleDeclaration) => {
       getPluginsConfig(typeChecker, moduleDeclaration, pluginConfigs);
     });
 }
 
-function getInterface(
-  typeChecker: ts.TypeChecker,
-  node: ts.InterfaceDeclaration,
-) {
+function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration) {
   const interfaceName = node.name.text;
-  const methods = node.members
-    .filter(ts.isMethodSignature)
-    .reduce((methods, methodSignature) => {
-      const m = getInterfaceMethod(typeChecker, methodSignature);
-      if (m) {
-        methods.push(m);
-      }
-      return methods;
-    }, [] as DocsInterfaceMethod[]);
+  const methods = node.members.filter(ts.isMethodSignature).reduce((methods, methodSignature) => {
+    const m = getInterfaceMethod(typeChecker, methodSignature);
+    if (m) {
+      methods.push(m);
+    }
+    return methods;
+  }, [] as DocsInterfaceMethod[]);
 
-  const properties = node.members
-    .filter(ts.isPropertySignature)
-    .reduce((properties, properytSignature) => {
-      const p = getInterfaceProperty(typeChecker, properytSignature);
-      if (p) {
-        properties.push(p);
-      }
-      return properties;
-    }, [] as DocsInterfaceProperty[]);
+  const properties = node.members.filter(ts.isPropertySignature).reduce((properties, properytSignature) => {
+    const p = getInterfaceProperty(typeChecker, properytSignature);
+    if (p) {
+      properties.push(p);
+    }
+    return properties;
+  }, [] as DocsInterfaceProperty[]);
 
   const symbol = typeChecker.getSymbolAtLocation(node.name);
   const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
@@ -214,7 +191,7 @@ function getEnum(typeChecker: ts.TypeChecker, node: ts.EnumDeclaration) {
   const en: DocsEnum = {
     name: enumName,
     slug: slugify(enumName),
-    members: node.members.map(enumMember => {
+    members: node.members.map((enumMember) => {
       const symbol = typeChecker.getSymbolAtLocation(enumMember.name);
       const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
 
@@ -232,10 +209,7 @@ function getEnum(typeChecker: ts.TypeChecker, node: ts.EnumDeclaration) {
   return en;
 }
 
-function getTypeAlias(
-  typeChecker: ts.TypeChecker,
-  node: ts.TypeAliasDeclaration,
-) {
+function getTypeAlias(typeChecker: ts.TypeChecker, node: ts.TypeAliasDeclaration) {
   const symbol = typeChecker.getSymbolAtLocation(node.name);
   const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
 
@@ -264,7 +238,7 @@ function getTypeAlias(
         ];
       }
     } else if (ts.isUnionTypeNode(node.type) && node.type.types) {
-      typeAlias.types = node.type.types.map(t => {
+      typeAlias.types = node.type.types.map((t) => {
         const referencedTypes = new Set(getAllTypeReferences(t));
         referencedTypes.delete('Promise');
         const typeRef: DocsTypeAliasReference = {
@@ -288,20 +262,15 @@ function getTypeAlias(
   return typeAlias;
 }
 
-function getInterfaceMethod(
-  typeChecker: ts.TypeChecker,
-  methodSignature: ts.MethodSignature,
-) {
-  const flags =
-    ts.TypeFormatFlags.WriteArrowStyleSignature |
-    ts.TypeFormatFlags.NoTruncation;
+function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.MethodSignature) {
+  const flags = ts.TypeFormatFlags.WriteArrowStyleSignature | ts.TypeFormatFlags.NoTruncation;
   const signature = typeChecker.getSignatureFromDeclaration(methodSignature);
   if (!signature) {
     return null;
   }
 
   const tags = signature.getJsDocTags();
-  if (tags.some(t => t.name === 'hidden')) {
+  if (tags.some((t) => t.name === 'hidden')) {
     return null;
   }
 
@@ -309,20 +278,12 @@ function getInterfaceMethod(
   const returnTypeNode = typeChecker.typeToTypeNode(
     returnType,
     methodSignature,
-    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction,
+    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction
   );
   const returnString = typeToString(typeChecker, returnType);
-  const signatureString = typeChecker.signatureToString(
-    signature,
-    methodSignature,
-    flags,
-    ts.SignatureKind.Call,
-  );
+  const signatureString = typeChecker.signatureToString(signature, methodSignature, flags, ts.SignatureKind.Call);
 
-  const referencedTypes = new Set([
-    ...getAllTypeReferences(returnTypeNode),
-    ...getAllTypeReferences(methodSignature),
-  ]);
+  const referencedTypes = new Set([...getAllTypeReferences(returnTypeNode), ...getAllTypeReferences(methodSignature)]);
   referencedTypes.delete('Promise');
 
   const methodName = methodSignature.name.getText();
@@ -330,7 +291,7 @@ function getInterfaceMethod(
   const m: DocsInterfaceMethod = {
     name: methodName,
     signature: signatureString,
-    parameters: signature.parameters.map(symbol => {
+    parameters: signature.parameters.map((symbol) => {
       const doc = serializeSymbol(typeChecker, symbol);
       const type = typeChecker.getTypeAtLocation(symbol.valueDeclaration);
       const param: DocsMethodParam = {
@@ -342,9 +303,7 @@ function getInterfaceMethod(
     }),
     returns: returnString,
     tags,
-    docs: ts.displayPartsToString(
-      signature.getDocumentationComment(typeChecker),
-    ),
+    docs: ts.displayPartsToString(signature.getDocumentationComment(typeChecker)),
     complexTypes: Array.from(referencedTypes),
     slug: '',
   };
@@ -354,10 +313,7 @@ function getInterfaceMethod(
   return m;
 }
 
-function getInterfaceProperty(
-  typeChecker: ts.TypeChecker,
-  properytSignature: ts.PropertySignature,
-) {
+function getInterfaceProperty(typeChecker: ts.TypeChecker, properytSignature: ts.PropertySignature) {
   const symbol = typeChecker.getSymbolAtLocation(properytSignature.name);
   if (!symbol) {
     return null;
@@ -383,7 +339,7 @@ function getInterfaceProperty(
 function getPluginsConfig(
   typeChecker: ts.TypeChecker,
   moduleDeclaration: ts.ModuleDeclaration,
-  pluginConfigs: DocsConfigInterface[],
+  pluginConfigs: DocsConfigInterface[]
 ) {
   const body = moduleDeclaration.body as ts.ModuleBlock;
   if (!Array.isArray(body.statements)) {
@@ -392,16 +348,14 @@ function getPluginsConfig(
 
   const pluginConfigInterfaces = body.statements.filter(
     (s: ts.InterfaceDeclaration) =>
-      s?.name?.text === 'PluginsConfig' &&
-      Array.isArray(s?.members) &&
-      s.members.length > 0,
+      s?.name?.text === 'PluginsConfig' && Array.isArray(s?.members) && s.members.length > 0
   ) as ts.InterfaceDeclaration[];
 
-  pluginConfigInterfaces.forEach(pluginConfigInterface => {
+  pluginConfigInterfaces.forEach((pluginConfigInterface) => {
     pluginConfigInterface.members
       .filter(ts.isPropertySignature)
-      .filter(p => p?.type && (p?.type as ts.TypeLiteralNode).members)
-      .forEach(properytSignature => {
+      .filter((p) => p?.type && (p?.type as ts.TypeLiteralNode).members)
+      .forEach((properytSignature) => {
         const typeLiteral = properytSignature.type as ts.TypeLiteralNode;
 
         const nm = properytSignature.name.getText();
@@ -412,10 +366,10 @@ function getPluginsConfig(
           slug: slugify(nm),
           properties: typeLiteral.members
             .filter(ts.isPropertySignature)
-            .map(propertySignature => {
+            .map((propertySignature) => {
               return getInterfaceProperty(typeChecker, propertySignature);
             })
-            .filter(p => p != null) as DocsInterfaceProperty[],
+            .filter((p) => p != null) as DocsInterfaceProperty[],
           docs: docs?.docs || '',
         };
 
@@ -426,11 +380,7 @@ function getPluginsConfig(
   });
 }
 
-function typeToString(
-  checker: ts.TypeChecker,
-  type: ts.Type,
-  typeNode?: ts.TypeNode,
-) {
+function typeToString(checker: ts.TypeChecker, type: ts.Type, typeNode?: ts.TypeNode) {
   if (typeNode && ts.isTypeReferenceNode(typeNode)) {
     return typeNode.getText();
   }
@@ -445,10 +395,7 @@ function typeToString(
   return checker.typeToString(type, undefined, TYPE_FORMAT_FLAGS);
 }
 
-function serializeSymbol(
-  checker: ts.TypeChecker,
-  symbol: ts.Symbol,
-): DocsJsDoc {
+function serializeSymbol(checker: ts.TypeChecker, symbol: ts.Symbol): DocsJsDoc {
   if (!checker || !symbol) {
     return {
       tags: [],
@@ -456,9 +403,7 @@ function serializeSymbol(
     };
   }
   return {
-    tags: symbol
-      .getJsDocTags()
-      .map(tag => ({ text: tag.text, name: tag.name })),
+    tags: symbol.getJsDocTags().map((tag) => ({ text: tag.text, name: tag.name })),
     docs: ts.displayPartsToString(symbol.getDocumentationComment(checker)),
   };
 }
@@ -470,7 +415,7 @@ function getAllTypeReferences(node: ts.Node | undefined) {
     if (ts.isTypeReferenceNode(node)) {
       referencedTypes.push(getEntityName(node.typeName));
       if (node.typeArguments) {
-        node.typeArguments.filter(ts.isTypeReferenceNode).forEach(tr => {
+        node.typeArguments.filter(ts.isTypeReferenceNode).forEach((tr) => {
           const typeName = tr.typeName as ts.Identifier;
           if (typeName && typeName.escapedText) {
             referencedTypes.push(typeName.escapedText.toString());

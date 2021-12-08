@@ -8,14 +8,12 @@ export function getTsProgram(opts: DocsParseOptions) {
   let options: ts.CompilerOptions;
 
   if (typeof opts.tsconfigPath === 'string') {
-    const configResult = ts.readConfigFile(opts.tsconfigPath, p =>
-      fs.readFileSync(p, 'utf-8'),
-    );
+    const configResult = ts.readConfigFile(opts.tsconfigPath, (p) => fs.readFileSync(p, 'utf-8'));
 
     if (configResult.error) {
       throw new Error(
         `Unable to read tsconfig path: "${opts.tsconfigPath}". ` +
-          ts.flattenDiagnosticMessageText(configResult.error.messageText, '\n'),
+          ts.flattenDiagnosticMessageText(configResult.error.messageText, '\n')
       );
     }
     const tsconfigDir = path.dirname(opts.tsconfigPath);
@@ -24,7 +22,7 @@ export function getTsProgram(opts: DocsParseOptions) {
     });
     options = configResult.config.compilerOptions;
   } else if (Array.isArray(opts.inputFiles) && opts.inputFiles.length > 0) {
-    opts.inputFiles.forEach(i => {
+    opts.inputFiles.forEach((i) => {
       if (!path.isAbsolute(i)) {
         throw new Error(`inputFile "${i}" must be absolute`);
       }
@@ -32,9 +30,7 @@ export function getTsProgram(opts: DocsParseOptions) {
     options = {};
     rootNames = [...opts.inputFiles];
   } else {
-    throw new Error(
-      `Either "tsconfigPath" or "inputFiles" option must be provided`,
-    );
+    throw new Error(`Either "tsconfigPath" or "inputFiles" option must be provided`);
   }
 
   // same defaults as transpile() for faster parse-only transpiling
