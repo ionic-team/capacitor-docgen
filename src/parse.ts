@@ -78,6 +78,13 @@ function collectInterfaces(
   enums: DocsEnum[]
 ) {
   if (i.name !== data.api?.name && !data.interfaces.some((di) => di.name === i.name)) {
+    const tags = i.tags.filter(tag => tag.name === 'extends' && tag.text?.trim()).map(tag => tag.text?.trim());
+    if (tags.length > 0) {
+      const extendsInterfaces = interfaces.filter(i => [...new Set(tags)].includes(i.name)).map(i => i.properties);
+      i.properties = i.properties.concat(extendsInterfaces.flat(1)).filter((elem, index, self) =>  {
+        return self.indexOf(elem) === index;
+      });
+    }
     data.interfaces.push(i);
   }
 
