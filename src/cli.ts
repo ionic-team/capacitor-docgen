@@ -1,5 +1,5 @@
 import minimist from 'minimist';
-import c from 'colorette';
+import { green, red } from 'colorette';
 import path from 'path';
 import type { DocsGenerateOptions } from './types';
 import { generate } from './generate';
@@ -60,7 +60,7 @@ export async function run(config: { cwd: string; args: string[] }) {
     }
   } catch (e) {
     if (!args.silent) {
-      console.error(c.red(`\n${emoji(`❌`)}DocGen ${e}\n`));
+      console.error(red(`\n${emoji(`❌`)}DocGen ${e}\n`));
     }
     process.exit(1);
   }
@@ -75,7 +75,7 @@ function getTsconfigPath(cwd: string, cliTsConfigPath: string) {
 
 function logOutput(outputPath: string | undefined) {
   if (outputPath) {
-    console.log(c.green(`${emoji(`✔️`)}DocGen Output:`), outputPath);
+    console.log(green(`${emoji(`✔️`)}DocGen Output:`), outputPath);
   }
 }
 
