@@ -1,6 +1,6 @@
 {
   "name": "@capacitor/docgen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Docs Readme Markdown and JSON Generator for Capacitor Plugins",
   "keywords": [
     "capacitor docs generation",
