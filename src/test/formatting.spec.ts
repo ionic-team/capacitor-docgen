@@ -41,13 +41,13 @@ describe('formatting', () => {
 
   it('formatDescription w/ backticks', () => {
     const r = formatDescription(d, 'Hey `SomeInterface`!');
-    expect(r).toEqual('Hey <a href="#someinterface">`SomeInterface`</a>!');
+    expect(r).toEqual('Hey [`SomeInterface`](#someinterface)!');
   });
 
   it('formatDescription', () => {
     const r = formatDescription(d, `Hey SomeInterface and SomeInterface.prop and SomeEnum and SomeEnum.Value!`);
     expect(r).toEqual(
-      `Hey <a href=\"#someinterface\">SomeInterface</a> and <a href=\"#someinterface\">SomeInterface.prop</a> and <a href=\"#someenum\">SomeEnum</a> and <a href=\"#someenum\">SomeEnum.Value</a>!`
+      `Hey [SomeInterface](#someinterface) and [SomeInterface.prop](#someinterface) and [SomeEnum](#someenum) and [SomeEnum.Value](#someenum)!`
     );
   });
 
@@ -55,20 +55,20 @@ describe('formatting', () => {
     const r = formatType(d, `Promise<SomeInterface | SomeEnum | Promise<void>>`);
     expect(r.type).toEqual(`Promise<SomeInterface | SomeEnum | Promise<void>>`);
     expect(r.formatted).toEqual(
-      `<code>Promise&lt;<a href="#someinterface">SomeInterface</a> | <a href=\"#someenum\">SomeEnum</a> | Promise&lt;void&gt;&gt;</code>`
+      `<code>Promise&lt;[SomeInterface](#someinterface) | [SomeEnum](#someenum) | Promise&lt;void&gt;&gt;</code>`
     );
   });
 
   it('formatType interface promise', () => {
     const r = formatType(d, `Promise<SomeInterface>`);
     expect(r.type).toEqual(`Promise<SomeInterface>`);
-    expect(r.formatted).toEqual(`<code>Promise&lt;<a href="#someinterface">SomeInterface</a>&gt;</code>`);
+    expect(r.formatted).toEqual(`<code>Promise&lt;[SomeInterface](#someinterface)&gt;</code>`);
   });
 
   it('formatType interface', () => {
     const r = formatType(d, `SomeInterface`);
     expect(r.type).toEqual(`SomeInterface`);
-    expect(r.formatted).toEqual(`<code><a href="#someinterface">SomeInterface</a></code>`);
+    expect(r.formatted).toEqual(`<code>[SomeInterface](#someinterface)</code>`);
   });
 
   it('formatType remove undefined', () => {
