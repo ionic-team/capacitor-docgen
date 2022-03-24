@@ -20,7 +20,6 @@ export interface DocsInterface {
   tags: DocsTagInfo[];
   methods: DocsInterfaceMethod[];
   properties: DocsInterfaceProperty[];
-  importObject: string[];
 }
 
 export interface DocsEnum {
