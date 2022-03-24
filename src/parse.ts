@@ -38,7 +38,7 @@ export function parse(opts: DocsParseOptions) {
   });
 
   return (api: string) => {
-    const apiInterface = interfaces.find(i => i.name === api) || null;
+    const apiInterface = interfaces.find((i) => i.name === api) || null;
 
     const data: DocsData = {
       api: apiInterface,
