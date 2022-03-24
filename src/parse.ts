@@ -38,21 +38,7 @@ export function parse(opts: DocsParseOptions) {
   });
 
   return (api: string) => {
-    let apiInterface = interfaces.find((i) => i.name === api) || null;
-
-    /**
-     * Add methods of import(many is used in `extends`)
-     */
-    const allImportObject = interfaces
-      .filter((i) => apiInterface?.importObject.includes(i.name) && i.name !== api)
-      .map((i) => i.importObject);
-
-    const otherMethod =
-      interfaces.filter((i) => [...new Set(allImportObject.flat())].includes(i.name)).map((d) => d.methods) || null;
-
-    if (apiInterface !== null && otherMethod && otherMethod.length > 0) {
-      apiInterface.methods = [...new Set(apiInterface?.methods.concat(otherMethod.flat(1)))];
-    }
+    const apiInterface = interfaces.find((i) => i.name === api) || null;
 
     const data: DocsData = {
       api: apiInterface,
@@ -170,9 +156,6 @@ function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration
   const symbol = typeChecker.getSymbolAtLocation(node.name);
   const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
 
-  // @ts-ignore
-  const importObject = node.parent?.locals?.keys() || [];
-
   const i: DocsInterface = {
     name: interfaceName,
     slug: slugify(interfaceName),
@@ -180,7 +163,6 @@ function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration
     tags: docs?.tags || [],
     methods,
     properties,
-    importObject: [...importObject].filter((d: string) => d !== interfaceName),
   };
 
   return i;
