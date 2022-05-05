@@ -217,14 +217,14 @@ function markdownConfig(data: DocsData) {
   if (data.pluginConfigs) {
     data!.pluginConfigs!.forEach((c) => {
       o.push(configInterfaceTable(data, c));
-      o.push(buildExamples(c));
+      o.push(buildExamples(c, data.package));
     });
   }
 
   return o.join('\n');
 }
 
-function buildExamples(c: DocsConfigInterface) {
+function buildExamples(c: DocsConfigInterface, packageName?: string) {
   const o: string[] = [];
   o.push(`### Examples`);
   o.push(``);
@@ -248,7 +248,7 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`In \`capacitor.config.ts\`:`);
   o.push(``);
   o.push(`\`\`\`ts`);
-  o.push(`/// <reference types="@capacitor/${slugify(c.name.replace(/([a-z])([A-Z])/g, '$1 $2'))}" />`);
+  o.push(`/// <reference types="${packageName ? packageName : "@capacitor/" + slugify(c.name.replace(/([a-z])([A-Z])/g, '$1 $2'))}" />`);
   o.push(``);
   o.push(`import { CapacitorConfig } from '@capacitor/cli';`);
   o.push(``);

@@ -42,6 +42,7 @@ export function parse(opts: DocsParseOptions) {
 
     const data: DocsData = {
       api: apiInterface,
+      package: opts.package,
       interfaces: [],
       enums: [],
       typeAliases: [],

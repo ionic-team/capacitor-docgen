@@ -61,6 +61,7 @@ docgen --api HapticsPlugin --output-readme README.md
 | `--output-readme` | `-r`  | Path to the markdown file to update. Note that the file must already exist. **Required** |
 | `--output-json`   | `-j`  | Path to write the raw docs data as a json file.                                          |
 | `--project`       | `-p`  | Path to the project's `tsconfig.json` file, same as the [project](https://www.typescriptlang.org/docs/handbook/compiler-options.html) flag for TypeScript's CLI. By default it'll attempt to find this file. |
+| `--package`       | `-pkg`  | The plugin package name |
 
 
 #### package.json script

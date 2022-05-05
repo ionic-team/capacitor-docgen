@@ -11,7 +11,7 @@ import fs from 'fs';
  */
 export async function run(config: { cwd: string; args: string[] }) {
   const args = minimist(config.args, {
-    string: ['project', 'api', 'output-json', 'output-readme'],
+    string: ['project', 'api', 'output-json', 'output-readme', 'package'],
     boolean: ['silent'],
     alias: {
       p: 'project',
@@ -19,6 +19,7 @@ export async function run(config: { cwd: string; args: string[] }) {
       j: 'output-json',
       r: 'output-readme',
       s: 'silent',
+      pkg: 'package',
     },
   });
 
@@ -48,6 +49,10 @@ export async function run(config: { cwd: string; args: string[] }) {
     }
     if (args['output-readme']) {
       opts.outputReadmePath = normalizePath(config.cwd, args['output-readme']);
+    }
+
+    if (args['package']) {
+      opts.package = args['package'];
     }
 
     const results = await generate(opts);

@@ -1,5 +1,6 @@
 export interface DocsData {
   api: DocsInterface | null;
+  package?: string;
   interfaces: DocsInterface[];
   typeAliases: DocsTypeAlias[];
   enums: DocsEnum[];
@@ -93,6 +94,7 @@ export interface DocsTagInfo {
 export interface DocsParseOptions {
   tsconfigPath?: string;
   inputFiles?: string[];
+  package?: string;
 }
 
 export interface DocsGenerateOptions extends DocsParseOptions {
