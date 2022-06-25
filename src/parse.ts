@@ -11,8 +11,9 @@ import type {
   DocsInterfaceProperty,
   DocsConfigInterface,
   DocsTypeAlias,
-  DocsTypeAliasReference, DocsTagInfo
-} from './types'
+  DocsTypeAliasReference,
+  DocsTagInfo,
+} from './types';
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
 
@@ -149,15 +150,15 @@ function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration
     // See https://github.com/microsoft/TypeScript/pull/18654 for why
     // this is preferred.
     if (propertySignature?.type?.kind === ts.SyntaxKind.FunctionType) {
-      const method = getInterfacePropertyMethod(typeChecker, propertySignature)
+      const method = getInterfacePropertyMethod(typeChecker, propertySignature);
 
       if (method) {
-        methods.push(method)
+        methods.push(method);
       }
     } else {
-      const p = getInterfaceProperty(typeChecker, propertySignature)
+      const p = getInterfaceProperty(typeChecker, propertySignature);
       if (p) {
-        properties.push(p)
+        properties.push(p);
       }
     }
     return properties;
@@ -259,27 +260,17 @@ function getMethod(
   node: ts.PropertySignature | ts.MethodSignature,
   signature: ts.Signature
 ) {
-  const flags =
-    ts.TypeFormatFlags.WriteArrowStyleSignature |
-    ts.TypeFormatFlags.NoTruncation;
+  const flags = ts.TypeFormatFlags.WriteArrowStyleSignature | ts.TypeFormatFlags.NoTruncation;
   const returnType = typeChecker.getReturnTypeOfSignature(signature);
   const returnTypeNode = typeChecker.typeToTypeNode(
     returnType,
     node,
-    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction,
+    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction
   );
   const returnString = typeToString(typeChecker, returnType);
-  const signatureString = typeChecker.signatureToString(
-    signature,
-    node,
-    flags,
-    ts.SignatureKind.Call,
-  );
+  const signatureString = typeChecker.signatureToString(signature, node, flags, ts.SignatureKind.Call);
 
-  const referencedTypes = new Set([
-    ...getAllTypeReferences(returnTypeNode),
-    ...getAllTypeReferences(node),
-  ]);
+  const referencedTypes = new Set([...getAllTypeReferences(returnTypeNode), ...getAllTypeReferences(node)]);
   referencedTypes.delete('Promise');
 
   const methodName = node.name.getText();
@@ -287,7 +278,7 @@ function getMethod(
   const m: DocsInterfaceMethod = {
     name: methodName,
     signature: signatureString,
-    parameters: signature.parameters.map(symbol => {
+    parameters: signature.parameters.map((symbol) => {
       const doc = serializeSymbol(typeChecker, symbol);
       const type = typeChecker.getTypeAtLocation(symbol.valueDeclaration!);
       const param: DocsMethodParam = {
@@ -299,9 +290,7 @@ function getMethod(
     }),
     returns: returnString,
     tags: signature.getJsDocTags() as DocsTagInfo[],
-    docs: ts.displayPartsToString(
-      signature.getDocumentationComment(typeChecker),
-    ),
+    docs: ts.displayPartsToString(signature.getDocumentationComment(typeChecker)),
     complexTypes: Array.from(referencedTypes),
     slug: slugify(methodName),
   };
@@ -309,11 +298,8 @@ function getMethod(
   return m;
 }
 
-function getInterfacePropertyMethod(
-  typeChecker: ts.TypeChecker,
-  property: ts.PropertySignature
-) {
-  const type = typeChecker.getTypeAtLocation(property)
+function getInterfacePropertyMethod(typeChecker: ts.TypeChecker, property: ts.PropertySignature) {
+  const type = typeChecker.getTypeAtLocation(property);
   const signatures = type.getCallSignatures();
 
   if (!signatures.length) {
@@ -324,16 +310,13 @@ function getInterfacePropertyMethod(
   return getMethod(typeChecker, property, signature);
 }
 
-function getInterfaceMethod(
-  typeChecker: ts.TypeChecker,
-  methodSignature: ts.MethodSignature,
-) {
+function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.MethodSignature) {
   const signature = typeChecker.getSignatureFromDeclaration(methodSignature);
   if (!signature) {
     return null;
   }
 
-  return getMethod(typeChecker, methodSignature, signature)
+  return getMethod(typeChecker, methodSignature, signature);
 }
 
 function getInterfaceProperty(typeChecker: ts.TypeChecker, properytSignature: ts.PropertySignature) {
