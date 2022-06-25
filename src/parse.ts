@@ -145,9 +145,20 @@ function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration
   }, [] as DocsInterfaceMethod[]);
 
   const properties = node.members.filter(ts.isPropertySignature).reduce((properties, propertySignature) => {
-    const p = getInterfaceProperty(typeChecker, propertySignature);
-    if (p) {
-      properties.push(p);
+    // Interface properties may actually be methods.
+    // See https://github.com/microsoft/TypeScript/pull/18654 for why
+    // this is preferred.
+    if (propertySignature?.type?.kind === ts.SyntaxKind.FunctionType) {
+      const method = getInterfacePropertyMethod(typeChecker, propertySignature)
+
+      if (method) {
+        methods.push(method)
+      }
+    } else {
+      const p = getInterfaceProperty(typeChecker, propertySignature)
+      if (p) {
+        properties.push(p)
+      }
     }
     return properties;
   }, [] as DocsInterfaceProperty[]);
@@ -243,36 +254,40 @@ function getTypeAlias(typeChecker: ts.TypeChecker, node: ts.TypeAliasDeclaration
   return typeAlias;
 }
 
-function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.MethodSignature) {
-  const flags = ts.TypeFormatFlags.WriteArrowStyleSignature | ts.TypeFormatFlags.NoTruncation;
-  const signature = typeChecker.getSignatureFromDeclaration(methodSignature);
-  if (!signature) {
-    return null;
-  }
-
-  const tags = signature.getJsDocTags() as DocsTagInfo[];
-  if (tags.some((t) => t.name === 'hidden')) {
-    return null;
-  }
-
+function getMethod(
+  typeChecker: ts.TypeChecker,
+  node: ts.PropertySignature | ts.MethodSignature,
+  signature: ts.Signature
+) {
+  const flags =
+    ts.TypeFormatFlags.WriteArrowStyleSignature |
+    ts.TypeFormatFlags.NoTruncation;
   const returnType = typeChecker.getReturnTypeOfSignature(signature);
   const returnTypeNode = typeChecker.typeToTypeNode(
     returnType,
-    methodSignature,
-    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction
+    node,
+    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction,
   );
   const returnString = typeToString(typeChecker, returnType);
-  const signatureString = typeChecker.signatureToString(signature, methodSignature, flags, ts.SignatureKind.Call);
+  const signatureString = typeChecker.signatureToString(
+    signature,
+    node,
+    flags,
+    ts.SignatureKind.Call,
+  );
 
-  const referencedTypes = new Set([...getAllTypeReferences(returnTypeNode), ...getAllTypeReferences(methodSignature)]);
+  const referencedTypes = new Set([
+    ...getAllTypeReferences(returnTypeNode),
+    ...getAllTypeReferences(node),
+  ]);
   referencedTypes.delete('Promise');
 
-  const methodName = methodSignature.name.getText();
+  const methodName = node.name.getText();
 
   const m: DocsInterfaceMethod = {
     name: methodName,
     signature: signatureString,
-    parameters: signature.parameters.map((symbol) => {
+    parameters: signature.parameters.map(symbol => {
       const doc = serializeSymbol(typeChecker, symbol);
       const type = typeChecker.getTypeAtLocation(symbol.valueDeclaration!);
       const param: DocsMethodParam = {
@@ -283,15 +298,42 @@ function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.Met
       return param;
     }),
     returns: returnString,
-    tags,
-    docs: ts.displayPartsToString(signature.getDocumentationComment(typeChecker)),
+    tags: signature.getJsDocTags() as DocsTagInfo[],
+    docs: ts.displayPartsToString(
+      signature.getDocumentationComment(typeChecker),
+    ),
     complexTypes: Array.from(referencedTypes),
-    slug: '',
+    slug: slugify(methodName),
   };
 
-  m.slug = slugify(formatMethodSignatureForSlug(m));
-
   return m;
+}
+
+function getInterfacePropertyMethod(
+  typeChecker: ts.TypeChecker,
+  property: ts.PropertySignature
+) {
+  const type = typeChecker.getTypeAtLocation(property)
+  const signatures = type.getCallSignatures();
+
+  if (!signatures.length) {
+    return null;
+  }
+
+  const signature = signatures[0];
+  return getMethod(typeChecker, property, signature);
+}
+
+function getInterfaceMethod(
+  typeChecker: ts.TypeChecker,
+  methodSignature: ts.MethodSignature,
+) {
+  const signature = typeChecker.getSignatureFromDeclaration(methodSignature);
+  if (!signature) {
+    return null;
+  }
+
+  return getMethod(typeChecker, methodSignature, signature)
 }
 
 function getInterfaceProperty(typeChecker: ts.TypeChecker, properytSignature: ts.PropertySignature) {
