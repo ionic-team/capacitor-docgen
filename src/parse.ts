@@ -15,7 +15,6 @@ import type {
 } from './types'
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
-import { formatMethodSignatureForSlug } from './formatting';
 
 /**
  * Given either a tsconfig file path, or exact input files, will
