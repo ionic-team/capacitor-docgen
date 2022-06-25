@@ -145,8 +145,8 @@ function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration
     return methods;
   }, [] as DocsInterfaceMethod[]);
 
-  const properties = node.members.filter(ts.isPropertySignature).reduce((properties, properytSignature) => {
-    const p = getInterfaceProperty(typeChecker, properytSignature);
+  const properties = node.members.filter(ts.isPropertySignature).reduce((properties, propertySignature) => {
+    const p = getInterfaceProperty(typeChecker, propertySignature);
     if (p) {
       properties.push(p);
     }
