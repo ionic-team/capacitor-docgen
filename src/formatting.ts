@@ -122,7 +122,17 @@ function cleanWhitespace(str: string) {
 export function tokenize(str: string) {
   const t: string[] = [];
   let w = '';
-  for (const c of str) {
+  for (let i = 0; i < str.length; i++) {
+    let c = str.charAt(i);
+    // Convert EOL to space, consecutive EOL to <br><br> (paragraph break)
+    if (EOL.test(c)) {
+      if (i < str.length - 2 && EOL.test(str.charAt(i + 1))) {
+        c = '<br><br>';
+        i += 1;
+      } else {
+        c = ' ';
+      }
+    }
     if (BREAKS.includes(c)) {
       if (w !== '') {
         t.push(w);
@@ -162,3 +172,4 @@ const BREAKS = [
   `{`,
   `}`,
 ];
+const EOL = /\r?\n/;
