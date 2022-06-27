@@ -114,7 +114,7 @@ function linkToken(data: DocsData, token: string) {
 function cleanWhitespace(str: string) {
   str = str.replace(/\n/g, ' ').trim();
   while (str.includes('  ')) {
-    str = str.replace(/  /g, ' ');
+    str = str.replace(/ {2}/g, ' ');
   }
   return str;
 }
