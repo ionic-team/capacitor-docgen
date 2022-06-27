@@ -73,14 +73,14 @@ function formatTokens(data: DocsData, tokens: string[]) {
 
 export function formatMethodSignature(m: DocsInterfaceMethod) {
   if (m.name === 'addListener' && m.parameters.length > 0) {
-    return `addListener(${m.parameters[0].type.replace(/\"/g, `'`)}, ...)`;
+    return `addListener(${m.parameters[0].type.replace(/"/g, `'`)}, ...)`;
   }
   return `${m.name}(${m.parameters.length > 0 ? '...' : ''})`;
 }
 
 export function formatMethodSignatureForSlug(m: DocsInterfaceMethod) {
   if (m.name === 'addListener' && m.parameters.length > 0) {
-    return `addListener(${m.parameters[0].type.replace(/\"/g, `'`)})`;
+    return `addListener(${m.parameters[0].type.replace(/"/g, `'`)})`;
   }
   return `${m.name}(${m.parameters.length > 0 ? '...' : ''})`;
 }
