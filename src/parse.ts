@@ -1,18 +1,18 @@
-import ts from 'typescript';
+import ts, { SyntaxKind } from 'typescript';
 import type {
+  DocsConfigInterface,
   DocsData,
-  DocsParseOptions,
-  DocsEnumMember,
   DocsEnum,
+  DocsEnumMember,
   DocsInterface,
   DocsInterfaceMethod,
-  DocsMethodParam,
-  DocsJsDoc,
   DocsInterfaceProperty,
-  DocsConfigInterface,
+  DocsJsDoc,
+  DocsMethodParam,
+  DocsParseOptions,
+  DocsTagInfo,
   DocsTypeAlias,
   DocsTypeAliasReference,
-  DocsTagInfo,
 } from './types';
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
@@ -274,6 +274,13 @@ function getMethod(
   referencedTypes.delete('Promise');
 
   const methodName = node.name.getText();
+  let docs: ts.SymbolDisplayPart[] | undefined;
+
+  if (node.kind === SyntaxKind.PropertySignature) {
+    docs = typeChecker.getSymbolAtLocation(node.name)?.getDocumentationComment(typeChecker);
+  } else {
+    docs = signature.getDocumentationComment(typeChecker);
+  }
 
   const m: DocsInterfaceMethod = {
     name: methodName,
@@ -290,7 +297,7 @@ function getMethod(
     }),
     returns: returnString,
     tags: signature.getJsDocTags() as DocsTagInfo[],
-    docs: ts.displayPartsToString(signature.getDocumentationComment(typeChecker)),
+    docs: ts.displayPartsToString(docs),
     complexTypes: Array.from(referencedTypes),
     slug: slugify(methodName),
   };
