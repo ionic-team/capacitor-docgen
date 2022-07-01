@@ -12,6 +12,7 @@ import type {
   DocsConfigInterface,
   DocsTypeAlias,
   DocsTypeAliasReference,
+  DocsTagInfo,
 } from './types';
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
@@ -251,7 +252,7 @@ function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.Met
     return null;
   }
 
-  const tags = signature.getJsDocTags();
+  const tags = signature.getJsDocTags() as DocsTagInfo[];
   if (tags.some((t) => t.name === 'hidden')) {
     return null;
   }
@@ -275,7 +276,7 @@ function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.Met
     signature: signatureString,
     parameters: signature.parameters.map((symbol) => {
       const doc = serializeSymbol(typeChecker, symbol);
-      const type = typeChecker.getTypeAtLocation(symbol.valueDeclaration);
+      const type = typeChecker.getTypeAtLocation(symbol.valueDeclaration!);
       const param: DocsMethodParam = {
         name: symbol.name,
         docs: doc.docs,
@@ -385,7 +386,7 @@ function serializeSymbol(checker: ts.TypeChecker, symbol: ts.Symbol): DocsJsDoc 
     };
   }
   return {
-    tags: symbol.getJsDocTags().map((tag) => ({ text: tag.text, name: tag.name })),
+    tags: symbol.getJsDocTags().map((tag) => ({ text: tag.text, name: tag.name })) as DocsTagInfo[],
     docs: ts.displayPartsToString(symbol.getDocumentationComment(checker)),
   };
 }
