@@ -248,7 +248,7 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`In \`capacitor.config.ts\`:`);
   o.push(``);
   o.push(`\`\`\`ts`);
-  o.push(`/// <reference types="@capacitor/${slugify(c.name.replace(/([a-z])([A-Z])/g, '$1 $2'))}" />`);
+  o.push(`/// <reference types="${process.env.npm_package_name}" />`);
   o.push(``);
   o.push(`import { CapacitorConfig } from '@capacitor/cli';`);
   o.push(``);
