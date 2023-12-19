@@ -95,17 +95,17 @@ function linkToken(data: DocsData, token: string) {
     );
   });
   if (i) {
-    return `<a href="#${i.slug}">${token}</a>`;
+    return `[${token}](#${i.slug})`;
   }
 
   const ta = data.typeAliases.find((ta) => ta.name === t);
   if (ta) {
-    return `<a href="#${ta.slug}">${token}</a>`;
+    return `[${token}](#${ta.slug})`;
   }
 
   const e = data.enums.find((e) => e.name === t || e.members.some((m) => e.name + '.' + m.name === t));
   if (e) {
-    return `<a href="#${e.slug}">${token}</a>`;
+    return `[${token}](#${e.slug})`;
   }
 
   return null;
