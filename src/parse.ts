@@ -15,7 +15,7 @@ import type {
 } from './types';
 import { getTsProgram } from './transpile';
 import GithubSlugger from 'github-slugger';
-import { formatMethodSignatureForSlug } from './formatting';
+import { formatMethodSignature } from './formatting';
 
 /**
  * Given either a tsconfig file path, or exact input files, will
@@ -290,7 +290,7 @@ function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.Met
     slug: '',
   };
 
-  m.slug = slugify(formatMethodSignatureForSlug(m));
+  m.slug = slugify(formatMethodSignature(m));
 
   return m;
 }
