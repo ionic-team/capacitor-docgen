@@ -11,7 +11,7 @@ Below is an index of all the methods available.
 * [`impact(...)`](#impact)
 * [`notification(...)`](#notification)
 * [`vibrate(...)`](#vibrate)
-* [`addListener('vibrate', ...)`](#addlistenervibrate)
+* [`addListener('vibrate', ...)`](#addlistenervibrate-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)

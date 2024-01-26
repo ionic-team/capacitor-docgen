@@ -110,7 +110,7 @@
         "complexTypes": [
           "VibrateListener"
         ],
-        "slug": "addlistenervibrate"
+        "slug": "addlistenervibrate-"
       },
       {
         "name": "removeAllListeners",
