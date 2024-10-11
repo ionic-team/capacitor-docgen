@@ -61,7 +61,7 @@ function collectInterfaces(
   i: DocsInterface,
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
-  enums: DocsEnum[]
+  enums: DocsEnum[],
 ) {
   if (i.name !== data.api?.name && !data.interfaces.some((di) => di.name === i.name)) {
     data.interfaces.push(i);
@@ -80,7 +80,7 @@ function collectUsed(
   complexTypes: string[],
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
-  enums: DocsEnum[]
+  enums: DocsEnum[],
 ) {
   complexTypes.forEach((typeName) => {
     const fi = interfaces.find((i) => i.name === typeName);
@@ -108,7 +108,7 @@ function parseSourceFile(
   interfaces: DocsInterface[],
   typeAliases: DocsTypeAlias[],
   enums: DocsEnum[],
-  pluginConfigs: DocsInterface[]
+  pluginConfigs: DocsInterface[],
 ) {
   const statements = tsSourceFile.statements;
   const interfaceDeclarations = statements.filter(ts.isInterfaceDeclaration);
@@ -260,7 +260,7 @@ function getInterfaceMethod(typeChecker: ts.TypeChecker, methodSignature: ts.Met
   const returnTypeNode = typeChecker.typeToTypeNode(
     returnType,
     methodSignature,
-    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction
+    ts.NodeBuilderFlags.NoTruncation | ts.NodeBuilderFlags.NoTypeReduction,
   );
   const returnString = typeToString(typeChecker, returnType);
   const signatureString = typeChecker.signatureToString(signature, methodSignature, flags, ts.SignatureKind.Call);
@@ -321,7 +321,7 @@ function getInterfaceProperty(typeChecker: ts.TypeChecker, properytSignature: ts
 function getPluginsConfig(
   typeChecker: ts.TypeChecker,
   moduleDeclaration: ts.ModuleDeclaration,
-  pluginConfigs: DocsConfigInterface[]
+  pluginConfigs: DocsConfigInterface[],
 ) {
   const body = moduleDeclaration.body as ts.ModuleBlock;
   if (!Array.isArray(body.statements)) {
@@ -330,7 +330,7 @@ function getPluginsConfig(
 
   const pluginConfigInterfaces = body.statements.filter(
     (s: ts.InterfaceDeclaration) =>
-      s?.name?.text === 'PluginsConfig' && Array.isArray(s?.members) && s.members.length > 0
+      s?.name?.text === 'PluginsConfig' && Array.isArray(s?.members) && s.members.length > 0,
   ) as ts.InterfaceDeclaration[];
 
   pluginConfigInterfaces.forEach((pluginConfigInterface) => {

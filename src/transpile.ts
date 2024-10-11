@@ -13,7 +13,7 @@ export function getTsProgram(opts: DocsParseOptions) {
     if (configResult.error) {
       throw new Error(
         `Unable to read tsconfig path: "${opts.tsconfigPath}". ` +
-          ts.flattenDiagnosticMessageText(configResult.error.messageText, '\n')
+          ts.flattenDiagnosticMessageText(configResult.error.messageText, '\n'),
       );
     }
     const tsconfigDir = path.dirname(opts.tsconfigPath);
