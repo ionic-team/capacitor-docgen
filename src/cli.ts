@@ -30,7 +30,7 @@ export async function run(config: { cwd: string; args: string[] }) {
     const tsconfigPath = getTsconfigPath(config.cwd, args.project);
     if (!tsconfigPath) {
       throw new Error(
-        `Unable to find project's tsconfig.json file. Use the "--project" arg to specify the exact path.`
+        `Unable to find project's tsconfig.json file. Use the "--project" arg to specify the exact path.`,
       );
     }
 

@@ -47,7 +47,7 @@ describe('formatting', () => {
   it('formatDescription', () => {
     const r = formatDescription(d, `Hey SomeInterface and SomeInterface.prop and SomeEnum and SomeEnum.Value!`);
     expect(r).toEqual(
-      `Hey <a href=\"#someinterface\">SomeInterface</a> and <a href=\"#someinterface\">SomeInterface.prop</a> and <a href=\"#someenum\">SomeEnum</a> and <a href=\"#someenum\">SomeEnum.Value</a>!`
+      `Hey <a href=\"#someinterface\">SomeInterface</a> and <a href=\"#someinterface\">SomeInterface.prop</a> and <a href=\"#someenum\">SomeEnum</a> and <a href=\"#someenum\">SomeEnum.Value</a>!`,
     );
   });
 
@@ -55,7 +55,7 @@ describe('formatting', () => {
     const r = formatType(d, `Promise<SomeInterface | SomeEnum | Promise<void>>`);
     expect(r.type).toEqual(`Promise<SomeInterface | SomeEnum | Promise<void>>`);
     expect(r.formatted).toEqual(
-      `<code>Promise&lt;<a href="#someinterface">SomeInterface</a> | <a href=\"#someenum\">SomeEnum</a> | Promise&lt;void&gt;&gt;</code>`
+      `<code>Promise&lt;<a href="#someinterface">SomeInterface</a> | <a href=\"#someenum\">SomeEnum</a> | Promise&lt;void&gt;&gt;</code>`,
     );
   });
 

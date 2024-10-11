@@ -31,7 +31,7 @@ export async function outputReadme(readmeFilePath: string, data: DocsData) {
     content = await readFile(readmeFilePath, 'utf8');
   } catch (e) {
     throw new Error(
-      `Unable to read: "${readmeFilePath}".\n\nIf this is the correct path, please create the file first, then run again.`
+      `Unable to read: "${readmeFilePath}".\n\nIf this is the correct path, please create the file first, then run again.`,
     );
   }
 
@@ -236,7 +236,7 @@ function buildExamples(c: DocsConfigInterface) {
   o.push(`    "${c.name}": {`);
   c.properties.forEach((p, i) => {
     o.push(
-      `      "${p.name}": ${p.tags.find((t) => t.name === 'example')?.text}${i === c.properties.length - 1 ? '' : ','}`
+      `      "${p.name}": ${p.tags.find((t) => t.name === 'example')?.text}${i === c.properties.length - 1 ? '' : ','}`,
     );
   });
   o.push(`    }`);
