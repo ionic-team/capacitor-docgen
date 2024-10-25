@@ -45,6 +45,37 @@ docs can also be linked to and shared.
 - [Example JSON Output](https://github.com/ionic-team/capacitor-docgen/blob/main/src/test/docs.json)
 
 
+## Extension jsdoc
+
+If interface use `extends`, you should add jsdocs for reflect docgen.
+
+for example:
+
+```ts
+/**
+ * @extends addOption
+ */
+export interface HapticsImpactOptions extends addOption {
+  /**
+   * Impact Feedback Style
+   *
+   * The mass of the objects in the collision simulated by a
+   * [`UIImpactFeedbackGenerator`](https://developer.apple.com/documentation/uikit/uiimpactfeedbackstyle) object.
+   * Type is a `HapticsImpactStyle`.
+   *
+   * @default HapticsImpactStyle.Heavy
+   * @since 1.0.0
+   */
+  style: HapticsImpactStyle;
+
+  value: boolean;
+}
+
+export interface addOption {
+  recursive: HapticsImpactOptions;
+}
+```
+
 ## CLI
 
 The easiest way to run `docgen` is to install `@capacitor/docgen` as a dev dependency

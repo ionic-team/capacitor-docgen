@@ -119,7 +119,10 @@ export interface HapticsImpact {
   value: number;
 }
 
-export interface HapticsImpactOptions {
+/**
+ * @extends addOption
+ */
+export interface HapticsImpactOptions extends addOption {
   /**
    * Impact Feedback Style
    *
@@ -133,7 +136,9 @@ export interface HapticsImpactOptions {
   style: HapticsImpactStyle;
 
   value: boolean;
+}
 
+export interface addOption {
   recursive: HapticsImpactOptions;
 }
 
