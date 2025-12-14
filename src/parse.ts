@@ -26,7 +26,22 @@ import { formatMethodSignature } from './formatting';
 export function parse(opts: DocsParseOptions) {
   const tsProgram = getTsProgram(opts);
   const typeChecker = tsProgram.getTypeChecker();
-  const tsSourceFiles = tsProgram.getSourceFiles();
+  const tsSourceFiles = tsProgram.getSourceFiles().filter((sourceFile) => {
+    const fileName = sourceFile.fileName;
+    // Filter out TypeScript lib files (lib.dom.d.ts, lib.es2017.d.ts, etc.)
+    if (fileName.includes('/typescript/lib/lib.') || fileName.includes('\\typescript\\lib\\lib.')) {
+      return false;
+    }
+    // Filter out node_modules except @capacitor packages
+    if (
+      (fileName.includes('/node_modules/') || fileName.includes('\\node_modules\\')) &&
+      !fileName.includes('/@capacitor/') &&
+      !fileName.includes('\\@capacitor\\')
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   const interfaces: DocsInterface[] = [];
   const enums: DocsEnum[] = [];
