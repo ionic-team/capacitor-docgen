@@ -116,8 +116,13 @@ function parseSourceFile(
   const enumDeclarations = statements.filter(ts.isEnumDeclaration);
   const moduleDeclarations = statements.filter(ts.isModuleDeclaration);
 
+  const processed = new Set<string>();
+
   interfaceDeclarations.forEach((interfaceDeclaration) => {
-    interfaces.push(getInterface(typeChecker, interfaceDeclaration));
+    const parsedInterface = getInterface(typeChecker, interfaceDeclaration, processed);
+    if (parsedInterface) {
+      interfaces.push(parsedInterface);
+    }
   });
 
   enumDeclarations.forEach((enumDeclaration) => {
@@ -135,26 +140,39 @@ function parseSourceFile(
     });
 }
 
-function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration) {
+function getInterface(typeChecker: ts.TypeChecker, node: ts.InterfaceDeclaration, processed = new Set<string>()) {
   const interfaceName = node.name.text;
-  const methods = node.members.filter(ts.isMethodSignature).reduce((methods, methodSignature) => {
-    const m = getInterfaceMethod(typeChecker, methodSignature);
-    if (m) {
-      methods.push(m);
-    }
-    return methods;
-  }, [] as DocsInterfaceMethod[]);
 
-  const properties = node.members.filter(ts.isPropertySignature).reduce((properties, properytSignature) => {
-    const p = getInterfaceProperty(typeChecker, properytSignature);
-    if (p) {
-      properties.push(p);
-    }
-    return properties;
-  }, [] as DocsInterfaceProperty[]);
+  if (processed.has(interfaceName)) {
+    return null;
+  }
+  processed.add(interfaceName);
 
+  const methods: DocsInterfaceMethod[] = [];
+  const properties: DocsInterfaceProperty[] = [];
   const symbol = typeChecker.getSymbolAtLocation(node.name);
   const docs = symbol ? serializeSymbol(typeChecker, symbol) : null;
+
+  if (node.heritageClauses) {
+    for (const clause of node.heritageClauses) {
+      if (clause.token === ts.SyntaxKind.ExtendsKeyword) {
+        clause.types.forEach((heritageType) => {
+          const extendedType = typeChecker.getTypeAtLocation(heritageType);
+          resolveType(extendedType, methods, properties, typeChecker, processed);
+        });
+      }
+    }
+  }
+
+  node.members.filter(ts.isMethodSignature).forEach((methodSignature) => {
+    const method = getInterfaceMethod(typeChecker, methodSignature);
+    if (method) methods.push(method);
+  });
+
+  node.members.filter(ts.isPropertySignature).forEach((propertySignature) => {
+    const property = getInterfaceProperty(typeChecker, propertySignature);
+    if (property) properties.push(property);
+  });
 
   const i: DocsInterface = {
     name: interfaceName,
@@ -420,6 +438,38 @@ function getEntityName(entity: ts.EntityName): string {
     return entity.escapedText.toString();
   } else {
     return getEntityName(entity.left);
+  }
+}
+
+function resolveType(
+  type: ts.Type,
+  methods: DocsInterfaceMethod[],
+  properties: DocsInterfaceProperty[],
+  typeChecker: ts.TypeChecker,
+  processed: Set<string>,
+) {
+  const symbol = type.getSymbol();
+  if (symbol) {
+    const declarations = symbol.getDeclarations();
+    if (declarations) {
+      declarations.forEach((decl) => {
+        if (ts.isInterfaceDeclaration(decl)) {
+          const extendedInterface = getInterface(typeChecker, decl, processed);
+          if (extendedInterface) {
+            extendedInterface.methods.forEach((m) => {
+              if (!methods.some((method) => method.name === m.name)) methods.push(m);
+            });
+            extendedInterface.properties.forEach((p) => {
+              if (!properties.some((prop) => prop.name === p.name)) properties.push(p);
+            });
+          }
+        }
+      });
+    }
+  }
+
+  if (type.isIntersection()) {
+    type.types.forEach((subType) => resolveType(subType, methods, properties, typeChecker, processed));
   }
 }
 
